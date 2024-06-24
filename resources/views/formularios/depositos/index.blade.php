@@ -34,7 +34,7 @@
                                     @foreach ($depositos as $deposito)
                                         <tr>
                                             <th scope="row">{{ $deposito->id }}</th>
-                                            <td>{{ $deposito->apellidos . ' ' . $deposito->nombres }}</td>
+                                            <td>{{ $deposito->apellidos  }}</td>
                                             <td>{{ $deposito->agencia->nombre }}</td>
                                             <td>{{ $deposito->fecha }}</td>
                                             <td>{{ $deposito->user->name }}</td>
@@ -85,6 +85,9 @@
 
     <script>
         $(document).ready(function() {
+            $('input, textarea').on('input', function() {
+                this.value = this.value.toUpperCase();
+            });
             $(".form-eliminar").submit(function(e) {
                 e.preventDefault(); // Previniendo el comportamiento predeterminado del botón
                 Swal.fire({

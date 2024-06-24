@@ -64,6 +64,12 @@
                 showConfirmButton: false,
                 timer: 3000 // 3 segundos
             });
+
         </script>
     @endif
+    <script>
+        $('.mayuscula').on('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    </script>
 @stop

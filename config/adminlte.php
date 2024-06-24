@@ -322,7 +322,9 @@ return [
             'label' => 4,
             'label_color' => 'success',
         ],
-        ['header' => 'CUENTAS'],
+        ['header' => 'CUENTAS',
+        'can' => 'user-list|role-list|permission-list|agencia-list',
+    ],
         /*
         [
             'text' => 'Usuarios',
@@ -347,18 +349,22 @@ return [
                 [
                     'text' => 'Usuarios',
                     'url' => '/users',
+                    'can' =>  'user-list',
                 ],
                 [
                     'text' => 'Roles',
                     'route' => 'roles.index',
+                    'can' =>  'role-list',
                 ],
                 [
                     'text' => 'Permisos',
                     'route' => 'permissions.index',
+                    'can' =>  'permission-list',
                 ],
                 [
                     'text' => 'Agencias',
                     'route' => 'agencias.index',
+                    'can' =>  'agencia-list',
                 ],
             ],
         ],
@@ -402,7 +408,8 @@ return [
             ],
         ],
 */
-        ['header' => 'FORMULARIOS'],
+        ['header' => 'FORMULARIOS',
+        'can' => 'deposito-list|deposito-show|deposito-create|deposito-edit',],
         [
             'text' => 'Depositos',
             'icon' => 'fas fa-fw fa-file',
@@ -410,10 +417,12 @@ return [
                 [
                     'text' => 'Nuevo',
                     'route' => 'depositos.create',
+                    'can' => 'deposito-create',
                 ],
                 [
                     'text' => 'Listado',
                     'route' => 'depositos.index',
+                    'can' => 'deposito-list',
                 ],
                 [
                     'text' => 'Descargar',

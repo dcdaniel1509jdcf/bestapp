@@ -22,15 +22,17 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-Route::get('/', function () {
-    return Redirect()->route('home');
-});
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', function () {
+        return Redirect()->route('home');
+    });
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('permissions', PermissionController::class);

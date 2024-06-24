@@ -29,7 +29,7 @@
                 <th>{{ $deposito->fecha }}</th>
                 <th>{{ $deposito->apellidos  }}</th>
                 <th>{{ $deposito->num_documento }}</th>
-                <th>{{ $deposito->val_deposito }}</th>
+                <th>{!! $deposito->val_deposito !!}</th>
                 <th>{{ asset(Storage::url($deposito->comprobante)) }}</th>
                 <th>{{ $deposito->banco }}</th>
                 <th>{{ $deposito->num_credito }}</th>

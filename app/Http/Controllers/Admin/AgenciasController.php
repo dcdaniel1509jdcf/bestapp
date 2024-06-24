@@ -30,6 +30,7 @@ class AgenciasController extends Controller
     {
         $request->validate([
             'nombre' => 'required|unique:agencias|max:255',
+            'telefono' => 'required|digits:10',
         ]);
 
         Agencias::create(['nombre' => $request->nombre,'direccion' => $request->direccion,'telefono'=>$request->telefono]);
@@ -45,10 +46,10 @@ class AgenciasController extends Controller
     public function update(Request $request, Agencias $agencia)
     {
         $request->validate([
-            'nombre' => 'required|unique:agencias,name,' . $agencia->id . '|max:255',
+            'nombre' => 'required|unique:agencias,nombre,' . $agencia->id . '|max:255',
         ]);
 
-        $agencia->update(['nombre' => $request->name,'direccion' => $request->direccion,'telefono'=>$request->telefono]);
+        $agencia->update(['nombre' => $request->nombre,'direccion' => $request->direccion,'telefono'=>$request->telefono]);
 
         return redirect()->route('agencias.index')->with('success', 'Agencia updated successfully.');
     }

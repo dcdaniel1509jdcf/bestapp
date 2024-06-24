@@ -21,6 +21,7 @@ class DepositosExport implements FromView
         $this->dateFin = $dateFin;
     }
 
+
     public function view(): View
     {
         return view('formularios.descargas.partials.depositos', [

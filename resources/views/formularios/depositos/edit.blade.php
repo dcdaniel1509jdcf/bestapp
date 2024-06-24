@@ -59,7 +59,7 @@
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Apellidos y Nombres:</label>
-                                        {!! Form::text('apellidos', null, ['class' => 'form-control']) !!}
+                                        {!! Form::text('apellidos', null, ['class' => 'form-control','id'=>'apellidos']) !!}
                                     </div>
                                 </div>
 
@@ -68,13 +68,13 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Numero de Deposito:</label>
-                                        {!! Form::text('num_documento', null, ['class' => 'form-control']) !!}
+                                        {!! Form::text('num_documento', null, ['class' => 'form-control','id'=>'num_documento']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Valor del deposito o transferencia:</label>
-                                        {!! Form::text('val_deposito', null, ['class' => 'form-control']) !!}
+                                        {!! Form::text('val_deposito', null, ['class' => 'form-control','id'=>'val_deposito','placeholder'=>'5432.10']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +82,12 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Banco:</label>
-                                        {!! Form::text('banco', null, ['class' => 'form-control']) !!}
+                                        {!! Form::select('banco', ['PICHINCHA BEST PC'=>'PICHINCHA BEST PC',
+                                            'PICHINCHA HARD WEST'=>'PICHINCHA HARD WEST',
+                                            'GUAYAQUIL BEST PC'=>'GUAYAQUIL BEST PC',
+                                            'GUAYAQUIL HW'=>'GUAYAQUIL HW',
+                                            'ALIANZA BEST PC'=>'ALIANZA BEST PC',
+                                            'ALIANZA HARD WEST'=>'ALIANZA HARD WEST'], null, ['class' => 'form-control','placeholder'=>'Seleccione']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
@@ -114,7 +119,7 @@
                                     <div class="form-group">
                                         <label for="tesoreria">Tesoreria:</label>
 
-                                        {!! Form::select('tesoreria', ['CONFIRMADO' => 'CONFIRMADO', 'NEGADO' => 'NEGADO'], null, [
+                                        {!! Form::select('tesoreria', ['CONFIRMADO' => 'CONFIRMADO', 'NEGADO' => 'NEGADO'], $deposito->tesoreria, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
                                         ]) !!}
@@ -123,7 +128,7 @@
                                 <div class="col-xs-8 col-md-8 col-sm-8">
                                     <div class="form-group">
                                         <label for="name">Novedades:</label>
-                                        {!! Form::text('novedad', null, ['class' => 'form-control']) !!}
+                                        {!! Form::text('novedad', $deposito->novedad, ['class' => 'form-control mayuscula']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +136,7 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Cajas:</label>
-                                        {!! Form::text('cajas', null, ['class' => 'form-control']) !!}
+                                        {!! Form::text('cajas', $deposito->cajas, ['class' => 'form-control mayuscula']) !!}
                                     </div>
                                 </div>
 
@@ -162,4 +167,24 @@
             nextSibling.innerText = fileName
         });
     </script>
+    <script>
+        $('#apellidos').on('input', function() {
+            // Remueve todos los caracteres que no sean letras o espacios
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+        //validaciones formulario
+        $('input, textarea').on('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        $('#num_documento').on('input', function() {
+            // Remueve todos los caracteres que no sean números o caracteres especiales
+            this.value = this.value.replace(/[^0-9!@#$%^&*(),.?":{}|<>]/g, '');
+        });
+        $('#val_deposito').on('input', function() {
+            // Remueve todos los caracteres que no sean números o caracteres especiales
+            this.value = this.value.replace(/[^0-9!.]/g, '');
+        });
+    </script>
+
 @stop

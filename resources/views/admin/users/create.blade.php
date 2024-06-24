@@ -32,7 +32,7 @@
                             <div class="col-xs-12 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <label for="name">Nombre:</label>
-                                    {!! Form::text('name', null, ['class' => 'form-control']) !!}
+                                    {!! Form::text('name', null, ['class' => 'form-control mayuscula']) !!}
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="col-xs-12 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <label for="name">Email:</label>
-                                    {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                                    {!! Form::email('email', null, ['class' => 'form-control ']) !!}
                                 </div>
                             </div>
                         </div>
