@@ -59,7 +59,7 @@
                                 </tbody>
                             </table>
                             <div class="pagination justify-content-end">
-                                {{ $roles->links() }}
+
 
                             </div>
                         </div>
