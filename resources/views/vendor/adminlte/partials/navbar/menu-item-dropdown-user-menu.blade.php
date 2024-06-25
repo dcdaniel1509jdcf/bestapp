@@ -63,10 +63,16 @@
         {{-- User menu footer --}}
         <li class="user-footer">
             @if($profile_url)
-                <a href="{{ $profile_url }}" class="nav-link btn btn-default btn-flat d-inline-block">
+            <!--
+            <a href="{{ $profile_url }}" class="nav-link btn btn-default btn-flat d-inline-block">
                     <i class="fa fa-fw fa-user text-lightblue"></i>
                     {{ __('adminlte::menu.profile') }}
                 </a>
+            -->
+            <a href="{{ $profile_url }}" class="nav-link btn btn-default btn-flat d-inline-block">
+                <i class="fa fa-fw fa-user text-lightblue"></i>
+                Contraseña
+            </a>
             @endif
             <a class="btn btn-default btn-flat float-right @if(!$profile_url) btn-block @endif"
                href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

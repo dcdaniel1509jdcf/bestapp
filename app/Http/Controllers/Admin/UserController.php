@@ -10,6 +10,8 @@ use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -144,5 +146,38 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect()->route('users.index')
                         ->with('success', 'User deleted successfully');
+    }
+    public function showChangePasswordForm(User $user){
+        return view('admin.users.profil', compact('user'));
+    }
+    public function changePassword(Request $request)
+    {
+        // Validación de los datos del formulario
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|same:confirm-password',
+        ]);
+
+        // Verificar si la validación falla
+        if ($validator->fails()) {
+            return redirect()->route('change.password.user',['user'=>Auth::id()])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // Verificar la contraseña actual
+        if (!Hash::check($request->current_password, auth()->user()->password)) {
+            return redirect()->route('change.password.user',['user'=>Auth::id()])
+                        ->withErrors(['current_password' => 'La contraseña actual no es válida'])
+                        ->withInput();
+        }
+
+        // Cambiar la contraseña
+        $user = auth()->user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('home')->with('success', '¡Contraseña cambiada correctamente!');
     }
 }
