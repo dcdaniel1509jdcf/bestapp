@@ -123,6 +123,9 @@ class DepositosController extends Controller
         $deposito->val_deposito = $request->val_deposito;
         $deposito->banco = $request->banco;
         $deposito->num_credito = $request->num_credito;
+        if(auth()->user()->hasRole('VENDEDOR') && $deposito->tesoreria=='NEGADO'){
+        $deposito->tesoreria = null;
+        }
         if(auth()->user()->hasPermissionTo('deposito-authorize')) {
             $deposito->tesoreria = $request->tesoreria;
             $deposito->user_tesoreria = Auth::id();
