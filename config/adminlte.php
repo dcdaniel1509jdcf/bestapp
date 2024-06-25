@@ -306,22 +306,27 @@ return [
         ],
 
         // Sidebar items:
-        [
+       /*
+       [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
+        */
         [
             'text' => 'blog',
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
+        /*
         [
             'text' => 'Perfil',
             'url' => 'user/perfil',
             'icon' => 'far fa-fw fa-user',
             'label' => '*',
             'label_color' => 'info',
+            'active' => false,
         ],
+        */
         ['header' => 'CUENTAS',
         'can' => 'user-list|role-list|permission-list|agencia-list',
     ],
