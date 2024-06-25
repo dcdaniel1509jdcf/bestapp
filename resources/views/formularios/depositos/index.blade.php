@@ -17,7 +17,7 @@
                             @can('deposito-create')
                                 <a class="btn btn-sm btn-info" href="{{ route('depositos.create') }}">Crear nuevo Depósito</a>
                             @endcan
-
+<br><br>
                             <table class="table table-striped mt-2" id="tableIni">
                                 <thead class="thead-dark">
                                     <tr>

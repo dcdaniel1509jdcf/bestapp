@@ -124,7 +124,7 @@
                                     <div class="col-xs-4 col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <label for="baja">Dado de baja:</label>
-                                            {!! Form::select('baja', ['DADO DE BAJA' => 'DADO DE BAJA', 'VENTA' => 'VENTA'], null, [
+                                            {!! Form::select('baja', ['DADO DE BAJA' => 'DADO DE BAJA'], null, [
                                                 'class' => 'form-control',
                                                 'placeholder' => 'SELECCIONE',
                                             ]) !!}

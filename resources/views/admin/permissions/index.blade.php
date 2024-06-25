@@ -17,7 +17,8 @@
                             @can('permission-create')
                                 <a class="btn btn-sm btn-info" href="{{ route('permissions.create') }}">Crear nuevo Permiso</a>
                             @endcan
-
+<br>
+<br>
                             <table class="table table-striped mt-2" id="tableIni">
                                 <thead class="thead-dark">
                                     <tr>
