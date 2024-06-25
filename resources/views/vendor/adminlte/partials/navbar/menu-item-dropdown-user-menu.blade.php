@@ -69,7 +69,7 @@
                     {{ __('adminlte::menu.profile') }}
                 </a>
             -->
-            <a href="{{ $profile_url }}" class="nav-link btn btn-default btn-flat d-inline-block">
+            <a href="{{ route('change.password.user',['user'=>Auth::id()]) }}" class="nav-link btn btn-default btn-flat d-inline-block">
                 <i class="fa fa-fw fa-user text-lightblue"></i>
                 Contraseña
             </a>
