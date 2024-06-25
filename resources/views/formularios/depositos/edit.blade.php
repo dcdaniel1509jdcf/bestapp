@@ -106,8 +106,12 @@
                                             {!! Form::label('file', 'Elegir archivo', ['class' => 'custom-file-label']) !!}
                                         </div>
                                         @if ($deposito->comprobante)
-                                            <p>Archivo actual: <a href="{{ Storage::url($deposito->comprobante) }}"
-                                                    target="_blank">Ver Comprobante</a></p>
+                                            <p>Archivo actual:
+                                                <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
+                                                    Ver Documento
+                                                  </button>
+                                            </p>
+                                                    @include('formularios.depositos.partial.modal')
                                         @endif
                                     </div>
                                 </div>
