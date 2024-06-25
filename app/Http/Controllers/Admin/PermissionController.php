@@ -30,6 +30,11 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:permissions|max:255',
+        ],
+        [
+            'name.required' => 'El campo nombre es obligatorio.',
+            'name.unique' => 'El nombre ya está en uso.',
+            'name.max' => 'El nombre no puede tener más de 255 caracteres.',
         ]);
 
         Permission::create(['name' => $request->name]);
@@ -46,6 +51,11 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:permissions,name,' . $permission->id . '|max:255',
+        ],
+        [
+            'name.required' => 'El campo nombre es obligatorio.',
+            'name.unique' => 'El nombre ya está en uso.',
+            'name.max' => 'El nombre no puede tener más de 255 caracteres.',
         ]);
 
         $permission->update(['name' => $request->name]);

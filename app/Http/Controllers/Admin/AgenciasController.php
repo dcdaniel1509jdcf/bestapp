@@ -31,6 +31,13 @@ class AgenciasController extends Controller
         $request->validate([
             'nombre' => 'required|unique:agencias|max:255',
             'telefono' => 'required|digits:10',
+        ],
+        [
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'nombre.unique' => 'El nombre ya está en uso.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+            'telefono.required' => 'El campo teléfono es obligatorio.',
+            'telefono.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
 
         Agencias::create(['nombre' => $request->nombre,'direccion' => $request->direccion,'telefono'=>$request->telefono]);
@@ -47,6 +54,14 @@ class AgenciasController extends Controller
     {
         $request->validate([
             'nombre' => 'required|unique:agencias,nombre,' . $agencia->id . '|max:255',
+            'telefono' => 'required|digits:10',
+        ],
+        [
+            'nombre.required' => 'El campo nombre es obligatorio.',
+            'nombre.unique' => 'El nombre ya está en uso.',
+            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
+            'telefono.required' => 'El campo teléfono es obligatorio.',
+            'telefono.digits' => 'El teléfono debe tener exactamente 10 dígitos.',
         ]);
 
         $agencia->update(['nombre' => $request->nombre,'direccion' => $request->direccion,'telefono'=>$request->telefono]);

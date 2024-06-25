@@ -52,6 +52,12 @@ class RoleController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
+        ],
+        [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.unique' => 'El nombre ya está en uso.',
+            'permission.required' => 'Debe seleccionar al menos un permiso.',
+
         ]);
 
         $role = Role::create(['name' => $request->input('name')]);
@@ -106,6 +112,12 @@ class RoleController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:roles,name,' . $id,
             'permission' => 'required|array',
+        ],
+        [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.unique' => 'El nombre ya está en uso.',
+            'permission.required' => 'Debe seleccionar al menos un permiso.',
+            'permission.array' => 'El campo de permisos debe ser un array válido.',
         ]);
 
         // Encontrar el rol por ID

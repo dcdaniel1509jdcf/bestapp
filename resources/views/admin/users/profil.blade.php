@@ -18,7 +18,7 @@
                     <div class="card-body login-card-body ">
                         @if ($errors->any())
                             <div class="alert alert-dark alert-dismissible fade show" role="alert">
-                                <strong>!Revise los campos!</strong>
+                                <strong>!Revise los campos!</strong><br>
                                 @foreach ($errors->all() as $error)
                                     <span class="badge badge-danger">{{ $error }}</span>
                                 @endforeach
@@ -52,7 +52,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-sm-12">
                                 <div class="form-group">
-                                    <label for="password">contraseña Actual:</label>
+                                    <label for="password">Contraseña Actual:</label>
                                     {!! Form::password('current_password', ['class' => 'form-control']) !!}
                                 </div>
                             </div>
@@ -62,6 +62,11 @@
                                 <div class="form-group">
                                     <label for="password">Contraseña:</label>
                                     {!! Form::password('password', ['class' => 'form-control']) !!}
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

@@ -61,6 +61,16 @@ class UserController extends Controller
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
             'agencia_id' => 'nullable|exists:agencias,id',
+        ],
+        [
+            'password.required' => 'La contraseña es requerida.',
+            'name.required' => 'El campo nombre es obligatorio.',
+            'email.required' => 'El campo email es obligatorio.',
+            'email.email' => 'El campo email debe ser una dirección de correo válida.',
+            'email.unique' => 'El email ya está en uso por otro usuario.',
+            'password.same' => 'La confirmación de la contraseña no coincide.',
+            'roles.required' => 'El campo roles es obligatorio.',
+            'agencia_id.exists' => 'La agencia seleccionada no es válida.',
         ]);
 
         $input = $request->all();
@@ -116,6 +126,15 @@ class UserController extends Controller
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'agencia_id' => 'nullable|exists:agencias,id',
+        ],
+        [
+            'name.required' => 'El campo nombre es obligatorio.',
+            'email.required' => 'El campo email es obligatorio.',
+            'email.email' => 'El campo email debe ser una dirección de correo válida.',
+            'email.unique' => 'El email ya está en uso por otro usuario.',
+            'password.same' => 'La confirmación de la contraseña no coincide.',
+            'roles.required' => 'El campo roles es obligatorio.',
+            'agencia_id.exists' => 'La agencia seleccionada no es válida.',
         ]);
 
         $input = $request->all();
@@ -157,7 +176,15 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
             'password' => 'required|string|min:8|same:confirm-password',
+        ],
+        [
+            'current_password.required' => 'La contraseña actual es requerida.',
+            'password.required' => 'La nueva contraseña es requerida.',
+            'password.string' => 'La nueva contraseña debe ser una cadena de texto.',
+            'password.min' => 'La nueva contraseña debe tener al menos :min caracteres.',
+            'password.same' => 'La confirmación de la nueva contraseña no coincide.',
         ]);
+
 
         // Verificar si la validación falla
         if ($validator->fails()) {
