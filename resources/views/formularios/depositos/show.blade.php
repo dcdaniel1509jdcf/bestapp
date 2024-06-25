@@ -92,12 +92,12 @@
                                     <div class="form-group">
                                         <label for="comprobante">Comprobante</label>
                                         @if ($deposito->comprobante)
-                                        <p>Archivo actual:
-                                            <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
+                                            <p>Archivo actual: <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
                                                 Ver Documento
                                               </button>
-                                        </p>
-                                                @include('formularios.depositos.partial.modal')
+                                              <a href="{{ Storage::url($deposito->comprobante) }}" class="btn btn-sm btn-link"
+                                                    target="_blank">ir</a></p>
+                                                    @include('formularios.depositos.partial.modal')
                                         @endif
                                     </div>
                                 </div>
