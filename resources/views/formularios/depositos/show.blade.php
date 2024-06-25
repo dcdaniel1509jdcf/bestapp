@@ -137,7 +137,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
-                                    {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                    @role('GESTOR DIFUSIONES') {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!} @endrole
                                     <a href="{{ route('depositos.index') }}" class="btn btn-secondary">Atras</a>
                                 </div>
                             </div>
