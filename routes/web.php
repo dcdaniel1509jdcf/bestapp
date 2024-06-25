@@ -35,7 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    Route::get('/{user}', [UserController::class, 'showChangePasswordForm'])->name('change.password.user');
+    Route::get('/cambiar-contrasena', [UserController::class, 'showChangePasswordForm'])->name('change.password.user');
     Route::post('/cambiar-contrasena', [UserController::class,'changePassword'])->name('change.password.user.post');
     Route::resource('permissions', PermissionController::class);
     Route::resource('depositos', DepositosController::class);

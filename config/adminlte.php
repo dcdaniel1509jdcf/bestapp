@@ -317,16 +317,16 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-        /*
+
         [
             'text' => 'Perfil',
-            'url' => 'user/perfil',
+            'route' => 'change.password.user',
             'icon' => 'far fa-fw fa-user',
             'label' => '*',
             'label_color' => 'info',
-            'active' => false,
+
         ],
-        */
+
         ['header' => 'CUENTAS',
         'can' => 'user-list|role-list|permission-list|agencia-list',
     ],
