@@ -18,7 +18,7 @@
                                 <a class="btn btn-sm btn-info" href="{{ route('permissions.create') }}">Crear nuevo Permiso</a>
                             @endcan
 
-                            <table class="table table-striped mt-2">
+                            <table class="table table-striped mt-2" id="tableIni">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">#</th>
@@ -75,6 +75,7 @@
 
     <script>
         $(document).ready(function() {
+            $("#tableIni").DataTable();
             $(".form-eliminar").submit(function(e) {
                 e.preventDefault(); // Previniendo el comportamiento predeterminado del botón
                 Swal.fire({

@@ -12,7 +12,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row py-2">
                         <div class="col-lg-12 margin-tb">
                             <div class="pull-right">
                                 @can('user-delete')
@@ -21,7 +21,7 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-striped mt-2">
+                    <table class="table table-striped mt-2" id="tableIni">
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
@@ -80,6 +80,7 @@
 
     <script>
         $(document).ready(function() {
+            $("#tableIni").DataTable();
             $(".form-eliminar").submit(function(e) {
                 e.preventDefault(); // Previniendo el comportamiento predeterminado del botón
                 Swal.fire({

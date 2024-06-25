@@ -18,7 +18,7 @@
                                 <a class="btn btn-sm btn-info" href="{{ route('depositos.create') }}">Crear nuevo Depósito</a>
                             @endcan
 
-                            <table class="table table-striped mt-2">
+                            <table class="table table-striped mt-2" id="tableIni">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col">#</th>
@@ -85,6 +85,7 @@
 
     <script>
         $(document).ready(function() {
+            $("#tableIni").DataTable();
             $('input, textarea').on('input', function() {
                 this.value = this.value.toUpperCase();
             });
