@@ -25,13 +25,13 @@ class DepositosController extends Controller
     {
 
         if(auth()->user()->hasRole('ADMINISTRADOR')){
-        $depositos = Depositos::orderBy('id', 'DESC')->paginate(5);
+        $depositos = Depositos::orderBy('id', 'DESC')->get();
     }else if(auth()->user()->hasRole('TESORERIA')){
-        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria',null)->paginate(5);
+        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria',null)->get();
     }else if(auth()->user()->hasRole('VENDEDOR')){
-        $depositos = Depositos::orderBy('id', 'DESC')->whereNull('tesoreria')->orWhere('tesoreria','NEGADO')->whereNull('baja')->paginate(5);
+        $depositos = Depositos::orderBy('id', 'DESC')->whereNull('tesoreria')->orWhere('tesoreria','NEGADO')->whereNull('baja')->get();
     }else if(auth()->user()->hasRole('GESTOR DIFUSIONES')){
-        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria','CONFIRMADO')->whereNull('baja')->paginate(5);
+        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria','CONFIRMADO')->whereNull('baja')->get();
     }
         return view('formularios.depositos.index', compact('depositos'))
             ->with('i', ($request->input('page', 1) - 1) * 5);

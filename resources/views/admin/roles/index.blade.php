@@ -18,6 +18,7 @@
                                 <a class="btn btn-sm btn-info" href="{{ route('roles.create') }}">Crear nuevo Rol</a>
                             @endcan
 <br>
+<br>
                             <table class="table table-striped mt-2" id="tableIni">
                                 <thead class="thead-dark">
                                     <tr>
