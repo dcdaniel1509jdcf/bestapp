@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text('cajas')->nullable();
             $table->text('baja')->nullable();
             $table->text('novedad')->nullable();
+            $table->text('doc_banco')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

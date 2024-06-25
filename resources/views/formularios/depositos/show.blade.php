@@ -121,6 +121,7 @@
                                     </div>
                                 </div>
                                 @can('deposito-authorize')
+                                @role('GESTOR DIFUSIONES')
                                     <div class="col-xs-4 col-md-4 col-sm-4">
                                         <div class="form-group">
                                             <label for="baja">Dado de baja:</label>
@@ -130,6 +131,7 @@
                                             ]) !!}
                                         </div>
                                     </div>
+                                @endrole
                                 @endcan
 
                             </div>

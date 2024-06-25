@@ -112,6 +112,22 @@
                                     </div>
                                 </div>
                             </div>
+                            @role('VENDEDOR')
+                            <div class="row">
+                                <div class="col-xs-8 col-md-8 col-sm-8">
+                                    <div class="form-group">
+                                        <label for="name">Novedades:</label>
+                                        {!! Form::label('novedad', $deposito->novedad, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="doc_banco">Numero documento banco:</label>
+                                        {!! Form::label('doc_banco', $deposito->doc_banco, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                            @endrole
                             @can('deposito-show')
                             <hr>
                             <div class="row">
@@ -127,7 +143,7 @@
                                 </div>
                                 <div class="col-xs-8 col-md-8 col-sm-8">
                                     <div class="form-group">
-                                        <label for="name">Novedades:</label>
+                                        <label for="novedad">Novedades:</label>
                                         {!! Form::text('novedad', $deposito->novedad, ['class' => 'form-control mayuscula']) !!}
                                     </div>
                                 </div>
@@ -135,11 +151,16 @@
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Cajas:</label>
+                                        <label for="cajas">Cajas:</label>
                                         {!! Form::text('cajas', $deposito->cajas, ['class' => 'form-control mayuscula']) !!}
                                     </div>
                                 </div>
-
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="doc_banco">Numero documento en banco:</label>
+                                        {!! Form::text('doc_banco', $deposito->doc_banco, ['class' => 'form-control mayuscula']) !!}
+                                    </div>
+                                </div>
                             </div>
                             @endcan
                             <div class="row">

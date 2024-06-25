@@ -30,6 +30,7 @@ class Depositos extends Model
         'novedad',
         'fecha',
         'tesoreria',
+        'doc_banco'
     ];
 
     public function user()

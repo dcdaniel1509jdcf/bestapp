@@ -16,6 +16,8 @@
             <th>CAJAS</th>
             <th>BAJA</th>
             <th>NOVEDAD</th>
+            <th>Num. Doc en Banco</th>
+
             <th>USUARIO</th>
 
         </tr>
@@ -38,6 +40,7 @@
                 <th>{{ $deposito->cajas }}</th>
                 <th>{{ $deposito->baja }}</th>
                 <th>{{ $deposito->novedad }}</th>
+                <th>{{ $deposito->doc_banco }}</th>
                 <th>{{ $deposito->usertesoreria->name ?? 'N/A' }}</th>
             </tr>
         @endforeach
