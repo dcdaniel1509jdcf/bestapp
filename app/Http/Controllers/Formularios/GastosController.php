@@ -161,5 +161,20 @@ class GastosController extends Controller
         // Redireccionar o responder según sea necesario
         return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
     }
+    public function destroy($id)
+    {
+        // Encontrar el depósito por su ID
+        $gasto = Gastos::findOrFail($id);
+
+        // Eliminar el archivo asociado si existe
+        if ($gasto->comprobante) {
+            Storage::disk('public')->delete($gasto->comprobante);
+        }
+
+        // Eliminar el depósito (soft delete)
+        $gasto->delete();
+
+        return redirect()->route('gastos.index')->with('success', 'Gasto eliminado exitosamente.');
+    }
 
 }

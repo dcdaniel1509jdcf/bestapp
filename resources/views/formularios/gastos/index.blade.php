@@ -36,16 +36,16 @@
                                             <td>{{ $gasto->fecha }}</td>
                                             <td>{{ $gasto->user->name }}</td>
                                             <td>
-
+<!--
                                                     <a class="btn btn-sm btn-outline-primary"
                                                         href="{{ route('depositos.show', ['deposito' => $gasto->id]) }}">Ver</a>
-
+                                            -->
                                                     <a class="btn btn-sm btn-outline-info"
                                                         href="{{ route('gastos.edit', ['gasto' => $gasto->id]) }}">Editar</a>
 
                                                     {!! Form::open([
                                                         'method' => 'DELETE',
-                                                        'route' => ['depositos.destroy', $gasto->id],
+                                                        'route' => ['gastos.destroy', $gasto->id],
                                                         'style' => 'display:inline',
                                                         'class' => 'form-eliminar',
                                                     ]) !!}
