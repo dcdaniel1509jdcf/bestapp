@@ -28,6 +28,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Roles</th>
+                                <th>Estado</th>
                                 <th width="280px">Action</th>
                             </tr>
                         </thead>
@@ -44,6 +45,7 @@
                                             @endforeach
                                         @endif
                                     </td>
+                                    <td>{{ $user->active==1? 'Activo':'Inactivo' }}</td>
                                     <td>
                                         <!-- <a class="btn btn-info" href="{{ route('users.show', $user->id) }}">Show</a> -->
                                         @can('user-edit')
