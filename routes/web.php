@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Formularios\DepositosController;
+use App\Http\Controllers\Formularios\GastosController;
 use App\Http\Controllers\Formularios\ReporteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -40,7 +41,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('depositos', DepositosController::class);
     Route::resource('agencias', AgenciasController::class);
-    Route::resource('agencias', AgenciasController::class);
+    Route::resource('gastos', GastosController::class);
+    //Route::resource('agencias', AgenciasController::class);
 
     Route::resource('reportes', ReporteController::class);
     Route::post('depositos-download', [DepositosController::class, 'download'])->name('depositos.download');

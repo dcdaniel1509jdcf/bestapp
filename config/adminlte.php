@@ -435,6 +435,26 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'Gastos',
+            'icon' => 'fas fa-fw fa-file',
+            'submenu' => [
+                [
+                    'text' => 'Nuevo',
+                    'route' => 'gastos.create',
+                   // 'can' => 'deposito-create',
+                ],
+                [
+                    'text' => 'Listado',
+                    'route' => 'gastos.index',
+                    //'can' => 'deposito-list',
+                ],
+                [
+                    'text' => 'Descargar',
+                    'route' => 'reportes.index',
+                ],
+            ],
+        ]
        /*
         [
             'text' => 'information',

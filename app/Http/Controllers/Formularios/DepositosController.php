@@ -83,7 +83,7 @@ class DepositosController extends Controller
 
         // Manejar la carga del archivo
         if ($request->hasFile('comprobante')) {
-            $filePath = $request->file('comprobante')->store('comprobantes', 'public');
+            $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
         }
 
         // Guardar los datos en la base de datos
@@ -160,7 +160,7 @@ class DepositosController extends Controller
                 Storage::disk('public')->delete($deposito->comprobante);
             }
 
-            $filePath = $request->file('comprobante')->store('comprobantes', 'public');
+            $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
             $deposito->comprobante = $filePath;
         }
 
