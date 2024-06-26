@@ -414,7 +414,8 @@ return [
         ],
 */
         ['header' => 'FORMULARIOS',
-        'can' => 'deposito-list|deposito-show|deposito-create|deposito-edit',],
+        //'can' => 'deposito-list|deposito-show|deposito-create|deposito-edit',
+        ],
         [
             'text' => 'Depositos',
             'icon' => 'fas fa-fw fa-file',
