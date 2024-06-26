@@ -81,6 +81,15 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-sm-12">
+                                <div class="form-group">
+                                    <label for="active">Usuario Activo?:</label>
+                                    {!! Form::select('active', [1 => 'Activo', 0 => 'Inactivo'], $user->active, ['class' => 'form-control']) !!}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 col-sm-12">
 
                                 {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
 

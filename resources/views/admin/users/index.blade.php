@@ -45,9 +45,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn btn-info" href="{{ route('users.show', $user->id) }}">Show</a>
+                                        <!-- <a class="btn btn-info" href="{{ route('users.show', $user->id) }}">Show</a> -->
                                         @can('user-edit')
-                                            <a class="btn btn-primary" href="{{ route('users.edit', $user->id) }}">Edit</a>
+                                            <a class="btn btn-primary" href="{{ route('users.edit', $user->id) }}">Editar</a>
                                         @endcan
                                         @can('user-delete')
                                             {!! Form::open([
@@ -56,7 +56,7 @@
                                                 'style' => 'display:inline',
                                                 'class' => 'form-eliminar',
                                             ]) !!}
-                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                            {!! Form::submit('Borrar', ['class' => 'btn btn-danger']) !!}
                                             {!! Form::close() !!}
                                         @endcan
                                     </td>

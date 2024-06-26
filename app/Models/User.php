@@ -29,7 +29,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'agencia_id'
+        'agencia_id',
+        'active',
     ];
 
     /**
@@ -67,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Agencias::class);
     }
+
+    public function scopeActive($query)
+{
+    return $query->where('active', true);
+}
 }

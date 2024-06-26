@@ -96,7 +96,7 @@
                                                 Ver Documento
                                               </button>
                                               <a href="{{ Storage::url($deposito->comprobante) }}" class="btn btn-sm btn-link"
-                                                    target="_blank">ir</a></p>
+                                                    target="_blank">abrir</a></p>
                                                     @include('formularios.depositos.partial.modal')
                                         @endif
                                     </div>

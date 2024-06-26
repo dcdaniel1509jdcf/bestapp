@@ -120,12 +120,14 @@ class UserController extends Controller
     */
     public function update(Request $request, $id)
     {
+
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'agencia_id' => 'nullable|exists:agencias,id',
+            'active' => 'required|boolean',
         ],
         [
             'name.required' => 'El campo nombre es obligatorio.',
@@ -135,6 +137,7 @@ class UserController extends Controller
             'password.same' => 'La confirmación de la contraseña no coincide.',
             'roles.required' => 'El campo roles es obligatorio.',
             'agencia_id.exists' => 'La agencia seleccionada no es válida.',
+            'active.required' => 'El campo visibilidad de usuario es obligatorio.',
         ]);
 
         $input = $request->all();

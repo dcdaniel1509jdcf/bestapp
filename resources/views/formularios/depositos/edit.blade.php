@@ -87,7 +87,7 @@
                                             'GUAYAQUIL BEST PC'=>'GUAYAQUIL BEST PC',
                                             'GUAYAQUIL HW'=>'GUAYAQUIL HW',
                                             'ALIANZA BEST PC'=>'ALIANZA BEST PC',
-                                            'ALIANZA HARD WEST'=>'ALIANZA HARD WEST'], null, ['class' => 'form-control','placeholder'=>'Seleccione']) !!}
+                                            'ALIANZA HARD WEST'=>'ALIANZA HARD WEST'], $deposito->banco, ['class' => 'form-control','placeholder'=>'Seleccione']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
