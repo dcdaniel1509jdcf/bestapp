@@ -61,7 +61,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Apellidos y Nombres:</label>
+                                        <label for="name">Apellidos y Nombres del cliente:</label>
                                         {!! Form::text('apellidos', null, ['class' => 'form-control','id'=>'apellidos']) !!}
                                     </div>
                                 </div>

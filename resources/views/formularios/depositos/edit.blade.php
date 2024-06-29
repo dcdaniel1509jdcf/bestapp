@@ -58,7 +58,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Apellidos y Nombres:</label>
+                                        <label for="name">Apellidos y Nombres del cliente:</label>
                                         {!! Form::text('apellidos', null, ['class' => 'form-control','id'=>'apellidos']) !!}
                                     </div>
                                 </div>
@@ -118,16 +118,28 @@
                             </div>
                             @role('VENDEDOR')
                             <div class="row">
+                                <div class="col-xs-4 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="custom-id2">Tesoreria:</label>
+                                        {!! Form::label(null, $deposito->tesoreria, ['class' => 'form-control', 'id' => 'custom-id0']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="baja">Dado de baja:</label>
+                                        {!! Form::label(null, $deposito->baja, ['class' => 'form-control', 'id' => 'custom-id']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="baja">Numero documento en banco:</label>
+                                        {!! Form::label(null, $deposito->doc_banco, ['class' => 'form-control', 'id' => 'custom-id5']) !!}
+                                    </div>
+                                </div>
                                 <div class="col-xs-8 col-md-8 col-sm-8">
                                     <div class="form-group">
                                         <label for="name">Novedades:</label>
-                                        {!! Form::label('novedad', $deposito->novedad, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="doc_banco">Numero documento banco:</label>
-                                        {!! Form::label('doc_banco', $deposito->doc_banco, ['class' => 'form-control']) !!}
+                                        {!! Form::label(null, $deposito->novedad, ['class' => 'form-control', 'id' => 'custom-id2']) !!}
                                     </div>
                                 </div>
                             </div>
