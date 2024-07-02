@@ -103,24 +103,33 @@
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-
-
-                                        <table border="1" id="tableid" class="table">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>Factura</th>
-                                                    <th>Valor</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (unserialize($deposito->num_credito) as $factura)
-                                                    <tr>
-                                                        <td>{{ $factura['factura'] }}</td>
-                                                        <td>{{ $factura['valor'] }}</td>
-                                                    </tr>
+                                        <div id="facturasContainer">
+                                            @if($deposito->num_credito)
+                                                @foreach (unserialize($deposito->num_credito) as $index => $factura)
+                                                    <div class="factura-group">
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-6">
+                                                                <input type="text"
+                                                                    name="facturas[{{ $index }}][factura]"
+                                                                    value="{{ $factura['factura'] }}" class="form-control" placeholder="Factura">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text"
+                                                                    name="facturas[{{ $index }}][valor]"
+                                                                    value="{{ $factura['valor'] }}" class="form-control" placeholder="Valor">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
-                                            </tbody>
-                                        </table>
+                                            @endif
+                                        </div>
+                                        <br>
+                                        <button type="button" class="btn btn-sm btn-success" id="addButton">Añadir Numero
+                                            del
+                                            factura</button>
                                     </div>
                                 </div>
                             </div>
@@ -225,6 +234,34 @@
 
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            let index = {{ isset($deposito->num_credito) ? count(unserialize($deposito->num_credito)) : 0 }};
+
+            $('#addButton').click(function() {
+                $('#facturasContainer').append(`
+                <div class="factura-group">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <input type="text" name="facturas[${index}][factura]" class="form-control" placeholder="Factura">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control" placeholder="Valor">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
+                        </div>
+                    </div>
+                </div>
+            `);
+                index++;
+            });
+
+            $(document).on('click', '.removeButton', function() {
+                $(this).closest('.factura-group').remove();
+            });
+        });
+    </script>
     <script>
         // Mostrar el nombre del archivo seleccionado
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {

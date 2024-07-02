@@ -82,8 +82,24 @@
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Numero del factura:</label>
-                                        {!! Form::label('num_credito', $deposito->num_credito, ['class' => 'form-control']) !!}
+                                        <table border="1" id="tableid" class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Factura</th>
+                                                    <th>Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if($deposito->num_credito)
+                                                @foreach (unserialize($deposito->num_credito) as $factura)
+                                                    <tr>
+                                                        <td>{{ $factura['factura'] }}</td>
+                                                        <td>{{ $factura['valor'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

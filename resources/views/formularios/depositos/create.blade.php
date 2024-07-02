@@ -110,11 +110,11 @@
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <!--
-                                        <div class="form-group">
-                                            <label for="name">Numero del factura:</label>
-                                            {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
-                                        </div>
-                                    -->
+                                                <div class="form-group">
+                                                    <label for="name">Numero del factura:</label>
+                                                    {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+                                                </div>
+                                            -->
                                     <div id="facturasContainer">
                                     </div>
                                     <br>
@@ -153,19 +153,29 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            let index = 0;
+
             $('#addButton').click(function() {
                 $('#facturasContainer').append(`
-                    <div class="factura-group">
-                        <div class="row">
+                <div class="factura-group">
+                    <div class="row mb-2">
                         <div class="col-md-6">
-                            <input type="text" name="facturas[]" class = "form-control" required placeholder="Factura">
+                            <input type="text" name="facturas[${index}][factura]" class="form-control" placeholder="Factura">
                         </div>
-                        <div class="col-md-6">
-                        <input type="text" name="valores[]" class = "form-control" required placeholder="Valor">
+                        <div class="col-md-4">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control" placeholder="Valor">
                         </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
                         </div>
                     </div>
-                `);
+                </div>
+            `);
+                index++;
+            });
+
+            $(document).on('click', '.removeButton', function() {
+                $(this).closest('.factura-group').remove();
             });
         });
     </script>

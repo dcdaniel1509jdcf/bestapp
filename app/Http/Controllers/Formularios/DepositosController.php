@@ -87,16 +87,7 @@ class DepositosController extends Controller
         }
 
         //validar comprobantes y depositos
-        $facturas = $request->input('facturas');
-        $valores = $request->input('valores');
-
-        $comprobantes = [];
-        for ($i = 0; $i < count($facturas); $i++) {
-            $comprobantes[] = [
-                'factura' => $facturas[$i],
-                'valor' => $valores[$i],
-            ];
-        }
+        $facturas = $request->input('facturas', []);
 
        // return serialize($comprobantes);
         // Guardar los datos en la base de datos
@@ -110,7 +101,7 @@ class DepositosController extends Controller
             'num_documento' => $request->num_documento,
             'val_deposito' => $request->val_deposito,
             'banco' => $request->banco,
-            'num_credito' => serialize($comprobantes),
+            'num_credito' =>serialize($facturas),
             'comprobante' => $filePath,
         ]);
 
@@ -133,7 +124,7 @@ class DepositosController extends Controller
             ],
             'val_deposito' => 'required|numeric',
             'banco' => 'required|string|max:255',
-            'num_credito' => 'required|string|max:255',
+           // 'num_credito' => 'required|string|max:255',
             'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:3048',
         ],
         [
@@ -163,6 +154,7 @@ class DepositosController extends Controller
             'comprobante.max' => 'El comprobante no puede ser mayor de 3048 KB.',
         ]);
 
+        $facturas = $request->input('facturas', []);
         // Obtener el depósito existente
         $deposito = Depositos::findOrFail($id);
 
@@ -187,7 +179,7 @@ class DepositosController extends Controller
         $deposito->num_documento = $request->num_documento;
         $deposito->val_deposito = $request->val_deposito;
         $deposito->banco = $request->banco;
-        $deposito->num_credito = $request->num_credito;
+        $deposito->num_credito = serialize($facturas);
         if(auth()->user()->hasRole('VENDEDOR') && $deposito->tesoreria=='NEGADO'){
         $deposito->tesoreria = null;
         $deposito->novedad = null;
