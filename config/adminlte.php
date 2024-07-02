@@ -439,6 +439,7 @@ return [
         [
             'text' => 'Gastos',
             'icon' => 'fas fa-fw fa-file',
+            'can' => 'gastos-index',
             'submenu' => [
                 [
                     'text' => 'Nuevo',
