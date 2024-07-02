@@ -31,7 +31,7 @@ class DepositosController extends Controller
     }else if(auth()->user()->hasRole('VENDEDOR')){
         $depositos = Depositos::orderBy('id', 'DESC')->where('user_id',Auth::id())->whereNull('tesoreria')->orWhere('tesoreria','NEGADO')->whereNull('baja')->get();
     }else if(auth()->user()->hasRole('GESTOR DIFUSIONES')){
-        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria','CONFIRMADO')->whereNull('baja')->get();
+        $depositos = Depositos::orderBy('id', 'DESC')->whereNull('baja')->get();
     }
         return view('formularios.depositos.index', compact('depositos'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
