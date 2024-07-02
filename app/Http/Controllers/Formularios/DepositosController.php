@@ -51,7 +51,7 @@ class DepositosController extends Controller
             'num_documento' => 'required|string|max:255|unique:depositos,num_documento',
             'val_deposito' => 'required|numeric',
             'banco' => 'required|string|max:255',
-            'num_credito' => 'required|string|max:255',
+            //'num_credito' => 'required|string|max:255',
             'comprobante' => 'required|file|mimes:jpg,jpeg,png,pdf|max:3048',
         ],
         [
@@ -86,6 +86,19 @@ class DepositosController extends Controller
             $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
         }
 
+        //validar comprobantes y depositos
+        $facturas = $request->input('facturas');
+        $valores = $request->input('valores');
+
+        $comprobantes = [];
+        for ($i = 0; $i < count($facturas); $i++) {
+            $comprobantes[] = [
+                'factura' => $facturas[$i],
+                'valor' => $valores[$i],
+            ];
+        }
+
+       // return serialize($comprobantes);
         // Guardar los datos en la base de datos
         Depositos::create([
             'fecha' => $request->fecha,
@@ -97,7 +110,7 @@ class DepositosController extends Controller
             'num_documento' => $request->num_documento,
             'val_deposito' => $request->val_deposito,
             'banco' => $request->banco,
-            'num_credito' => $request->num_credito,
+            'num_credito' => serialize($comprobantes),
             'comprobante' => $filePath,
         ]);
 

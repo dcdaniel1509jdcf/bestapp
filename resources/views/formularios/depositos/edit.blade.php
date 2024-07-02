@@ -59,7 +59,7 @@
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Apellidos y Nombres del cliente:</label>
-                                        {!! Form::text('apellidos', null, ['class' => 'form-control','id'=>'apellidos']) !!}
+                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos']) !!}
                                     </div>
                                 </div>
 
@@ -68,13 +68,17 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Numero de Deposito:</label>
-                                        {!! Form::text('num_documento', null, ['class' => 'form-control','id'=>'num_documento']) !!}
+                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Valor del deposito o transferencia:</label>
-                                        {!! Form::text('val_deposito', null, ['class' => 'form-control','id'=>'val_deposito','placeholder'=>'5432.10']) !!}
+                                        {!! Form::text('val_deposito', null, [
+                                            'class' => 'form-control',
+                                            'id' => 'val_deposito',
+                                            'placeholder' => '5432.10',
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -82,18 +86,41 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Banco:</label>
-                                        {!! Form::select('banco', ['PICHINCHA BEST PC'=>'PICHINCHA BEST PC',
-                                            'PICHINCHA HARD WEST'=>'PICHINCHA HARD WEST',
-                                            'GUAYAQUIL BEST PC'=>'GUAYAQUIL BEST PC',
-                                            'GUAYAQUIL HW'=>'GUAYAQUIL HW',
-                                            'ALIANZA BEST PC'=>'ALIANZA BEST PC',
-                                            'ALIANZA HARD WEST'=>'ALIANZA HARD WEST'], $deposito->banco, ['class' => 'form-control','placeholder'=>'Seleccione']) !!}
+                                        {!! Form::select(
+                                            'banco',
+                                            [
+                                                'PICHINCHA BEST PC' => 'PICHINCHA BEST PC',
+                                                'PICHINCHA HARD WEST' => 'PICHINCHA HARD WEST',
+                                                'GUAYAQUIL BEST PC' => 'GUAYAQUIL BEST PC',
+                                                'GUAYAQUIL HW' => 'GUAYAQUIL HW',
+                                                'ALIANZA BEST PC' => 'ALIANZA BEST PC',
+                                                'ALIANZA HARD WEST' => 'ALIANZA HARD WEST',
+                                            ],
+                                            $deposito->banco,
+                                            ['class' => 'form-control', 'placeholder' => 'Seleccione'],
+                                        ) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Numero del factura:</label>
-                                        {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+
+
+                                        <table border="1" id="tableid" class="table">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Factura</th>
+                                                    <th>Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (unserialize($deposito->num_credito) as $factura)
+                                                    <tr>
+                                                        <td>{{ $factura['factura'] }}</td>
+                                                        <td>{{ $factura['valor'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -106,78 +133,80 @@
                                             {!! Form::label('file', 'Elegir archivo', ['class' => 'custom-file-label']) !!}
                                         </div>
                                         @if ($deposito->comprobante)
-                                        <p>Archivo actual: <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
-                                            Ver Documento
-                                          </button>
-                                          <a href="{{ Storage::url($deposito->comprobante) }}" class="btn btn-sm btn-link"
-                                                target="_blank">abrir</a></p>
-                                                @include('formularios.depositos.partial.modal')
+                                            <p>Archivo actual: <button type="button" class="btn btn-sm btn-link"
+                                                    data-toggle="modal" data-target="#staticBackdrop">
+                                                    Ver Documento
+                                                </button>
+                                                <a href="{{ Storage::url($deposito->comprobante) }}"
+                                                    class="btn btn-sm btn-link" target="_blank">abrir</a>
+                                            </p>
+                                            @include('formularios.depositos.partial.modal')
                                         @endif
                                     </div>
                                 </div>
                             </div>
                             @role('VENDEDOR')
-                            <div class="row">
-                                <div class="col-xs-4 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="custom-id2">Tesoreria:</label>
-                                        {!! Form::label(null, $deposito->tesoreria, ['class' => 'form-control', 'id' => 'custom-id0']) !!}
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="custom-id2">Tesoreria:</label>
+                                            {!! Form::label(null, $deposito->tesoreria, ['class' => 'form-control', 'id' => 'custom-id0']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="baja">Dado de baja:</label>
+                                            {!! Form::label(null, $deposito->baja, ['class' => 'form-control', 'id' => 'custom-id']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="baja">Numero documento en banco:</label>
+                                            {!! Form::label(null, $deposito->doc_banco, ['class' => 'form-control', 'id' => 'custom-id5']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 col-md-8 col-sm-8">
+                                        <div class="form-group">
+                                            <label for="name">Novedades:</label>
+                                            {!! Form::label(null, $deposito->novedad, ['class' => 'form-control', 'id' => 'custom-id2']) !!}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-4 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="baja">Dado de baja:</label>
-                                        {!! Form::label(null, $deposito->baja, ['class' => 'form-control', 'id' => 'custom-id']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="baja">Numero documento en banco:</label>
-                                        {!! Form::label(null, $deposito->doc_banco, ['class' => 'form-control', 'id' => 'custom-id5']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-8 col-md-8 col-sm-8">
-                                    <div class="form-group">
-                                        <label for="name">Novedades:</label>
-                                        {!! Form::label(null, $deposito->novedad, ['class' => 'form-control', 'id' => 'custom-id2']) !!}
-                                    </div>
-                                </div>
-                            </div>
                             @endrole
                             @can('deposito-show')
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-4 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="tesoreria">Tesoreria:</label>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4 col-sm-4">
+                                        <div class="form-group">
+                                            <label for="tesoreria">Tesoreria:</label>
 
-                                        {!! Form::select('tesoreria', ['CONFIRMADO' => 'CONFIRMADO', 'NEGADO' => 'NEGADO'], $deposito->tesoreria, [
-                                            'class' => 'form-control',
-                                            'placeholder' => 'SELECCIONE',
-                                        ]) !!}
+                                            {!! Form::select('tesoreria', ['CONFIRMADO' => 'CONFIRMADO', 'NEGADO' => 'NEGADO'], $deposito->tesoreria, [
+                                                'class' => 'form-control',
+                                                'placeholder' => 'SELECCIONE',
+                                            ]) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 col-md-8 col-sm-8">
+                                        <div class="form-group">
+                                            <label for="novedad">Novedades:</label>
+                                            {!! Form::text('novedad', $deposito->novedad, ['class' => 'form-control mayuscula']) !!}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-8 col-md-8 col-sm-8">
-                                    <div class="form-group">
-                                        <label for="novedad">Novedades:</label>
-                                        {!! Form::text('novedad', $deposito->novedad, ['class' => 'form-control mayuscula']) !!}
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="cajas">Cajas:</label>
+                                            {!! Form::text('cajas', $deposito->cajas, ['class' => 'form-control mayuscula']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="doc_banco">Numero documento en banco:</label>
+                                            {!! Form::text('doc_banco', $deposito->doc_banco, ['class' => 'form-control mayuscula']) !!}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="cajas">Cajas:</label>
-                                        {!! Form::text('cajas', $deposito->cajas, ['class' => 'form-control mayuscula']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="doc_banco">Numero documento en banco:</label>
-                                        {!! Form::text('doc_banco', $deposito->doc_banco, ['class' => 'form-control mayuscula']) !!}
-                                    </div>
-                                </div>
-                            </div>
                             @endcan
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">

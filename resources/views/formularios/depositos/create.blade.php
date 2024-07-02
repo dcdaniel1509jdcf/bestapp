@@ -3,14 +3,14 @@
 @section('title', 'Depósito')
 
 @section('css')
-<style>
-    .custom-file-input ~ .custom-file-label::after {
-        content: "Buscar";
-    }
-</style>
+    <style>
+        .custom-file-input~.custom-file-label::after {
+            content: "Buscar";
+        }
+    </style>
 @stop
 @section('content_header')
-    <h1 class="m-0 text-dark text-center" >Depósitos</h1>
+    <h1 class="m-0 text-dark text-center">Depósitos</h1>
 @stop
 
 @section('content')
@@ -47,7 +47,10 @@
                                     <div class="form-group">
                                         <label for="name">Origen:</label>
 
-                                        {!! Form::select('origen', ['COBRO'=>'COBRO','VENTA'=>'VENTA'], null, ['class' => 'form-control','placeholder'=>'SELECCIONE']) !!}
+                                        {!! Form::select('origen', ['COBRO' => 'COBRO', 'VENTA' => 'VENTA'], null, [
+                                            'class' => 'form-control',
+                                            'placeholder' => 'SELECCIONE',
+                                        ]) !!}
 
                                     </div>
                                 </div>
@@ -62,7 +65,7 @@
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Apellidos y Nombres del cliente:</label>
-                                        {!! Form::text('apellidos', null, ['class' => 'form-control','id'=>'apellidos']) !!}
+                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos']) !!}
                                     </div>
                                 </div>
 
@@ -71,13 +74,17 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Numero de Deposito:</label>
-                                        {!! Form::text('num_documento', null, ['class' => 'form-control','id'=>'num_documento']) !!}
+                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Valor del deposito o transferencia:</label>
-                                        {!! Form::text('val_deposito', null, ['class' => 'form-control','id'=>'val_deposito','placeholder'=>'5432.10']) !!}
+                                        {!! Form::text('val_deposito', null, [
+                                            'class' => 'form-control',
+                                            'id' => 'val_deposito',
+                                            'placeholder' => '5432.10',
+                                        ]) !!}
                                     </div>
                                 </div>
                             </div>
@@ -86,19 +93,33 @@
                                     <div class="form-group">
                                         <label for="name">Banco:</label>
 
-                                        {!! Form::select('banco', ['PICHINCHA BEST PC'=>'PICHINCHA BEST PC',
-                                            'PICHINCHA HARD WEST'=>'PICHINCHA HARD WEST',
-                                            'GUAYAQUIL BEST PC'=>'GUAYAQUIL BEST PC',
-                                            'GUAYAQUIL HW'=>'GUAYAQUIL HW',
-                                            'ALIANZA BEST PC'=>'ALIANZA BEST PC',
-                                            'ALIANZA HARD WEST'=>'ALIANZA HARD WEST'], null, ['class' => 'form-control','placeholder'=>'Seleccione']) !!}
+                                        {!! Form::select(
+                                            'banco',
+                                            [
+                                                'PICHINCHA BEST PC' => 'PICHINCHA BEST PC',
+                                                'PICHINCHA HARD WEST' => 'PICHINCHA HARD WEST',
+                                                'GUAYAQUIL BEST PC' => 'GUAYAQUIL BEST PC',
+                                                'GUAYAQUIL HW' => 'GUAYAQUIL HW',
+                                                'ALIANZA BEST PC' => 'ALIANZA BEST PC',
+                                                'ALIANZA HARD WEST' => 'ALIANZA HARD WEST',
+                                            ],
+                                            null,
+                                            ['class' => 'form-control', 'placeholder' => 'Seleccione'],
+                                        ) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name">Numero del factura:</label>
-                                        {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+                                    <!--
+                                        <div class="form-group">
+                                            <label for="name">Numero del factura:</label>
+                                            {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+                                        </div>
+                                    -->
+                                    <div id="facturasContainer">
                                     </div>
+                                    <br>
+                                    <button type="button" class="btn btn-sm btn-success" id="addButton">Añadir Numero del
+                                        factura</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -106,7 +127,8 @@
                                     <div class="form-group">
                                         <label for="file">Cargar comprobante</label>
                                         <div class="custom-file">
-                                            <input type="file" name="comprobante" class="custom-file-input" id="file" required>
+                                            <input type="file" name="comprobante" class="custom-file-input"
+                                                id="file" required>
                                             <label class="custom-file-label" for="file">Elegir</label>
                                         </div>
                                     </div>
@@ -130,7 +152,24 @@
 
 @section('js')
     <script>
-
+        $(document).ready(function() {
+            $('#addButton').click(function() {
+                $('#facturasContainer').append(`
+                    <div class="factura-group">
+                        <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="facturas[]" class = "form-control" required placeholder="Factura">
+                        </div>
+                        <div class="col-md-6">
+                        <input type="text" name="valores[]" class = "form-control" required placeholder="Valor">
+                        </div>
+                        </div>
+                    </div>
+                `);
+            });
+        });
+    </script>
+    <script>
         // Mostrar el nombre del archivo seleccionado
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {
             var fileName = document.getElementById("file").files[0].name;
