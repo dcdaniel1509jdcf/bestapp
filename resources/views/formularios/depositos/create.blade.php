@@ -66,7 +66,7 @@
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Apellidos y Nombres del cliente:</label>
-                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos','required']) !!}
+                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos', 'required']) !!}
                                     </div>
                                 </div>
 
@@ -75,7 +75,7 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Numero de Deposito:</label>
-                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento','required']) !!}
+                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento', 'required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
@@ -85,7 +85,8 @@
                                             'class' => 'form-control',
                                             'id' => 'val_deposito',
                                             'placeholder' => '5432.10',
-                                            'required'
+                                            'required',
+                                            'readonly',
                                         ]) !!}
                                     </div>
                                 </div>
@@ -106,17 +107,17 @@
                                                 'ALIANZA HARD WEST' => 'ALIANZA HARD WEST',
                                             ],
                                             null,
-                                            ['class' => 'form-control', 'placeholder' => 'Seleccione','required'],
+                                            ['class' => 'form-control', 'placeholder' => 'Seleccione', 'required'],
                                         ) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <!--
-                                                <div class="form-group">
-                                                    <label for="name">Numero del factura:</label>
-                                                    {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
-                                                </div>
-                                            -->
+                                                    <div class="form-group">
+                                                        <label for="name">Numero del factura:</label>
+                                                        {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+                                                    </div>
+                                                -->
                                     <div id="facturasContainer">
                                     </div>
                                     <br>
@@ -165,7 +166,7 @@
                             <input type="text" name="facturas[${index}][factura]" class="form-control " placeholder="Factura">
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp" placeholder="Valor">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp valor" placeholder="Valor">
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -174,11 +175,28 @@
                 </div>
             `);
                 index++;
+                updateSum();
             });
 
             $(document).on('click', '.removeButton', function() {
                 $(this).closest('.factura-group').remove();
+                updateSum();
             });
+
+            $(document).on('input', '.valor', function(){
+                updateSum();
+            });
+
+            function updateSum() {
+                let sum = 0;
+                $('.valor').each(function() {
+                    let val = parseFloat($(this).val());
+                    if (!isNaN(val)) {
+                        sum += val;
+                    }
+                });
+                $('#val_deposito').val(sum.toFixed(2));
+            }
         });
     </script>
     <script>

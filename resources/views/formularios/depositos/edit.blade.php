@@ -78,6 +78,8 @@
                                             'class' => 'form-control',
                                             'id' => 'val_deposito',
                                             'placeholder' => '5432.10',
+                                            'required',
+                                            'readonly',
                                         ]) !!}
                                     </div>
                                 </div>
@@ -116,7 +118,7 @@
                                                             <div class="col-md-4">
                                                                 <input type="text"
                                                                     name="facturas[{{ $index }}][valor]"
-                                                                    value="{{ $factura['valor'] }}" class="form-control dineroCamp" placeholder="Valor">
+                                                                    value="{{ $factura['valor'] }}" class="form-control dineroCamp valor" placeholder="Valor">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -246,7 +248,7 @@
                             <input type="text" name="facturas[${index}][factura]" class="form-control" placeholder="Factura">
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp" placeholder="Valor">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp valor" placeholder="Valor">
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -255,11 +257,27 @@
                 </div>
             `);
                 index++;
+                updateSum();
             });
 
             $(document).on('click', '.removeButton', function() {
                 $(this).closest('.factura-group').remove();
+                updateSum();
             });
+            $(document).on('input', '.valor', function(){
+                updateSum();
+            });
+
+            function updateSum() {
+                let sum = 0;
+                $('.valor').each(function() {
+                    let val = parseFloat($(this).val());
+                    if (!isNaN(val)) {
+                        sum += val;
+                    }
+                });
+                $('#val_deposito').val(sum.toFixed(2));
+            }
         });
     </script>
     <script>
