@@ -17,31 +17,36 @@
             <th>BAJA</th>
             <th>NOVEDAD</th>
             <th>Num. Doc en Banco</th>
-
-            <th>USUARIO</th>
-
+            <th>USUARIO TESORERIA</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($depositos as $deposito)
             <tr>
-                <th>{{ $deposito->created_at }}</th>
-                <th>{{ $deposito->agencia->nombre }}</th>
-                <th>{{ $deposito->origen }}</th>
-                <th>{{ $deposito->fecha }}</th>
-                <th>{{ $deposito->apellidos  }}</th>
-                <th>{{ $deposito->num_documento }}</th>
-                <th>{!! $deposito->val_deposito !!}</th>
-                <th>{{ asset(Storage::url($deposito->comprobante)) }}</th>
-                <th>{{ $deposito->banco }}</th>
-                <th>{{ $deposito->num_credito }}</th>
-                <th>{{ $deposito->user->name }}</th>
-                <th>{{ $deposito->tesoreria }}</th>
-                <th>{{ $deposito->cajas }}</th>
-                <th>{{ $deposito->baja }}</th>
-                <th>{{ $deposito->novedad }}</th>
-                <th>{{ $deposito->doc_banco }}</th>
-                <th>{{ $deposito->usertesoreria->name ?? 'N/A' }}</th>
+                <td>{{ $deposito->created_at }}</td>
+                <td>{{ $deposito->agencia->nombre }}</td>
+                <td>{{ $deposito->origen }}</td>
+                <td>{{ $deposito->fecha }}</td>
+                <td>{{ $deposito->apellidos }}</td>
+                <td>{{ $deposito->num_documento }}</td>
+                <td>{!! $deposito->val_deposito !!}</td>
+                <td><a href="{{ asset(Storage::url($deposito->comprobante)) }}" target="_blank">Ver comprobante</a></td>
+                <td>{{ $deposito->banco }}</td>
+                <td>
+
+                    @foreach (unserialize($deposito->num_credito) as $factura)
+                        <p>{{ $factura['factura'] }} Valor: {{ $factura['valor'] }} </p>
+                        <br>
+                    @endforeach
+
+                </td>
+                <td>{{ $deposito->user->name }}</td>
+                <td>{{ $deposito->tesoreria }}</td>
+                <td>{{ $deposito->cajas }}</td>
+                <td>{{ $deposito->baja }}</td>
+                <td>{{ $deposito->novedad }}</td>
+                <td>{{ $deposito->doc_banco }}</td>
+                <td>{{ $deposito->usertesoreria->name ?? 'N/A' }}</td>
             </tr>
         @endforeach
     </tbody>
