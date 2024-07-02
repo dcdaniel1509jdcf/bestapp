@@ -163,10 +163,10 @@
                 <div class="factura-group">
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <input type="text" name="facturas[${index}][factura]" class="form-control " placeholder="Factura">
+                            <input type="text" name="facturas[${index}][factura]" class="form-control " required placeholder="Factura">
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp valor" placeholder="Valor">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp valor" required placeholder="Valor">
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
