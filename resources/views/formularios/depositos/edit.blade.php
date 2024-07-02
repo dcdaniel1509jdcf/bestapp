@@ -116,7 +116,7 @@
                                                             <div class="col-md-4">
                                                                 <input type="text"
                                                                     name="facturas[{{ $index }}][valor]"
-                                                                    value="{{ $factura['valor'] }}" class="form-control" placeholder="Valor">
+                                                                    value="{{ $factura['valor'] }}" class="form-control dineroCamp" placeholder="Valor">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -246,7 +246,7 @@
                             <input type="text" name="facturas[${index}][factura]" class="form-control" placeholder="Factura">
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="facturas[${index}][valor]" class="form-control" placeholder="Valor">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp" placeholder="Valor">
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -285,6 +285,10 @@
             this.value = this.value.replace(/[^0-9!@#$%^&*(),.?":{}|<>]/g, '');
         });
         $('#val_deposito').on('input', function() {
+            // Remueve todos los caracteres que no sean números o caracteres especiales
+            this.value = this.value.replace(/[^0-9!.]/g, '');
+        });
+        $('.dineroCamp').on('input', function() {
             // Remueve todos los caracteres que no sean números o caracteres especiales
             this.value = this.value.replace(/[^0-9!.]/g, '');
         });

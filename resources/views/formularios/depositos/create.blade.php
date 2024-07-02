@@ -50,6 +50,7 @@
                                         {!! Form::select('origen', ['COBRO' => 'COBRO', 'VENTA' => 'VENTA'], null, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
+                                            'required',
                                         ]) !!}
 
                                     </div>
@@ -65,7 +66,7 @@
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="name">Apellidos y Nombres del cliente:</label>
-                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos']) !!}
+                                        {!! Form::text('apellidos', null, ['class' => 'form-control', 'id' => 'apellidos','required']) !!}
                                     </div>
                                 </div>
 
@@ -74,7 +75,7 @@
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
                                         <label for="name">Numero de Deposito:</label>
-                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento']) !!}
+                                        {!! Form::text('num_documento', null, ['class' => 'form-control', 'id' => 'num_documento','required']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
@@ -84,6 +85,7 @@
                                             'class' => 'form-control',
                                             'id' => 'val_deposito',
                                             'placeholder' => '5432.10',
+                                            'required'
                                         ]) !!}
                                     </div>
                                 </div>
@@ -104,7 +106,7 @@
                                                 'ALIANZA HARD WEST' => 'ALIANZA HARD WEST',
                                             ],
                                             null,
-                                            ['class' => 'form-control', 'placeholder' => 'Seleccione'],
+                                            ['class' => 'form-control', 'placeholder' => 'Seleccione','required'],
                                         ) !!}
                                     </div>
                                 </div>
@@ -160,10 +162,10 @@
                 <div class="factura-group">
                     <div class="row mb-2">
                         <div class="col-md-6">
-                            <input type="text" name="facturas[${index}][factura]" class="form-control" placeholder="Factura">
+                            <input type="text" name="facturas[${index}][factura]" class="form-control " placeholder="Factura">
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="facturas[${index}][valor]" class="form-control" placeholder="Valor">
+                            <input type="text" name="facturas[${index}][valor]" class="form-control dineroCamp" placeholder="Valor">
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-sm btn-danger removeButton">X</button>
@@ -200,6 +202,10 @@
             this.value = this.value.replace(/[^0-9!@#$%^&*(),.?":{}|<>-]/g, '');
         });
         $('#val_deposito').on('input', function() {
+            // Remueve todos los caracteres que no sean números o caracteres especiales
+            this.value = this.value.replace(/[^0-9!.]/g, '');
+        });
+        $('.dineroCamp').on('input', function() {
             // Remueve todos los caracteres que no sean números o caracteres especiales
             this.value = this.value.replace(/[^0-9!.]/g, '');
         });
