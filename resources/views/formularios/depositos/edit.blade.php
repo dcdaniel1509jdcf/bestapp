@@ -44,6 +44,7 @@
                                         {!! Form::select('origen', ['COBRO' => 'COBRO', 'VENTA' => 'VENTA'], null, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
+                                            'id'=> 'origen',
                                         ]) !!}
 
                                     </div>
@@ -278,6 +279,14 @@
                 });
                 $('#val_deposito').val(sum.toFixed(2));
             }
+
+            $('#origen').change(function() {
+                if ($(this).val() === 'VENTA') {
+                    $('#val_deposito').prop('readonly', false);
+                } else {
+                    $('#val_deposito').prop('readonly', true).val('');
+                }
+            });
         });
     </script>
     <script>

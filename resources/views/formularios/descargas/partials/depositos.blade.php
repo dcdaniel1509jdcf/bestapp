@@ -41,7 +41,13 @@
 
                 </td>
                 <td>{{ $deposito->user->name }}</td>
-                <td>{{ $deposito->tesoreria }}</td>
+                <td>
+                    @if ($deposito->tesoreria == null)
+                        En Proceso
+                    @else
+                        {{ $deposito->tesoreria }}
+                    @endif
+                </td>
                 <td>{{ $deposito->cajas }}</td>
                 <td>{{ $deposito->baja }}</td>
                 <td>{{ $deposito->novedad }}</td>

@@ -38,17 +38,17 @@
                                             <td>{{ $deposito->apellidos  }}</td>
                                             <td>{{ $deposito->agencia->nombre }}</td>
                                             <td>{{ $deposito->fecha }}</td>
-                                            <td>
-                                            @if ($deposito->tesoreria== null)
-                                            <span class="badge badge-success">En Proceso</span>
-                                            @endif
-                                            @if ($deposito->tesoreria== 'NEGADO')
-                                            <span class="badge badge-danger">Negado</span>
-                                            @endif
 
-                                            </td>
                                             <td>{{ $deposito->user->name }}</td>
+                                            <td>
+                                                @if ($deposito->tesoreria== null)
+                                                <span class="badge badge-success">En Proceso</span>
+                                                @endif
+                                                @if ($deposito->tesoreria== 'NEGADO')
+                                                <span class="badge badge-danger">Negado</span>
+                                                @endif
 
+                                                </td>
                                             <td>
                                                 @canany(['deposito-authorize'])
                                                     <a class="btn btn-sm btn-outline-primary"
