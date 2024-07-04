@@ -34,14 +34,30 @@
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="name">Agencia:</label>
-                                        {!! Form::label('agencia', $deposito->agencia->nombre, ['class' => 'form-control']) !!}
+                                        {!! Form::select('agencia_id', $agencias, $deposito->agencia_id, ['class' => 'form-control']) !!}
+
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="name">Origen:</label>
-
-                                        {!! Form::select('origen', ['COBRO' => 'COBRO', 'VENTA' => 'VENTA'], null, [
+                                        @php
+                                        $array = [];
+                                    @endphp
+                                    @role('COBRADOR DEPOSITOS')
+                                        @php
+                                            $array = ['COBRO' => 'COBRO'];
+                                        @endphp
+                                    @endrole
+                                    @role('CAJERO DEPOSITOS')
+                                        @php
+                                            $array = ['VENTA' => 'VENTA'];
+                                        @endphp
+                                    @endrole
+                                    @role('TESORERIA')
+                                    $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
+                                    @endrole
+                                        {!! Form::select('origen', $array, null, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
                                             'id'=> 'origen',

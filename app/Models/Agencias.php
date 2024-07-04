@@ -11,7 +11,7 @@ class Agencias extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['nombre', 'direccion', 'telefono'];
+    protected $fillable = ['nombre', 'direccion', 'telefono','activo'];
 
     public function users()
     {

@@ -38,8 +38,8 @@
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="name">Agencia:</label>
-                                        {!! Form::label('agencia', auth()->user()->agencia->nombre, ['class' => 'form-control']) !!}
-                                        {!! Form::hidden('agencia_id', auth()->user()->agencia_id, [null]) !!}
+
+                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control']) !!}
 
                                     </div>
                                 </div>
@@ -47,11 +47,27 @@
                                     <div class="form-group">
                                         <label for="name">Origen:</label>
 
-                                        {!! Form::select('origen', ['COBRO' => 'COBRO', 'VENTA' => 'VENTA'], null, [
+                                        @php
+                                            $array = [];
+                                        @endphp
+                                        @role('COBRADOR DEPOSITOS')
+                                            @php
+                                                $array = ['COBRO' => 'COBRO'];
+                                            @endphp
+                                        @endrole
+                                        @role('CAJERO DEPOSITOS')
+                                            @php
+                                                $array = ['VENTA' => 'VENTA'];
+                                            @endphp
+                                        @endrole
+                                        @role('TESORERIA')
+                                        $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
+                                        @endrole
+                                        {!! Form::select('origen', $array, null, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
                                             'required',
-                                            'id'=>'origen',
+                                            'id' => 'origen',
                                         ]) !!}
 
                                     </div>
@@ -114,11 +130,11 @@
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <!--
-                                                    <div class="form-group">
-                                                        <label for="name">Numero del factura:</label>
-                                                        {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
-                                                    </div>
-                                                -->
+                                                            <div class="form-group">
+                                                                <label for="name">Numero del factura:</label>
+                                                                {!! Form::text('num_credito', null, ['class' => 'form-control']) !!}
+                                                            </div>
+                                                        -->
                                     <div id="facturasContainer">
                                     </div>
                                     <br>
@@ -184,7 +200,7 @@
                 updateSum();
             });
 
-            $(document).on('input', '.valor', function(){
+            $(document).on('input', '.valor', function() {
                 updateSum();
             });
 

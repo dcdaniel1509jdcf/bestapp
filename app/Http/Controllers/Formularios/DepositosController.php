@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Formularios;
 
 use App\Exports\DepositosExport;
 use App\Http\Controllers\Controller;
+use App\Models\Agencias;
 use App\Models\Formularios\Depositos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class DepositosController extends Controller
         $depositos = Depositos::orderBy('id', 'DESC')->get();
     }else if(auth()->user()->hasRole('TESORERIA')){
         $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria',null)->get();
-    }else if(auth()->user()->hasRole('VENDEDOR')){
+    }else if(auth()->user()->hasRole('CAJERO DEPOSITOS') || auth()->user()->hasRole('COBRADOR DEPOSITOS')){
         $depositos = Depositos::orderBy('id', 'DESC')->where('user_id',Auth::id())->whereNull('tesoreria')->orWhere('tesoreria','NEGADO')->whereNull('baja')->get();
     }else if(auth()->user()->hasRole('GESTOR DIFUSIONES')){
         $depositos = Depositos::orderBy('id', 'DESC')->whereNull('baja')->get();
@@ -39,13 +40,14 @@ class DepositosController extends Controller
 
     public function create()
     {
-        return view('formularios.depositos.create');
+        $agencias = Agencias::where('activo',true)->pluck('nombre', 'id');
+        return view('formularios.depositos.create',compact('agencias'));
     }
     public function store(Request $request)
     {
         $request->validate([
             'apellidos' => 'required|string|max:255',
-            //'nombres' => 'required|string|max:255',
+            'agencia_id' => 'required',
             'origen' => 'required',
             'fecha' => 'required',
             'num_documento' => 'required|string|max:255|unique:depositos,num_documento',
@@ -58,7 +60,7 @@ class DepositosController extends Controller
             'apellidos.required' => 'El campo Apellidos y Nombres es obligatorio.',
             'apellidos.string' => 'El campo Apellidos y Nombres debe ser una cadena de texto.',
             'apellidos.max' => 'El campo Apellidos y Nombres no puede tener más de 255 caracteres.',
-            //'nombres.required' => 'El campo nombres es obligatorio.',
+            'agencia_id.required' => 'El campo Agencia es obligatorio.',
             //'nombres.string' => 'El campo nombres debe ser una cadena de texto.',
             //'nombres.max' => 'El campo nombres no puede tener más de 255 caracteres.',
             'origen.required' => 'El campo origen es obligatorio.',
@@ -95,7 +97,7 @@ class DepositosController extends Controller
             'fecha' => $request->fecha,
             'user_id' => Auth::id(),
             'origen' => $request->origen,
-            'agencia_id' => auth()->user()->agencia_id,
+            'agencia_id' => $request->agencia_id,
             'apellidos' => $request->apellidos,
             'nombres' => $request->nombres ?? '-',
             'num_documento' => $request->num_documento,
@@ -114,6 +116,7 @@ class DepositosController extends Controller
         $request->validate([
             'apellidos' => 'required|string|max:255',
             //'nombres' => 'required|string|max:255',
+            'agencia_id' => 'required',
             'origen' => 'required',
             'fecha' => 'required',
             'num_documento' => [
@@ -131,6 +134,7 @@ class DepositosController extends Controller
             'apellidos.required' => 'El campo Apellidos y Nombres es obligatorio.',
             'apellidos.string' => 'El campo Apellidos y Nombres debe ser una cadena de texto.',
             'apellidos.max' => 'El campo Apellidos y Nombres no puede tener más de 255 caracteres.',
+            'agencia_id.required' => 'El campo Agencia es obligatorio.',
             //'nombres.required' => 'El campo nombres es obligatorio.',
             //'nombres.string' => 'El campo nombres debe ser una cadena de texto.',
             //'nombres.max' => 'El campo nombres no puede tener más de 255 caracteres.',
@@ -200,7 +204,8 @@ class DepositosController extends Controller
     public function edit($id)
     {
         $deposito = Depositos::find($id);
-        return view('formularios.depositos.edit', compact('deposito'));
+        $agencias = Agencias::where('activo',true)->pluck('nombre', 'id');
+        return view('formularios.depositos.edit', compact('deposito','agencias'));
     }
     public function destroy($id)
     {

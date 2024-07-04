@@ -25,6 +25,7 @@
                                         <th scope="col">Nombre</th>
 
                                         <th scope="col">Direccion</th>
+                                        <th scope="col">Estado</th> <!-- Nueva columna -->
                                         <th scope="col">Accion</th>
                                     </tr>
                                 </thead>
@@ -34,6 +35,7 @@
                                             <th scope="row">{{ $agencia->id }}</th>
                                             <td>{{ $agencia->nombre }}</td>
                                             <td>{{ $agencia->direccion }}</td>
+                                            <td>{{ $agencia->activo ? 'Activo' : 'Inactivo' }}</td> <!-- Nueva columna -->
                                             <td>
                                                 @can('agencia-edit')
                                                     <a class="btn btn-sm btn-outline-info"

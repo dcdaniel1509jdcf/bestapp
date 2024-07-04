@@ -27,6 +27,8 @@
 
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Usuario</th>
+                                        <th scope="col">Origen</th>
+                                        <th scope="col">Numero de Deposito</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Accion</th>
                                     </tr>
@@ -40,12 +42,15 @@
                                             <td>{{ $deposito->fecha }}</td>
 
                                             <td>{{ $deposito->user->name }}</td>
+                                            <td>{{ $deposito->origen }}</td>
+                                            <td>{{ $deposito->num_documento }}</td>
                                             <td>
                                                 @if ($deposito->tesoreria== null)
                                                 <span class="badge badge-success">En Proceso</span>
-                                                @endif
-                                                @if ($deposito->tesoreria== 'NEGADO')
+                                                @elseif ($deposito->tesoreria== 'NEGADO')
                                                 <span class="badge badge-danger">Negado</span>
+                                                @else
+                                                <span class="badge badge-info">{{$deposito->tesoreria}}</span>
                                                 @endif
 
                                                 </td>

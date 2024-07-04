@@ -42,7 +42,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        $agencias = Agencias::pluck('nombre', 'id');
+        $agencias = Agencias::where('activo',true)->pluck('nombre', 'id');
 
         return view('admin.users.create', compact('roles','agencias'));
     }
