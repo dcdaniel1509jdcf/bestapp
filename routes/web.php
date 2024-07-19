@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('reportes', ReporteController::class);
     Route::post('depositos-download', [DepositosController::class, 'download'])->name('depositos.download');
+	Route::post('/filtrar', [DepositosController::class, 'filtrar'])->name('filtrar');
     Route::patch('depositos-autorizacion/{deposito}', [DepositosController::class, 'autorizate'])->name('depositos.autorizacion');
 
     // Route::resource('productos', ProductController::class);

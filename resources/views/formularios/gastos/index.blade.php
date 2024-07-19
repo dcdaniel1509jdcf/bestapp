@@ -36,10 +36,7 @@
                                             <td>{{ $gasto->fecha }}</td>
                                             <td>{{ $gasto->user->name }}</td>
                                             <td>
-<!--
-                                                    <a class="btn btn-sm btn-outline-primary"
-                                                        href="{{ route('depositos.show', ['deposito' => $gasto->id]) }}">Ver</a>
-                                            -->
+
                                                     <a class="btn btn-sm btn-outline-info"
                                                         href="{{ route('gastos.edit', ['gasto' => $gasto->id]) }}">Editar</a>
 
@@ -62,10 +59,7 @@
 
                                 </tbody>
                             </table>
-                            <div class="pagination justify-content-end">
 
-
-                            </div>
                         </div>
                     </div>
                 </div>

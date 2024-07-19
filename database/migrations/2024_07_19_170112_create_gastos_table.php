@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');  // Cambiado a unsignedBigInteger
             $table->unsignedBigInteger('agencia_id');  // Cambiado a unsignedBigInteger
-            $table->date('fecha');
-            $table->text('agencia');
-            $table->text('concepto');
 
-            $table->decimal('valor', 10, 2);
-            $table->text('observacion')->nullable();
-            $table->text('fondo')->nullable();
-            $table->text('comprobante')->nullable();
+            $table->date('fecha');
+            $table->enum('concepto', ['movilizacion', 'suministros', 'gastos_varios']);
+            $table->decimal('valor', 10, 2)->nullable();
+            $table->text('detalle')->nullable();
+            $table->string('numero_factura')->nullable();
+            $table->string('comprobante');
+            $table->enum('tipo_movilizacion', ['volanteo', 'notificacion', 'traslado_valores', 'traslado_mercaderia', 'traslado_personal'])->nullable();
+            $table->string('destino')->nullable();
+            $table->string('asignado_a')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

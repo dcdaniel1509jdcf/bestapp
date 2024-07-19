@@ -24,19 +24,53 @@ class DepositosController extends Controller
     }
     public function index(Request $request)
     {
+        // Recuperar los filtros de la sesión
+        $filtros = $request->session()->get('filtros', []);
 
-        if(auth()->user()->hasRole('ADMINISTRADOR')){
-        $depositos = Depositos::orderBy('id', 'DESC')->get();
-    }else if(auth()->user()->hasRole('TESORERIA')){
-        $depositos = Depositos::orderBy('id', 'DESC')->where('tesoreria',null)->get();
-    }else if(auth()->user()->hasRole('CAJERO DEPOSITOS') || auth()->user()->hasRole('COBRADOR DEPOSITOS')){
-        $depositos = Depositos::orderBy('id', 'DESC')->where('user_id',Auth::id())->whereNull('tesoreria')->orWhere('tesoreria','NEGADO')->whereNull('baja')->get();
-    }else if(auth()->user()->hasRole('GESTOR DIFUSIONES')){
-        $depositos = Depositos::orderBy('id', 'DESC')->whereNull('baja')->get();
+        // Iniciar la consulta base
+        $query = Depositos::query();
+
+        // Aplicar restricciones según el rol del usuario
+        if (auth()->user()->hasRole('ADMINISTRADOR')) {
+            $query->orderBy('id', 'DESC');
+        } elseif (auth()->user()->hasRole('TESORERIA')) {
+            $query->orderBy('id', 'DESC')->where('tesoreria', null);
+        } elseif (auth()->user()->hasRole('CAJERO DEPOSITOS') || auth()->user()->hasRole('COBRADOR DEPOSITOS')) {
+            $query->where('user_id', auth()->user()->id)
+                  ->where(function ($subQuery) {
+                      $subQuery->whereNull('tesoreria')
+                               ->orWhere('tesoreria', 'NEGADO');
+                  })
+                  ->whereNull('baja')
+                  ->orderBy('id', 'DESC');
+        } elseif (auth()->user()->hasRole('GESTOR DIFUSIONES')) {
+            $query->orderBy('id', 'DESC')->whereNull('baja');
+        }
+
+        // Aplicar filtros almacenados en la sesión
+        if (!empty($filtros['select_filtro']) && !empty($filtros['input_filtro'])) {
+            if ($filtros['select_filtro'] == 'agencia_id') {
+                // Buscar el ID de la agencia por nombre
+                $agencia = Agencias::where('nombre', 'like', '%' . $filtros['input_filtro'] . '%')->first();
+                if ($agencia) {
+                    $query->where('agencia_id', $agencia->id);
+                } else {
+                    // Si no se encuentra ninguna agencia, la consulta no devolverá resultados
+                    $query->where('agencia_id', -1);
+                }
+            } else {
+                // Aplicar otros filtros
+                $query->where($filtros['select_filtro'], 'like', '%' . $filtros['input_filtro'] . '%');
+            }
+        }
+
+        // Obtener los resultados
+        $depositos = $query->get();
+
+        // Pasar los datos a la vista
+        return view('formularios.depositos.index', compact('depositos'));
     }
-        return view('formularios.depositos.index', compact('depositos'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
-    }
+
 
     public function create()
     {
@@ -172,6 +206,7 @@ class DepositosController extends Controller
             $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
             $deposito->comprobante = $filePath;
         }
+		$deposito->agencia_id=$request->agencia_id;
 
         // Actualizar los datos en la base de datos
         $deposito->fecha = $request->fecha;
@@ -184,7 +219,7 @@ class DepositosController extends Controller
         $deposito->val_deposito = $request->val_deposito;
         $deposito->banco = $request->banco;
         $deposito->num_credito = serialize($facturas);
-        if(auth()->user()->hasRole('VENDEDOR') && $deposito->tesoreria=='NEGADO'){
+        if(auth()->user()->hasAnyRole(['CAJERO DEPOSITOS', 'COBRADOR DEPOSITOS']) && $deposito->tesoreria=='NEGADO'  ){
         $deposito->tesoreria = null;
         $deposito->novedad = null;
         }
@@ -250,5 +285,17 @@ class DepositosController extends Controller
         $deposito->save();
 
         return redirect()->route('depositos.index')->with('success', 'Depósito actualizado exitosamente');
+    }
+	public function filtrar(Request $request)
+    {
+        // Validar y guardar filtros en la sesión
+        $filtros = $request->validate([
+            'select_filtro' => 'nullable|string',
+            'input_filtro' => 'nullable|string',
+        ]);
+
+        $request->session()->put('filtros', $filtros);
+        //return $request;
+        return redirect()->route('depositos.index');
     }
 }

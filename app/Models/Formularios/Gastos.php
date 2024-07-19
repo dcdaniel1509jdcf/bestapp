@@ -14,20 +14,23 @@ class Gastos extends Model
 
     protected $fillable = [
         'user_id',
-        'agencia_id',
-        'fondo',
-        'agencia',
-        'concepto',
-        'valor',
-        'observacion',
-        'comprobante',
-        'fecha',
+            'agencia_id',
+            'fecha',
+            'concepto',
+            'valor',
+            'detalle',
+            'numero_factura',
+            'comprobante',
+            'tipo_movilizacion',
+            'destino',
+            'asignado_a',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 
     public function agenciaN()
     {

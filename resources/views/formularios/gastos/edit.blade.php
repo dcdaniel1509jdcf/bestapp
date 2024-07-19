@@ -9,7 +9,7 @@
     <section class="section">
         <div class="section-body">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="col-lg-10 col-md-10 col-xs-10">
                     <div class="card">
                         <div class="card-body">
                             @if ($errors->any())
@@ -26,72 +26,118 @@
 
                             {!! Form::model($gasto, [
                                 'route' => ['gastos.update', $gasto->id],
-                                'method' => 'PATCH',
+                                'method' => 'PUT',
                                 'enctype' => 'multipart/form-data',
                             ]) !!}
-
+                            @csrf
                             <div class="row">
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="agencia_id">Agencia:</label>
-                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control','placeholder'=>'SELECCIONE']) !!}
-
+                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control', 'placeholder' => 'SELECCIONE']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Fecha:</label>
-                                        {!! Form::date('fecha', now()->format('Y-m-d'), ['class' => 'form-control']) !!}
+                                        <label for="fecha">Fecha:</label>
+                                        {!! Form::date('fecha', null, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="concepto">Concepto:</label>
+                                        {!! Form::select(
+                                            'concepto',
+                                            ['movilizacion' => 'Movilización', 'suministros' => 'Suministros', 'gastos_varios' => 'Gastos Varios'],
+                                            null,
+                                            ['class' => 'form-control', 'placeholder' => 'SELECCIONE', 'id' => 'concepto'],
+                                        ) !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="movilizacion" style="display:none;">
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="tipo_movilizacion">Tipo de Movilización:</label>
+                                            {!! Form::select(
+                                                'tipo_movilizacion',
+                                                [
+                                                    'volanteo' => 'Volanteo',
+                                                    'notificacion' => 'Notificación',
+                                                    'traslado_valores' => 'Traslado de Valores',
+                                                    'traslado_mercaderia' => 'Traslado de Mercadería',
+                                                    'traslado_personal' => 'Traslado de Personal',
+                                                ],
+                                                null,
+                                                ['class' => 'form-control', 'placeholder' => 'SELECCIONE'],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="destino">Destino:</label>
+                                            {!! Form::text('destino', null, ['class' => 'form-control']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="asignado_a">Asignado a:</label>
+                                            {!! Form::text('asignado_a', null, ['class' => 'form-control']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="valor">Valor:</label>
+                                        {!! Form::text('valor', null, ['class' => 'form-control val-money', 'placeholder' => '5432.10']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Concepto:</label>
-                                        {!! Form::textarea('concepto', null, ['class' => 'form-control','rows'=>'2']) !!}
+                                        <label for="detalle">Detalle:</label>
+                                        {!! Form::textarea('detalle', null, ['class' => 'form-control', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Valor:</label>
-                                        {!! Form::text('valor', null, ['class' => 'form-control val-money','id'=>'val_deposito','placeholder'=>'5432.10']) !!}
+                                        <label for="numero_factura">Número de Factura:</label>
+                                        {!! Form::text('numero_factura', null, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Observación:</label>
-                                        {!! Form::textarea('observacion', null, ['class' => 'form-control','rows'=>'2']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name">Fondo para reponer:</label>
-                                        {!! Form::text('fondo', null, ['class' => 'form-control val-money']) !!}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="comprobante">Cargar Comprobante</label>
+                                        <label for="file">Cargar comprobante</label>
                                         <div class="custom-file">
-                                            {!! Form::file('comprobante', ['class' => 'custom-file-input', 'id' => 'file']) !!}
-                                            {!! Form::label('file', 'Elegir archivo', ['class' => 'custom-file-label']) !!}
+                                            <input type="file" name="comprobante" class="custom-file-input"
+                                                id="file">
+                                            <label class="custom-file-label" for="file">Elegir</label>
                                         </div>
                                         @if ($gasto->comprobante)
-                                        <p>Archivo actual: <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
-                                            Ver Documento
-                                          </button>
-                                          <a href="{{ Storage::url($gasto->comprobante) }}" class="btn btn-sm btn-link"
-                                                target="_blank">abrir</a></p>
-                                                @include('formularios.gastos.partial.modal')
+                                            <p>Archivo actual: <button type="button" class="btn btn-sm btn-link"
+                                                    data-toggle="modal" data-target="#staticBackdrop">
+                                                    Ver Documento
+                                                </button>
+                                                <a href="{{ Storage::url($gasto->comprobante) }}"
+                                                    class="btn btn-sm btn-link" target="_blank">abrir</a>
+                                            </p>
+                                            @include('formularios.gastos.partial.modal')
                                         @endif
                                     </div>
                                 </div>
@@ -102,9 +148,10 @@
                                     {!! Form::submit('Guardar', ['class' => 'btn btn-block btn-success']) !!}
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <a href="{{ route('gastos.index') }}" class="btn btn-block btn-secondary">Atras</a>
+                                    <a href="{{ route('gastos.index') }}" class="btn btn-block btn-secondary">Atrás</a>
                                 </div>
                             </div>
+
                             {!! Form::close() !!}
                         </div>
                     </div>
@@ -141,6 +188,24 @@
         $('#val_deposito').on('input', function() {
             // Remueve todos los caracteres que no sean números o caracteres especiales
             this.value = this.value.replace(/[^0-9!.]/g, '');
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const conceptoElement = document.getElementById('concepto');
+            const movilizacionElement = document.getElementById('movilizacion');
+
+            const toggleFields = () => {
+                const concepto = conceptoElement.value;
+                if (concepto === 'movilizacion') {
+                    movilizacionElement.style.display = 'block';
+                } else {
+                    movilizacionElement.style.display = 'none';
+                }
+            };
+            conceptoElement.addEventListener('change', toggleFields);
+            toggleFields(); // Ejecutar al cargar la página para el valor inicial
         });
     </script>
 

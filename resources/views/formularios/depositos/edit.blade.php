@@ -42,7 +42,7 @@
                                     <div class="form-group">
                                         <label for="name">Origen:</label>
                                         @php
-                                        $array = [];
+                                        $array = ["VENTA"=>"VENTA","COBRO"=>"COBRO"];
                                     @endphp
                                     @role('COBRADOR DEPOSITOS')
                                         @php
@@ -57,7 +57,7 @@
                                     @role('TESORERIA')
                                     $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
                                     @endrole
-                                        {!! Form::select('origen', $array, null, [
+                                        {!! Form::select('origen', $array,$deposito->origen, [
                                             'class' => 'form-control',
                                             'placeholder' => 'SELECCIONE',
                                             'id'=> 'origen',
@@ -173,7 +173,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @role('VENDEDOR')
+                            @role('CAJERO DEPOSITOS|COBRADOR DEPOSITOS')
                                 <div class="row">
                                     <div class="col-xs-4 col-md-4 col-sm-4">
                                         <div class="form-group">

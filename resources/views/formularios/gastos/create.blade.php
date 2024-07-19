@@ -3,21 +3,21 @@
 @section('title', 'Depósito')
 
 @section('css')
-<style>
-    .custom-file-input ~ .custom-file-label::after {
-        content: "Buscar";
-    }
-</style>
+    <style>
+        .custom-file-input~.custom-file-label::after {
+            content: "Buscar";
+        }
+    </style>
 @stop
 @section('content_header')
-    <h1 class="m-0 text-dark text-center" >Gastos</h1>
+    <h1 class="m-0 text-dark text-center">Gastos</h1>
 @stop
 
 @section('content')
     <section class="section">
         <div class="section-body">
             <div class="row justify-content-center">
-                <div class="col-lg-6">
+                <div class="col-lg-10 col-md-10 col-xs-10">
                     <div class="card">
                         <div class="card-body">
                             @if ($errors->any())
@@ -33,51 +33,94 @@
                             @endif
                             {!! Form::open(['route' => 'gastos.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                             @csrf
-
                             <div class="row">
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="agencia_id">Agencia:</label>
-                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control','placeholder'=>'SELECCIONE']) !!}
-
+                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control', 'placeholder' => 'SELECCIONE']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Fecha:</label>
+                                        <label for="fecha">Fecha:</label>
                                         {!! Form::date('fecha', now()->format('Y-m-d'), ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-md-12 col-sm-12">
+                                <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Concepto:</label>
-                                        {!! Form::textarea('concepto', null, ['class' => 'form-control','rows'=>'2']) !!}
+                                        <label for="concepto">Concepto:</label>
+                                        {!! Form::select(
+                                            'concepto',
+                                            ['movilizacion' => 'Movilización', 'suministros' => 'Suministros', 'gastos_varios' => 'Gastos Varios'],
+                                            null,
+                                            ['class' => 'form-control', 'placeholder' => 'SELECCIONE', 'id' => 'concepto'],
+                                        ) !!}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="movilizacion" style="display:none;">
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="tipo_movilizacion">Tipo de Movilización:</label>
+                                            {!! Form::select(
+                                                'tipo_movilizacion',
+                                                [
+                                                    'volanteo' => 'Volanteo',
+                                                    'notificacion' => 'Notificación',
+                                                    'traslado_valores' => 'Traslado de Valores',
+                                                    'traslado_mercaderia' => 'Traslado de Mercadería',
+                                                    'traslado_personal' => 'Traslado de Personal',
+                                                ],
+                                                null,
+                                                ['class' => 'form-control', 'placeholder' => 'SELECCIONE'],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="destino">Destino:</label>
+                                            {!! Form::text('destino', null, ['class' => 'form-control']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="asignado_a">Asignado a:</label>
+                                            {!! Form::text('asignado_a', null, ['class' => 'form-control']) !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Valor:</label>
-                                        {!! Form::text('valor', null, ['class' => 'form-control val-money','id'=>'val_deposito','placeholder'=>'5432.10']) !!}
+                                        <label for="valor">Valor:</label>
+                                        {!! Form::text('valor', null, ['class' => 'form-control val-money', 'placeholder' => '5432.10']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Observación:</label>
-                                        {!! Form::textarea('observacion', null, ['class' => 'form-control','rows'=>'2']) !!}
+                                        <label for="detalle">Detalle:</label>
+                                        {!! Form::textarea('detalle', null, ['class' => 'form-control', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Fondo para reponer:</label>
-                                        {!! Form::text('fondo', null, ['class' => 'form-control val-money']) !!}
+                                        <label for="numero_factura">Número de Factura:</label>
+                                        {!! Form::text('numero_factura', null, ['class' => 'form-control']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +129,8 @@
                                     <div class="form-group">
                                         <label for="file">Cargar comprobante</label>
                                         <div class="custom-file">
-                                            <input type="file" name="comprobante" class="custom-file-input" id="file" required>
+                                            <input type="file" name="comprobante" class="custom-file-input"
+                                                id="file" required>
                                             <label class="custom-file-label" for="file">Elegir</label>
                                         </div>
                                     </div>
@@ -98,9 +142,10 @@
                                     {!! Form::submit('Guardar', ['class' => 'btn btn-block btn-success']) !!}
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <a href="{{ route('gastos.index') }}" class="btn btn-block btn-secondary">Atras</a>
+                                    <a href="{{ route('gastos.index') }}" class="btn btn-block btn-secondary">Atrás</a>
                                 </div>
                             </div>
+
                             {!! Form::close() !!}
                         </div>
                     </div>
@@ -112,7 +157,6 @@
 
 @section('js')
     <script>
-
         // Mostrar el nombre del archivo seleccionado
         document.querySelector('.custom-file-input').addEventListener('change', function(e) {
             var fileName = document.getElementById("file").files[0].name;
@@ -136,6 +180,11 @@
             // Remueve todos los caracteres que no sean números o caracteres especiales
             this.value = this.value.replace(/[^0-9!.]/g, '');
         });
-
+    </script>
+    <script>
+        document.getElementById('concepto').addEventListener('change', function() {
+            var value = this.value;
+            document.getElementById('movilizacion').style.display = (value == 'movilizacion') ? 'block' : 'none';
+        });
     </script>
 @stop
