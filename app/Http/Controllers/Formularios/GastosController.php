@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Storage;
 
 class GastosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:gasto-list|gasto-create|gasto-edit|gasto-delete', ['only' => ['index']]);
+        $this->middleware('permission:gasto-create', ['only' => ['create','store']]);
+        $this->middleware('permission:gasto-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:gasto-delete', ['only' => ['destroy']]);
+
+    }
     public function index(Request $request)
     {
 
