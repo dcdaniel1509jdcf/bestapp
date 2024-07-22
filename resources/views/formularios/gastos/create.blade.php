@@ -10,7 +10,7 @@
     </style>
 @stop
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Gastos</h1>
+    <h1 class="m-0 text-dark text-center">Gasto</h1>
 @stop
 
 @section('content')
@@ -37,7 +37,7 @@
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="agencia_id">Agencia:</label>
-                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control', 'placeholder' => 'SELECCIONE']) !!}
+                                        {!! Form::select('agencia_id', $agencias, auth()->user()->agencia->id, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">

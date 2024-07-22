@@ -419,6 +419,7 @@ return [
         [
             'text' => 'Depositos',
             'icon' => 'fas fa-fw fa-file',
+            'can' => 'deposito-list',
             'submenu' => [
                 [
                     'text' => 'Nuevo',
@@ -453,7 +454,7 @@ return [
                 ],
                 [
                     'text' => 'Descargar',
-                    'route' => 'reportes.index',
+                    'route' => 'reportes.gastos.index',
                 ],
             ],
         ]

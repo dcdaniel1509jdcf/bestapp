@@ -3,7 +3,7 @@
 @section('title', 'Depósitos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Depósito</h1>
+    <h1 class="m-0 text-dark text-center">Gasto</h1>
 @stop
 @section('content')
     <section class="section">
@@ -34,7 +34,7 @@
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
                                         <label for="agencia_id">Agencia:</label>
-                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control', 'placeholder' => 'SELECCIONE']) !!}
+                                        {!! Form::select('agencia_id', $agencias, null, ['class' => 'form-control', 'readonly' ]) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
@@ -142,6 +142,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="est">Novedad:</label>
+
+                                        {!! Form::label('Na', $gasto->novedad, null) !!}
+
+                                    </div>
+                                </div>
+                            </div>
+                            @role('TESORERIA HOLDING')
+                            <div class="row">
+                                <div class="col-xs-4 col-md-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label for="estado">Estado:</label>
+                                        {!! Form::select('estado', ['En Espera' => 'En Espera', 'Autorizado' => 'Autorizado', 'Rechazado' => 'Rechazado'], null, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="numero_factura">Novedad:</label>
+                                        {!! Form::text('novedad', null, ['class' => 'form-control']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                            @endrole
 
                             <div class="row justify-content-center">
                                 <div class="col-xs-6 col-md-6 col-sm-6">

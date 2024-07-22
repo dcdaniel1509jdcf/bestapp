@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Formularios;
 
+use App\Exports\GastosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Agencias;
 use App\Models\Formularios\Gastos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GastosController extends Controller
 {
@@ -17,26 +19,44 @@ class GastosController extends Controller
         $this->middleware('permission:gasto-create', ['only' => ['create','store']]);
         $this->middleware('permission:gasto-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:gasto-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:gasto-show', ['only' => ['show']]);
 
     }
     public function index(Request $request)
     {
 
-            $gastos=Gastos::all();
-            return view('formularios.gastos.index', compact('gastos'));
+          // Iniciar la consulta base
+          $query = Gastos::query();
+
+          // Aplicar restricciones según el rol del usuario
+          if (auth()->user()->hasRole('ADMINISTRADOR')) {
+              $query->orderBy('id', 'DESC');
+          } elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
+              $query->orderBy('id', 'DESC')->where('estado','En Espera');
+          } elseif (auth()->user()->hasRole('ASESOR GASTOS')) {
+              $query->where('user_id', auth()->user()->id)
+                    ->where(function ($subQuery) {
+                        $subQuery->where('estado','En Espera')
+                                 ->orWhere('estado', 'Rechazado');
+                    })
+                    ->orderBy('id', 'DESC');
+          }
+
+          $gastos = $query->get();
+        return view('formularios.gastos.index', compact('gastos'));
     }
 
     public function create()
     {
-        $agencias=Agencias::pluck('nombre','id');
-        return view('formularios.gastos.create',compact('agencias'));
+        $agencias = Agencias::pluck('nombre', 'id');
+        return view('formularios.gastos.create', compact('agencias'));
     }
 
     public function edit($id)
     {
-        $agencias=Agencias::pluck('nombre','id');
+        $agencias = Agencias::pluck('nombre', 'id');
         $gasto = Gastos::find($id);
-        return view('formularios.gastos.edit', compact('gasto','agencias'));
+        return view('formularios.gastos.edit', compact('gasto', 'agencias'));
     }
 
     public function update(Request $request, $id)
@@ -69,7 +89,16 @@ class GastosController extends Controller
             $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
             $gasto->comprobante = $filePath;
         }
-        $gasto->agencia_id = $request->agencia_id;
+        //$gasto->agencia_id = auth()->user()->agencia->id;
+        if (auth()->user()->hasRole('ASESOR GASTOS')) {
+            $gasto->estado = 'En Espera';
+            $gasto->novedad = null;
+        }
+        if (auth()->user()->hasRole('TESORERIA HOLDING')) {
+            $gasto->estado = $request->estado;
+            $gasto->novedad = $request->novedad;
+        }
+
         $gasto->fecha = $request->fecha;
         $gasto->concepto = $request->concepto;
         $gasto->valor = $request->valor;
@@ -112,7 +141,8 @@ class GastosController extends Controller
         // Creación del gasto
         $gasto = new Gastos();
         $gasto->user_id = Auth::id();
-        $gasto->agencia_id = $request->agencia_id;
+        $gasto->estado = 'En Espera';
+        $gasto->agencia_id = auth()->user()->agencia->id;
         $gasto->fecha = $request->fecha;
         $gasto->concepto = $request->concepto;
         $gasto->valor = $request->valor;
@@ -147,5 +177,36 @@ class GastosController extends Controller
 
         return redirect()->route('gastos.index')->with('success', 'Gasto eliminado exitosamente.');
     }
+    public function download(Request $request)
+    {
+        return Excel::download(new GastosExport($request->dateIni, $request->dateFin), 'gastos'.time().'.xlsx');
+        //return $request;
+    }
+    public function show($id)
+    {
+        $gasto = Gastos::with('agencia')->findOrFail($id);
+        return view('formularios.gastos.show', compact('gasto'));
+    }
+    /*
+    public function autorizate(Request $request, $id)
+    {
+        $request->validate([
+            //'tesoreria' => 'required|string|max:255',
+            'estado' => 'required',
+            //'cajas' => 'nullable|string|max:255',
+            //'novedad' => 'nullable|string|max:255',
+        ]);
+
+        $gasto = Gastos::findOrFail($id);
+        //$deposito->tesoreria = $request->tesoreria;
+        //$deposito->user_tesoreria = Auth::id();
+        $gasto->estado = $request->estado;
+        //$deposito->cajas = $request->cajas;
+        //$deposito->novedad = $request->novedad;
+        $gasto->save();
+
+        return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
+    }
+        */
 
 }

@@ -24,6 +24,8 @@ class Gastos extends Model
             'tipo_movilizacion',
             'destino',
             'asignado_a',
+            'novedad',
+            'estado'
     ];
 
     public function user()
@@ -32,8 +34,8 @@ class Gastos extends Model
     }
 
 
-    public function agenciaN()
+    public function agencia()
     {
-        return $this->belongsTo(Agencias::class, 'agencia_id');
+        return $this->belongsTo(Agencias::class);
     }
 }

@@ -24,6 +24,7 @@
 
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Usuario</th>
+                                        <th scope="col">Estado</th>
                                         <th scope="col">Accion</th>
                                     </tr>
                                 </thead>
@@ -31,26 +32,40 @@
                                     @foreach ($gastos as $gasto)
                                         <tr>
                                             <th scope="row">{{ $gasto->id }}</th>
-                                            <td>{{ $gasto->concepto  }}</td>
-                                            <td>{{ $gasto->agenciaN->nombre }}</td>
+                                            <td>{{ $gasto->concepto }}</td>
+                                            <td>{{ $gasto->agencia ? $gasto->agencia->nombre : 'No disponible' }}</td>
                                             <td>{{ $gasto->fecha }}</td>
                                             <td>{{ $gasto->user->name }}</td>
                                             <td>
+                                                @if ($gasto->estado == 'En Espera')
+                                                    <span class="badge badge-info">En Espera</span>
+                                                @elseif ($gasto->estado == 'Rechazado')
+                                                    <span class="badge badge-danger">Rechazado</span>
+                                                @else
+                                                    <span class="badge badge-success">{{ $gasto->estado }}</span>
+                                                @endif
 
+                                            </td>
+                                            <td>
+                                                @canany(['gasto-show'])
+                                                    <a class="btn btn-sm btn-outline-primary"
+                                                        href="{{ route('gastos.show', ['gasto' => $gasto->id]) }}">Ver</a>
+                                                @endcanany
+                                                @canany(['gasto-edit'])
                                                     <a class="btn btn-sm btn-outline-info"
                                                         href="{{ route('gastos.edit', ['gasto' => $gasto->id]) }}">Editar</a>
-
+                                                @endcanany
+                                                @canany(['gasto-delete'])
                                                     {!! Form::open([
                                                         'method' => 'DELETE',
                                                         'route' => ['gastos.destroy', $gasto->id],
                                                         'style' => 'display:inline',
                                                         'class' => 'form-eliminar',
                                                     ]) !!}
-
-
                                                     {!! Form::submit('Borrar', ['class' => 'btn btn-sm btn-outline-danger']) !!}
 
                                                     {!! Form::close() !!}
+                                                @endcanany
 
                                             </td>
                                         </tr>

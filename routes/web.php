@@ -44,10 +44,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('gastos', GastosController::class);
     //Route::resource('agencias', AgenciasController::class);
 
-    Route::resource('reportes', ReporteController::class);
+
     Route::post('depositos-download', [DepositosController::class, 'download'])->name('depositos.download');
+    Route::post('gastos-download', [GastosController::class, 'download'])->name('gastos.download');
 	Route::post('/filtrar', [DepositosController::class, 'filtrar'])->name('filtrar');
     Route::patch('depositos-autorizacion/{deposito}', [DepositosController::class, 'autorizate'])->name('depositos.autorizacion');
+
+    Route::resource('reportes', ReporteController::class);
+    Route::get('/reportes-gastos', [ReporteController::class, 'index_gastos'])->name('reportes.gastos.index');
 
     // Route::resource('productos', ProductController::class);
 });

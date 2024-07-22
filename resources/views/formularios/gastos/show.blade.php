@@ -23,129 +23,123 @@
                                     </button>
                                 </div>
                             @endif
-                            {!! Form::model($deposito, [
-                                'route' => ['depositos.autorizacion', $deposito->id],
-                                'method' => 'PATCH',
-                            ]) !!}
+
+
+
                             <div class="row">
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Agencia:</label>
-                                        {!! Form::label('agencia', $deposito->agencia->nombre, ['class' => 'form-control']) !!}
+                                        <label for="agencia_id">Agencia:</label>
+                                        {!! Form::text('agencia_id', $gasto->agencia ? $gasto->agencia->nombre : 'No disponible', [
+                                            'class' => 'form-control',
+                                            'readonly',
+                                        ]) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Origen:</label>
-                                        {!! Form::label('origen', $deposito->origen, ['class' => 'form-control']) !!}
+                                        <label for="fecha">Fecha:</label>
+                                        {!! Form::text('fecha', $gasto->fecha, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-md-4 col-sm-4">
                                     <div class="form-group">
-                                        <label for="name">Fecha del comprobante:</label>
-                                        {!! Form::label('fecha', $deposito->fecha, ['class' => 'form-control']) !!}
+                                        <label for="concepto">Concepto:</label>
+                                        {!! Form::text('concepto', ucfirst($gasto->concepto), ['class' => 'form-control', 'readonly']) !!}
+                                    </div>
+                                </div>
+                            </div>
 
+                            @if ($gasto->concepto === 'movilizacion')
+                                <div id="movilizacion">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="tipo_movilizacion">Tipo de Movilización:</label>
+                                                {!! Form::text('tipo_movilizacion', $gasto->tipo_movilizacion, ['class' => 'form-control', 'readonly']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="destino">Destino:</label>
+                                                {!! Form::text('destino', $gasto->destino, ['class' => 'form-control', 'readonly']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                <label for="asignado_a">Asignado a:</label>
+                                                {!! Form::text('asignado_a', $gasto->asignado_a, ['class' => 'form-control', 'readonly']) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div class="row">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="valor">Valor:</label>
+                                        {!! Form::text('valor', $gasto->valor, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Apellidos y Nombres:</label>
-
-                                        {!! Form::label('apellidos', $deposito->apellidos, ['class' => 'form-control']) !!}
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name">Numero de Deposito:</label>
-                                        {!! Form::label('num_documento', $deposito->num_documento, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name">Valor del deposito o transferencia:</label>
-                                        {!! Form::label('val_deposito', $deposito->val_deposito, ['class' => 'form-control']) !!}
+                                        <label for="detalle">Detalle:</label>
+                                        {!! Form::textarea('detalle', $gasto->detalle, ['class' => 'form-control', 'rows' => '2', 'readonly']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="name">Banco:</label>
-                                        {!! Form::label('banco', $deposito->banco, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="name">Numero del factura:</label>
-                                        {!! Form::label('num_credito', $deposito->num_credito, ['class' => 'form-control']) !!}
+                                        <label for="numero_factura">Número de Factura:</label>
+                                        {!! Form::text('numero_factura', $gasto->numero_factura, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="comprobante">Comprobante</label>
-                                        @if ($deposito->comprobante)
-                                            <p>Archivo actual: <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#staticBackdrop">
-                                                Ver Documento
-                                              </button>
-                                              <a href="{{ Storage::url($deposito->comprobante) }}" class="btn btn-sm btn-link"
-                                                    target="_blank">abrir</a></p>
-                                                    @include('formularios.depositos.partial.modal')
+                                        <label for="file">Comprobante:</label>
+                                        @if ($gasto->comprobante)
+                                            <a href="{{ asset('storage/' . $gasto->comprobante) }}" target="_blank">Ver
+                                                Comprobante</a>
+                                        @else
+                                            No disponible
                                         @endif
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-4 col-md-4 col-sm-4">
-                                    <div class="form-group">
-                                        <label for="tesoreria">Tesoreria:</label>
-                                        {!! Form::label('tesoreria', $deposito->tesoreria, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-xs-8 col-md-8 col-sm-8">
-                                    <div class="form-group">
-                                        <label for="name">Novedades:</label>
-                                        {!! Form::label('novedad', $deposito->novedad, ['class' => 'form-control']) !!}
-                                    </div>
-                                </div>
 
-                            </div>
                             <div class="row">
-                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="form-group">
-                                        <label for="name">Cajas:</label>
-                                        {!! Form::label('cajas', $deposito->cajas, ['class' => 'form-control']) !!}
+                                        <label for="estado">Estado:</label>
+                                        {!! Form::text('estado', $gasto->estado, ['class' => 'form-control', 'readonly']) !!}
                                     </div>
                                 </div>
-                                @can('deposito-authorize')
-                                @role('GESTOR DIFUSIONES')
-                                    <div class="col-xs-4 col-md-4 col-sm-4">
-                                        <div class="form-group">
-                                            <label for="baja">Dado de baja:</label>
-                                            {!! Form::select('baja', ['DADO DE BAJA' => 'DADO DE BAJA'], null, [
-                                                'class' => 'form-control',
-                                                'placeholder' => 'SELECCIONE',
-                                            ]) !!}
-                                        </div>
-                                    </div>
-                                @endrole
-                                @endcan
-
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
-                                    @role('GESTOR DIFUSIONES') {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!} @endrole
-                                    <a href="{{ route('depositos.index') }}" class="btn btn-secondary">Atras</a>
+                                    <div class="form-group">
+                                        <label for="estado">Novedad:</label>
+                                        {!! Form::text('novedad', $gasto->novedad, ['class' => 'form-control', 'readonly']) !!}
+                                    </div>
                                 </div>
                             </div>
-                            {!! Form::close() !!}
+
+                            <div class="row justify-content-center">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <a href="{{ route('gastos.index') }}" class="btn btn-block btn-secondary">Volver a la
+                                        lista</a>
+                                </div>
+                            </div>
+
+
+
+
                         </div>
                     </div>
                 </div>
