@@ -82,6 +82,7 @@
                                         <th scope="col">Cliente</th>
 										@role('GESTOR DIFUSIONES')
 										<th scope="col">VALOR</th>
+                                        <th scope="col">BANCO</th>
 										@endrole
 										@role('TESORERIA')
 										<th scope="col">BANCO</th>
@@ -103,6 +104,7 @@
                                             <td>{{ $deposito->apellidos  }}</td>
 											@role('GESTOR DIFUSIONES')
 											<td>{{ $deposito->val_deposito  }}</td>
+                                            <td>{{ $deposito->banco }}</td>
 											@endrole
 											@role('TESORERIA')
 											<td>{{ $deposito->banco }}</td>
