@@ -34,7 +34,7 @@ class DepositosController extends Controller
         if (auth()->user()->hasRole('ADMINISTRADOR')) {
             $query->orderBy('id', 'DESC');
         } elseif (auth()->user()->hasRole('TESORERIA')) {
-            $query->orderBy('id', 'DESC')->whereNull('tesoreria')->orWhere('tesoreria', 'NEGADO')->orWhere('tesoreria', 'CONFIRMADO');
+            $query->orderBy('id', 'DESC')->where('tesoreria', null);
         } elseif (auth()->user()->hasRole('CAJERO DEPOSITOS') || auth()->user()->hasRole('COBRADOR DEPOSITOS')) {
             $query->where('user_id', auth()->user()->id)
                   ->where(function ($subQuery) {
@@ -44,10 +44,7 @@ class DepositosController extends Controller
                   ->whereNull('baja')
                   ->orderBy('id', 'DESC');
         } elseif (auth()->user()->hasRole('GESTOR DIFUSIONES')) {
-            $query->Where('tesoreria', 'CONFIRMADO')
-            ->orderBy('id', 'DESC');
-            ;
-            //->whereNull('baja');
+            $query->orderBy('id', 'DESC')->whereNull('baja');
         }
 
         // Aplicar filtros almacenados en la sesión
