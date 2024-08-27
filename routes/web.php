@@ -53,5 +53,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('reportes', ReporteController::class);
     Route::get('/reportes-gastos', [ReporteController::class, 'index_gastos'])->name('reportes.gastos.index');
 
+    Route::get('/depositos-buscar', [DepositosController::class, 'buscar'])->name('depositos.search');
+    Route::get('/depositos-buscar-show/{deposito}', [DepositosController::class, 'edit_adm'])->name('depositos.edit.adm');
+    Route::patch('/depositos-buscar-update/{deposito}', [DepositosController::class, 'update_adm'])->name('depositos.update.adm');
     // Route::resource('productos', ProductController::class);
 });

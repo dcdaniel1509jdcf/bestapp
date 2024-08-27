@@ -6,6 +6,7 @@ use App\Exports\DepositosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Agencias;
 use App\Models\Formularios\Depositos;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -21,20 +22,23 @@ class DepositosController extends Controller
         $this->middleware('permission:deposito-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:deposito-delete', ['only' => ['destroy']]);
         $this->middleware('permission:deposito-authorize', ['only' => ['show','authorize']]);
+        $this->middleware('permission:deposito-buscar', ['only' => ['buscar','edit_adm','update_adm']]);
     }
     public function index(Request $request)
     {
         // Recuperar los filtros de la sesión
         $filtros = $request->session()->get('filtros', []);
-
+        $fechaHace15Dias = Carbon::now()->subDays(7);
         // Iniciar la consulta base
         $query = Depositos::query();
 
         // Aplicar restricciones según el rol del usuario
         if (auth()->user()->hasRole('ADMINISTRADOR')) {
-            $query->orderBy('id', 'DESC');
+            $query->where('created_at', '>=', $fechaHace15Dias)
+          ->orderBy('id', 'DESC');
         } elseif (auth()->user()->hasRole('TESORERIA')) {
             $query->orderBy('id', 'DESC')->where('tesoreria', null);
+            //
         } elseif (auth()->user()->hasRole('CAJERO DEPOSITOS') || auth()->user()->hasRole('COBRADOR DEPOSITOS')) {
             $query->where('user_id', auth()->user()->id)
                   ->where(function ($subQuery) {
@@ -74,12 +78,13 @@ class DepositosController extends Controller
 
     public function create()
     {
-        $agencias = Agencias::where('activo',true)->pluck('nombre', 'id');
-        return view('formularios.depositos.create',compact('agencias'));
+        $agencias = Agencias::where('activo', true)->pluck('nombre', 'id');
+        return view('formularios.depositos.create', compact('agencias'));
     }
     public function store(Request $request)
     {
-        $request->validate([
+        $request->validate(
+            [
             'apellidos' => 'required|string|max:255',
             'agencia_id' => 'required',
             'origen' => 'required',
@@ -90,7 +95,7 @@ class DepositosController extends Controller
             //'num_credito' => 'required|string|max:255',
             'comprobante' => 'required|file|mimes:jpg,jpeg,png,pdf|max:3048',
         ],
-        [
+            [
             'apellidos.required' => 'El campo Apellidos y Nombres es obligatorio.',
             'apellidos.string' => 'El campo Apellidos y Nombres debe ser una cadena de texto.',
             'apellidos.max' => 'El campo Apellidos y Nombres no puede tener más de 255 caracteres.',
@@ -115,7 +120,8 @@ class DepositosController extends Controller
             'comprobante.file' => 'El comprobante debe ser un archivo.',
             'comprobante.mimes' => 'El comprobante debe ser un archivo de tipo: jpg, jpeg, png, pdf.',
             'comprobante.max' => 'El comprobante no puede ser mayor de 3048 KB.',
-        ]);
+        ]
+        );
 
         // Manejar la carga del archivo
         if ($request->hasFile('comprobante')) {
@@ -125,7 +131,7 @@ class DepositosController extends Controller
         //validar comprobantes y depositos
         $facturas = $request->input('facturas', []);
 
-       // return serialize($comprobantes);
+        // return serialize($comprobantes);
         // Guardar los datos en la base de datos
         Depositos::create([
             'fecha' => $request->fecha,
@@ -137,7 +143,7 @@ class DepositosController extends Controller
             'num_documento' => $request->num_documento,
             'val_deposito' => $request->val_deposito,
             'banco' => $request->banco,
-            'num_credito' =>serialize($facturas),
+            'num_credito' => serialize($facturas),
             'comprobante' => $filePath,
         ]);
 
@@ -147,7 +153,8 @@ class DepositosController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $request->validate(
+            [
             'apellidos' => 'required|string|max:255',
             //'nombres' => 'required|string|max:255',
             'agencia_id' => 'required',
@@ -164,7 +171,7 @@ class DepositosController extends Controller
            // 'num_credito' => 'required|string|max:255',
             'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:3048',
         ],
-        [
+            [
             'apellidos.required' => 'El campo Apellidos y Nombres es obligatorio.',
             'apellidos.string' => 'El campo Apellidos y Nombres debe ser una cadena de texto.',
             'apellidos.max' => 'El campo Apellidos y Nombres no puede tener más de 255 caracteres.',
@@ -190,7 +197,8 @@ class DepositosController extends Controller
             'comprobante.file' => 'El comprobante debe ser un archivo.',
             'comprobante.mimes' => 'El comprobante debe ser un archivo de tipo: jpg, jpeg, png, pdf.',
             'comprobante.max' => 'El comprobante no puede ser mayor de 3048 KB.',
-        ]);
+        ]
+        );
 
         $facturas = $request->input('facturas', []);
         // Obtener el depósito existente
@@ -206,7 +214,7 @@ class DepositosController extends Controller
             $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
             $deposito->comprobante = $filePath;
         }
-		$deposito->agencia_id=$request->agencia_id;
+        $deposito->agencia_id = $request->agencia_id;
 
         // Actualizar los datos en la base de datos
         $deposito->fecha = $request->fecha;
@@ -219,9 +227,9 @@ class DepositosController extends Controller
         $deposito->val_deposito = $request->val_deposito;
         $deposito->banco = $request->banco;
         $deposito->num_credito = serialize($facturas);
-        if(auth()->user()->hasAnyRole(['CAJERO DEPOSITOS', 'COBRADOR DEPOSITOS']) && $deposito->tesoreria=='NEGADO'  ){
-        $deposito->tesoreria = null;
-        $deposito->novedad = null;
+        if(auth()->user()->hasAnyRole(['CAJERO DEPOSITOS', 'COBRADOR DEPOSITOS']) && $deposito->tesoreria == 'NEGADO') {
+            $deposito->tesoreria = null;
+            $deposito->novedad = null;
         }
         if(auth()->user()->hasPermissionTo('deposito-authorize')) {
             $deposito->tesoreria = $request->tesoreria;
@@ -239,8 +247,8 @@ class DepositosController extends Controller
     public function edit($id)
     {
         $deposito = Depositos::find($id);
-        $agencias = Agencias::where('activo',true)->pluck('nombre', 'id');
-        return view('formularios.depositos.edit', compact('deposito','agencias'));
+        $agencias = Agencias::where('activo', true)->pluck('nombre', 'id');
+        return view('formularios.depositos.edit', compact('deposito', 'agencias'));
     }
     public function destroy($id)
     {
@@ -286,7 +294,7 @@ class DepositosController extends Controller
 
         return redirect()->route('depositos.index')->with('success', 'Depósito actualizado exitosamente');
     }
-	public function filtrar(Request $request)
+    public function filtrar(Request $request)
     {
         // Validar y guardar filtros en la sesión
         $filtros = $request->validate([
@@ -297,5 +305,138 @@ class DepositosController extends Controller
         $request->session()->put('filtros', $filtros);
         //return $request;
         return redirect()->route('depositos.index');
+    }
+
+    public function buscar(Request $request)
+    {
+
+        $resultados = null;
+        // Si hay parámetros de búsqueda, realiza la búsqueda
+
+            if ($request->input('apellidos') != null) {
+                $resultados = Depositos::where('apellidos', 'LIKE', '%' . $request->input('apellidos') . '%')
+                    ->get();
+            }
+            if($request->input('num_documento') != null) {
+                $resultados = Depositos::where('num_documento', 'LIKE', '%' . $request->input('num_documento'). '%')
+                    ->get();
+            }
+        // Retorna la vista con los resultados (si los hay)
+        return view('formularios.depositos.search', compact('resultados'));
+    }
+    public function edit_adm($id)
+    {
+        $deposito = Depositos::find($id);
+        $agencias = Agencias::where('activo', true)->pluck('nombre', 'id');
+        return view('formularios.depositos.edit_adm', compact('deposito', 'agencias'));
+    }
+
+    public function update_adm(Request $request, $id)
+    {
+        $request->validate(
+            [
+            'apellidos' => 'required|string|max:255',
+            //'nombres' => 'required|string|max:255',
+            'agencia_id' => 'required',
+            'origen' => 'required',
+            'fecha' => 'required',
+            'num_documento' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('depositos', 'num_documento')->ignore($id),
+            ],
+            'val_deposito' => 'required|numeric',
+            'banco' => 'required|string|max:255',
+           // 'num_credito' => 'required|string|max:255',
+            'comprobante' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:3048',
+        ],
+            [
+            'apellidos.required' => 'El campo Apellidos y Nombres es obligatorio.',
+            'apellidos.string' => 'El campo Apellidos y Nombres debe ser una cadena de texto.',
+            'apellidos.max' => 'El campo Apellidos y Nombres no puede tener más de 255 caracteres.',
+            'agencia_id.required' => 'El campo Agencia es obligatorio.',
+            //'nombres.required' => 'El campo nombres es obligatorio.',
+            //'nombres.string' => 'El campo nombres debe ser una cadena de texto.',
+            //'nombres.max' => 'El campo nombres no puede tener más de 255 caracteres.',
+            'origen.required' => 'El campo origen es obligatorio.',
+            'fecha.required' => 'El campo Fecha del comprobante es obligatorio.',
+            'num_documento.required' => 'El campo número de Deposito es obligatorio.',
+            'num_documento.string' => 'El campo número de Deposito debe ser una cadena de texto.',
+            'num_documento.max' => 'El campo número de Deposito no puede tener más de 255 caracteres.',
+            'num_documento.unique' => 'El número de Deposito ya está en uso.',
+            'val_deposito.required' => 'El campo valor del depósito es obligatorio.',
+            'val_deposito.numeric' => 'El campo valor del depósito debe ser un número.',
+            'banco.required' => 'El campo banco es obligatorio.',
+            'banco.string' => 'El campo banco debe ser una cadena de texto.',
+            'banco.max' => 'El campo banco no puede tener más de 255 caracteres.',
+            'num_credito.required' => 'El campo número de factura es obligatorio.',
+            'num_credito.string' => 'El campo número de factura debe ser una cadena de texto.',
+            'num_credito.max' => 'El campo número de factura no puede tener más de 255 caracteres.',
+            'comprobante.nullable' => 'El campo comprobante es opcional.',
+            'comprobante.file' => 'El comprobante debe ser un archivo.',
+            'comprobante.mimes' => 'El comprobante debe ser un archivo de tipo: jpg, jpeg, png, pdf.',
+            'comprobante.max' => 'El comprobante no puede ser mayor de 3048 KB.',
+        ]
+        );
+
+        $facturas = $request->input('facturas', []);
+        // Obtener el depósito existente
+        $deposito = Depositos::findOrFail($id);
+
+        // Manejar la carga del archivo
+        if ($request->hasFile('comprobante')) {
+            // Eliminar el archivo anterior si existe
+            if ($deposito->comprobante && Storage::disk('public')->exists($deposito->comprobante)) {
+                Storage::disk('public')->delete($deposito->comprobante);
+            }
+
+            $filePath = $request->file('comprobante')->store('comprobantes/depositos', 'public');
+            $deposito->comprobante = $filePath;
+        }
+        $deposito->agencia_id = $request->agencia_id;
+
+        // Actualizar los datos en la base de datos
+        $deposito->fecha = $request->fecha;
+        //$deposito->user_id = Auth::id();
+        $deposito->origen = $request->origen;
+        //$deposito->agencia_id = auth()->user()->agencia_id;
+        $deposito->apellidos = $request->apellidos;
+        $deposito->nombres = $request->nombres ?? '-';
+        $deposito->num_documento = $request->num_documento;
+        $deposito->val_deposito = $request->val_deposito;
+        $deposito->banco = $request->banco;
+        $deposito->num_credito = serialize($facturas);
+        if($request->tesoreria == 'NEGADO') {
+            $deposito->tesoreria = $request->tesoreria;
+            $deposito->novedad = $request->novedad;
+            $deposito->baja = null;
+        }
+        if($request->tesoreria == '') {
+            $deposito->tesoreria = null;
+            $deposito->novedad = null;
+            $deposito->baja = null;
+        }
+        if($request->tesoreria == 'CONFIRMADO' && $request->baja =='REMOVER') {
+            $deposito->tesoreria = $request->tesoreria;
+           // $deposito->user_tesoreria = Auth::id();
+            $deposito->cajas = $request->cajas;
+            $deposito->novedad = $request->novedad;
+            $deposito->doc_banco = $request->doc_banco;
+            $deposito->baja = null;
+        }
+        if($request->tesoreria == 'CONFIRMADO' && $request->baja !='REMOVER') {
+            $deposito->tesoreria = $request->tesoreria;
+            $deposito->user_tesoreria = Auth::id();
+            $deposito->cajas = $request->cajas;
+            $deposito->novedad = $request->novedad;
+            $deposito->doc_banco = $request->doc_banco;
+            $deposito->baja = $request->baja;
+        }
+        // Guardar los cambios
+        $deposito->save();
+
+        // Redireccionar o responder según sea necesario
+        return redirect()->route('depositos.search')->with('success', 'Depósito actualizado exitosamente');
     }
 }

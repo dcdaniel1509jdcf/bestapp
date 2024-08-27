@@ -432,6 +432,11 @@ return [
                     'can' => 'deposito-list',
                 ],
                 [
+                    'text' => 'Buscar',
+                    'route' => 'depositos.search',
+                    'can'=>'deposito-buscar',
+                ],
+                [
                     'text' => 'Descargar',
                     'route' => 'reportes.index',
                 ],
