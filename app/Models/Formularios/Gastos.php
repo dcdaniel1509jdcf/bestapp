@@ -13,24 +13,17 @@ class Gastos extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
-            'agencia_id',
-            'fecha',
-            'concepto',
-            'valor',
-            'detalle',
-            'numero_factura',
-            'comprobante',
-            'tipo_movilizacion',
-            'destino',
-            'asignado_a',
-            'novedad',
-            'estado'
+        'agencia', 'detalle', 'valor', 'fecha', 'tipo_documento', 'numero_documento', 'concepto',
+        'tipo_tramite', 'nombre_tramite', 'nombre_entidad', 'movilizacion_tipo', 'viaticos',
+        'combustible', 'destino', 'asignado', 'tipo_pasajes', 'subtipo_pasajes', 'tipo_fletes',
+        'detalle_flete', 'movilizacion_destino', 'movilizacion_asignado', 'movilizacion_detalle',
+        'comprobante', 'user_id', 'estado','novedad'
     ];
 
+    // Relación con el usuario
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
 

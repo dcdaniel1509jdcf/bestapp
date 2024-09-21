@@ -3,14 +3,14 @@
 @section('title', 'Usuarios')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Crear usuario</h1>
+    <h1 class="m-0 text-dark text-center">Crear usuario</h1>
 @stop
 
 @section('content')
 
     <div class="section-body">
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
                         @if ($errors->any())
@@ -81,7 +81,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-md-12 col-sm-12">
 
-                                {!! Form::submit('Guardar', ['class' => 'btn btn-success']) !!}
+                                {!! Form::submit('Guardar', ['class' => 'btn btn-block btn-success']) !!}
 
                             </div>
                         </div>

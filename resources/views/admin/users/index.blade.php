@@ -47,8 +47,9 @@
                                     </td>
                                     <td>{{ $user->active==1? 'Activo':'Inactivo' }}</td>
                                     <td>
-                                        <!-- <a class="btn btn-info" href="{{ route('users.show', $user->id) }}">Show</a> -->
                                         @can('user-edit')
+                                        <a class="btn btn-info" href="{{ route('perfil.user.create', $user->id) }}">Perfil</a>
+
                                             <a class="btn btn-primary" href="{{ route('users.edit', $user->id) }}">Editar</a>
                                         @endcan
                                         @can('user-delete')

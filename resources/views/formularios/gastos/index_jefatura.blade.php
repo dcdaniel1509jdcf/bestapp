@@ -3,7 +3,7 @@
 @section('title', 'Depósitos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Gastos</h1>
+    <h1 class="m-0 text-dark">Gastos de Jefatura</h1>
 @stop
 @section('content')
 
@@ -29,6 +29,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @isset($gastos)
+
+
                                         @foreach ($gastos as $gasto)
                                             <tr>
                                                 <th scope="row">{{ $gasto->id }}</th>
@@ -75,7 +78,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
+                                        @endisset
 
                                     </tbody>
                                 </table>

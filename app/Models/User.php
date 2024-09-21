@@ -70,7 +70,11 @@ class User extends Authenticatable
     }
 
     public function scopeActive($query)
-{
-    return $query->where('active', true);
-}
+    {
+        return $query->where('active', true);
+    }
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }

@@ -450,17 +450,45 @@ return [
                 [
                     'text' => 'Nuevo',
                     'route' => 'gastos.create',
-                   // 'can' => 'deposito-create',
+                    'can' => 'gasto-create',
                 ],
                 [
                     'text' => 'Listado',
                     'route' => 'gastos.index',
+                    'can' => 'gasto-list',
+                ],
+                [
+                    'text' => 'Listado Jefatura',
+                    'route' => 'gastos.index.jefatura',
+                    'can' => 'gasto-list',
+                ],
+                [
+                    'text' => 'Descargar',
+                    'route' => 'reportes.gastos.index',
+                ],
+
+            ],
+        ],
+        [
+            'text' => 'Gestion',
+            'icon' => 'fas fa-fw fa-file',
+            //'can' => 'gastos-index',
+            'submenu' => [
+                [
+                    'text' => 'Nuevo',
+                    'route' => 'saldos.create',
+                   // 'can' => 'deposito-create',
+                ],
+                [
+                    'text' => 'Listado',
+                    'route' => 'saldos.index',
                     //'can' => 'deposito-list',
                 ],
                 [
                     'text' => 'Descargar',
                     'route' => 'reportes.gastos.index',
                 ],
+
             ],
         ]
        /*

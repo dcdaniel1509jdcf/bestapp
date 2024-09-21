@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Depósito')
+@section('title', 'Gastos')
 
 @section('css')
     <style>
@@ -33,145 +33,219 @@
                             @endif
                             {!! Form::open(['route' => 'gastos.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                             @csrf
-                            <div id="fecha-container" class="mb-3">
-                                <label for="fecha" class="form-label">Fecha de Comprobante</label>
-                                <input type="date" class="form-control" id="fecha">
+                            <div class="row">
+
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div id="agencia-container" class="mb-3">
+                                        <label for="agencia" class="form-label">Agencia / Departamento</label>
+                                        <input type="text" class="form-control" readonly name="agencia" value="{{ $agencia }}" id="agencia">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div id="valor-container" class="mb-3 ">
+                                        <label for="valor" class="form-label">Valor</label>
+                                        <input type="text" class="form-control" name="valor" id="valor" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tipo-documento-container" class="mb-3 ">
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <div id="fecha-container" class="mb-3">
+                                            <label for="fecha" class="form-label">Fecha de Comprobante</label>
+                                            <input type="date" class="form-control" name="fecha" id="fecha">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                        <label for="tipo_documento" class="form-label">Tipo de Documento</label>
+                                        <select class="form-control" id="tipo_documento" name="tipo_documento">
+                                            <option value="">Seleccione tipo de documento</option>
+                                            <option value="numero_recibo">Número de Recibo</option>
+                                            <option value="numero_factura">Número de Factura</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 d-none" id="numero-documento-container">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="file">Cargar comprobante</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="comprobante" class="custom-file-input"
+                                                id="file" >
+                                            <label class="custom-file-label" for="file">Elegir</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="numero_documento" class="form-label">Número de Documento</label>
+                                        <input type="text" class="form-control" name="numero_documento"
+                                            id="numero_documento">
+                                    </div>
+                                </div>
                             </div>
                             <!-- Campo Agencia -->
-                            <div id="agencia-container" class="mb-3">
-                                <label for="agencia" class="form-label">Agencia</label>
-                                <input type="text" class="form-control" id="agencia">
+                            <div class="row">
+                                <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="concepto" class="form-label">Concepto</label>
+                                        <select class="form-control" id="concepto" name="concepto">
+                                            <option value="">Seleccione un concepto</option>
+                                            <option value="gastos_varios">Gastos Varios</option>
+                                            <option value="suministros">Suministros</option>
+                                            <option value="tramites_entidades">Trámites Entidades</option>
+                                            <option value="movilizacion">Movilización</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="concepto" class="form-label">Concepto</label>
-                                <select class="form-control" id="concepto">
-                                    <option value="">Seleccione un concepto</option>
-                                    <option value="gastos_varios">Gastos Varios</option>
-                                    <option value="suministros">Suministros</option>
-                                    <option value="tramites_entidades">Trámites Entidades</option>
-                                    <option value="movilizacion">Movilización</option>
-                                </select>
-                            </div>
-                            <div id="detalle-container" class="mb-3 d-none">
-                                <label for="detalle" class="form-label">Detalle</label>
-                                <input type="text" class="form-control" id="detalle">
-                            </div>
-                            <div id="valor-container" class="mb-3 d-none">
-                                <label for="valor" class="form-label">Valor</label>
-                                <input type="text" class="form-control" id="valor">
-                            </div>
-                            <div id="tipo-documento-container" class="mb-3 d-none">
-                                <label for="tipo_documento" class="form-label">Tipo de Documento</label>
-                                <select class="form-control" id="tipo_documento">
-                                    <option value="">Seleccione tipo de documento</option>
-                                    <option value="numero_recibo">Número de Recibo</option>
-                                    <option value="numero_factura">Número de Factura</option>
-                                </select>
-                            </div>
-                            <div id="numero-documento-container" class="mb-3 d-none">
-                                <label for="numero_documento" class="form-label">Número de Documento</label>
-                                <input type="text" class="form-control" id="numero_documento">
-                            </div>
-                            <div id="tipo-tramite-container" class="mb-3 d-none">
-                                <label for="tipo_tramite" class="form-label">Tipo de Trámite</label>
-                                <select class="form-control" id="tipo_tramite">
-                                    <option value="">Seleccione tipo de trámite</option>
-                                    <option value="municipios">Municipios</option>
-                                    <option value="ant">ANT</option>
-                                    <option value="sri">SRI</option>
-                                    <option value="fiscalia">Fiscalía</option>
-                                    <option value="notaria">Notaría</option>
-                                </select>
-                            </div>
-                            <div id="nombre-tramite-container" class="mb-3 d-none">
-                                <label for="nombre_tramite" class="form-label">Nombre del Trámite</label>
-                                <input type="text" class="form-control" id="nombre_tramite">
-                            </div>
-                            <div id="nombre-entidad-container" class="mb-3 d-none">
-                                <label for="nombre_entidad" class="form-label">Nombre de la Entidad</label>
-                                <input type="text" class="form-control" id="nombre_entidad">
-                            </div>
-                            <div id="movilizacion-container" class="mb-3 d-none">
-                                <label for="movilizacion_tipo" class="form-label">Tipo de Movilización</label>
-                                <select class="form-control" id="movilizacion_tipo">
-                                    <option value="">Seleccione tipo de movilización</option>
-                                    <option value="encomiendas">Encomiendas</option>
-                                    <option value="traslado_personal">Traslado del Personal</option>
-                                    <option value="traslado_mercaderia">Traslado de Mercadería</option>
-                                    <option value="traslado_valores">Traslado de Valores</option>
-                                    <option value="notificacion">Notificación</option>
-                                    <option value="volanteo">Volanteo</option>
-                                    <option value="mantenimiento">Mantenimiento</option>
-                                    <option value="viaticos">Viáticos</option>
-                                </select>
-                            </div>
-                            <div id="viaticos-container" class="mb-3 d-none">
-                                <label for="viaticos" class="form-label">Viáticos</label>
-                                <select class="form-control" id="viaticos">
-                                    <option value="">Seleccione tipo de viático</option>
-                                    <option value="peaje">Peaje</option>
-                                    <option value="pasajes">Pasajes</option>
-                                    <option value="fletes">Fletes</option>
-                                    <option value="movilizacion">Movilización</option>
-                                    <option value="hospedaje">Hospedaje</option>
-                                </select>
+                            <div class="row">
+                                <div id="tipo-tramite-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="tipo_tramite" class="form-label">Tipo de Trámite</label>
+                                        <select class="form-control" id="tipo_tramite" name="tipo_tramite">
+                                            <option value="">Seleccione tipo de trámite</option>
+                                            <option value="municipios">Municipios</option>
+                                            <option value="ant">ANT</option>
+                                            <option value="sri">SRI</option>
+                                            <option value="fiscalia">Fiscalía</option>
+                                            <option value="notaria">Notaría</option>
+                                            <option value="ministerio_de_trabajo">Ministerio del Trabajo</option>
+                                            <option value="procuracion_judicial">Procuración judicial</option>
+                                            <option value="registro_mercantil" >Registro Mercantil</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="nombre-tramite-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="nombre_tramite" class="form-label">Nombre del Trámite</label>
+                                        <input type="text" class="form-control" id="nombre_tramite"
+                                            name="nombre_tramite">
+                                    </div>
+                                </div>
+                                <div id="nombre-entidad-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="nombre_entidad" class="form-label">Nombre de la Entidad</label>
+                                        <input type="text" class="form-control" id="nombre_entidad"
+                                            name="nombre_entidad">
+                                    </div>
+                                </div>
+                                <div id="movilizacion-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3 ">
+                                        <label for="movilizacion_tipo" class="form-label">Tipo de Movilización</label>
+                                        <select class="form-control" id="movilizacion_tipo" name="movilizacion_tipo">
+                                            <option value="">Seleccione tipo de movilización</option>
+                                            <option value="encomiendas">Encomiendas</option>
+                                            <option value="traslado_personal">Traslado del Personal</option>
+                                            <option value="traslado_mercaderia">Traslado de Mercadería</option>
+                                            <option value="traslado_valores">Traslado de Valores</option>
+                                            <option value="notificacion">Notificación</option>
+                                            <option value="volanteo">Volanteo</option>
+                                            <option value="mantenimiento">Mantenimiento</option>
+                                            <option value="viaticos">Viáticos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="viaticos-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="viaticos" class="form-label">Viáticos</label>
+                                        <select class="form-control" id="viaticos" name="viaticos">
+                                            <option value="">Seleccione tipo de viático</option>
+                                            <option value="peaje">Peaje</option>
+                                            <option value="pasajes">Pasajes</option>
+                                            <option value="fletes">Fletes</option>
+                                            <option value="movilizacion">Movilización</option>
+                                            <option value="hospedaje">Hospedaje</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="combustible-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div  class="mb-3">
+                                        <label for="combustible" class="form-label">Combustible</label>
+                                        <input type="text" class="form-control" id="combustible" name="combustible">
+                                    </div>
+                                </div>
+                                <div id="destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="destino" class="form-label">Destino</label>
+                                        <input type="text" class="form-control" id="destino" name="destino">
+                                    </div>
+                                </div>
+                                <div id="asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="asignado" class="form-label">Asignado a</label>
+                                        <input type="text" class="form-control" id="asignado" name="asignado">
+                                    </div>
+                                </div>
+                                <div id="tipo-pasajes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3 ">
+                                        <label for="tipo_pasajes" class="form-label">Tipo de Pasajes</label>
+                                        <select class="form-control" id="tipo_pasajes" name="tipo_pasajes">
+                                            <option value="">Seleccione tipo de pasajes</option>
+                                            <option value="nacionales">Nacionales</option>
+                                            <option value="interprovincial">Interprovincial</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="subtipo-pasajes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3 ">
+                                        <label for="subtipo_pasajes" class="form-label">Subtipo de Pasajes</label>
+                                        <select class="form-control" id="subtipo_pasajes" name="subtipo_pasajes">
+                                            <option value="">Seleccione subtipo de pasajes</option>
+                                            <option value="taxis">Taxis</option>
+                                            <option value="buses">Buses</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="tipo-fletes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="tipo_fletes" class="form-label">Tipo de Fletes</label>
+                                        <select class="form-control" id="tipo_fletes" name="tipo_fletes">
+                                            <option value="">Seleccione tipo de fletes</option>
+                                            <option value="camionetas">Camionetas</option>
+                                            <option value="autos">Autos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="detalle-flete-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="detalle_flete" class="form-label">Detalle del Flete</label>
+                                        <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div id="movilizacion-destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="movilizacion_destino" class="form-label">Destino</label>
+                                        <input type="text" class="form-control" id="movilizacion_destino"
+                                            name="movilizacion_destino">
+                                    </div>
+                                </div>
+                                <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="movilizacion_asignado" class="form-label">Asignado a</label>
+                                        <input type="text" class="form-control" id="movilizacion_asignado"
+                                            name="movilizacion_asignado">
+                                    </div>
+                                </div>
+                                <div id="movilizacion-detalle-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                    <div class="mb-3 ">
+                                        <label for="movilizacion_detalle" class="form-label">Detalle</label>
+                                        <textarea class="form-control" id="movilizacion_detalle" name="movilizacion_detalle" rows="3"></textarea>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div id="combustible-container" class="mb-3 d-none">
-                                <label for="combustible" class="form-label">Combustible</label>
-                                <input type="text" class="form-control" id="combustible">
-                            </div>
-                            <div id="destino-container" class="mb-3 d-none">
-                                <label for="destino" class="form-label">Destino</label>
-                                <input type="text" class="form-control" id="destino">
-                            </div>
-                            <div id="asignado-container" class="mb-3 d-none">
-                                <label for="asignado" class="form-label">Asignado a</label>
-                                <input type="text" class="form-control" id="asignado">
-                            </div>
-                            <div id="tipo-pasajes-container" class="mb-3 d-none">
-                                <label for="tipo_pasajes" class="form-label">Tipo de Pasajes</label>
-                                <select class="form-control" id="tipo_pasajes">
-                                    <option value="">Seleccione tipo de pasajes</option>
-                                    <option value="nacionales">Nacionales</option>
-                                    <option value="interprovincial">Interprovincial</option>
-                                </select>
-                            </div>
-                            <div id="subtipo-pasajes-container" class="mb-3 d-none">
-                                <label for="subtipo_pasajes" class="form-label">Subtipo de Pasajes</label>
-                                <select class="form-control" id="subtipo_pasajes">
-                                    <option value="">Seleccione subtipo de pasajes</option>
-                                    <option value="taxis">Taxis</option>
-                                    <option value="buses">Buses</option>
-                                </select>
-                            </div>
-                            <div id="tipo-fletes-container" class="mb-3 d-none">
-                                <label for="tipo_fletes" class="form-label">Tipo de Fletes</label>
-                                <select class="form-control" id="tipo_fletes">
-                                    <option value="">Seleccione tipo de fletes</option>
-                                    <option value="camionetas">Camionetas</option>
-                                    <option value="autos">Autos</option>
-                                </select>
-                            </div>
-                            <div id="detalle-flete-container" class="mb-3 d-none">
-                                <label for="detalle_flete" class="form-label">Detalle del Flete</label>
-                                <textarea class="form-control" id="detalle_flete" rows="3"></textarea>
-                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12 col-sm-12">
+                                    <div id="detalle-container" class="mb-3 ">
+                                        <label for="detalle" class="form-label">Detalle de solicitud</label>
+                                        <input type="text" class="form-control" name="detalle" id="detalle" required>
+                                    </div>
+                                </div>
 
-                            <div id="movilizacion-destino-container" class="mb-3 d-none">
-                                <label for="movilizacion_destino" class="form-label">Destino</label>
-                                <input type="text" class="form-control" id="movilizacion_destino">
                             </div>
-                            <div id="movilizacion-asignado-container" class="mb-3 d-none">
-                                <label for="movilizacion_asignado" class="form-label">Asignado a</label>
-                                <input type="text" class="form-control" id="movilizacion_asignado">
-                            </div>
-                            <div id="movilizacion-detalle-container" class="mb-3 d-none">
-                                <label for="movilizacion_detalle" class="form-label">Detalle</label>
-                                <textarea class="form-control" id="movilizacion_detalle" rows="3"></textarea>
-                            </div>
-
-
                             <button type="submit" class="btn btn-primary">Guardar Solicitud</button>
 
                             {!! Form::close() !!}
@@ -184,14 +258,7 @@
 @stop
 
 @section('js')
-    <script>
-        // Mostrar el nombre del archivo seleccionado
-        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-            var fileName = document.getElementById("file").files[0].name;
-            var nextSibling = e.target.nextElementSibling
-            nextSibling.innerText = fileName
-        });
-    </script>
+
     <script>
         $('input, textarea').on('input', function() {
             this.value = this.value.toUpperCase();
@@ -210,15 +277,20 @@
         });
     </script>
 
+
     <script>
-        document.getElementById('concepto').addEventListener('change', function () {
+        document.getElementById('tipo_documento').addEventListener('change', function() {
+            if (this.value) {
+                document.getElementById('numero-documento-container').classList.remove('d-none');
+            } else {
+                document.getElementById('numero-documento-container').classList.add('d-none');
+            }
+        });
+        document.getElementById('concepto').addEventListener('change', function() {
             var concepto = this.value;
 
             // Reset y ocultar todos los campos dinámicos
-            document.getElementById('detalle-container').classList.add('d-none');
-            document.getElementById('valor-container').classList.add('d-none');
-            document.getElementById('tipo-documento-container').classList.add('d-none');
-            document.getElementById('numero-documento-container').classList.add('d-none');
+
             document.getElementById('tipo-tramite-container').classList.add('d-none');
             document.getElementById('nombre-tramite-container').classList.add('d-none');
             document.getElementById('nombre-entidad-container').classList.add('d-none');
@@ -236,22 +308,11 @@
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
 
             if (concepto === 'gastos_varios' || concepto === 'suministros') {
-                document.getElementById('detalle-container').classList.remove('d-none');
-                document.getElementById('valor-container').classList.remove('d-none');
-                document.getElementById('tipo-documento-container').classList.remove('d-none');
-
-                document.getElementById('tipo_documento').addEventListener('change', function () {
-                    if (this.value) {
-                        document.getElementById('numero-documento-container').classList.remove('d-none');
-                    } else {
-                        document.getElementById('numero-documento-container').classList.add('d-none');
-                    }
-                });
-
+                // Campos por defecto
             } else if (concepto === 'tramites_entidades') {
                 document.getElementById('tipo-tramite-container').classList.remove('d-none');
 
-                document.getElementById('tipo_tramite').addEventListener('change', function () {
+                document.getElementById('tipo_tramite').addEventListener('change', function() {
                     if (this.value) {
                         document.getElementById('nombre-tramite-container').classList.remove('d-none');
                         document.getElementById('nombre-entidad-container').classList.remove('d-none');
@@ -264,7 +325,7 @@
             } else if (concepto === 'movilizacion') {
                 document.getElementById('movilizacion-container').classList.remove('d-none');
 
-                document.getElementById('movilizacion_tipo').addEventListener('change', function () {
+                document.getElementById('movilizacion_tipo').addEventListener('change', function() {
                     var movilizacion_tipo = this.value;
 
                     // Ocultar todos los campos relacionados
@@ -280,53 +341,82 @@
                     document.getElementById('movilizacion-asignado-container').classList.add('d-none');
                     document.getElementById('movilizacion-detalle-container').classList.add('d-none');
 
-                    if (['encomiendas', 'traslado_personal', 'traslado_mercaderia', 'traslado_valores', 'notificacion', 'volanteo'].includes(movilizacion_tipo)) {
-                        document.getElementById('movilizacion-destino-container').classList.remove('d-none');
-                        document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
-                        document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
+                    if (['encomiendas', 'traslado_personal', 'traslado_mercaderia', 'traslado_valores',
+                            'notificacion', 'volanteo'
+                        ].includes(movilizacion_tipo)) {
+                        document.getElementById('movilizacion-destino-container').classList.remove(
+                            'd-none');
+                        document.getElementById('movilizacion-asignado-container').classList.remove(
+                            'd-none');
+                        document.getElementById('movilizacion-detalle-container').classList.remove(
+                            'd-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
 
-                        document.getElementById('viaticos').addEventListener('change', function () {
+                        document.getElementById('viaticos').addEventListener('change', function() {
                             var viaticos = this.value;
 
-                            document.getElementById('combustible-container').classList.add('d-none');
+                            document.getElementById('combustible-container').classList.add(
+                                'd-none');
                             document.getElementById('destino-container').classList.add('d-none');
                             document.getElementById('asignado-container').classList.add('d-none');
-                            document.getElementById('tipo-pasajes-container').classList.add('d-none');
-                            document.getElementById('subtipo-pasajes-container').classList.add('d-none');
-                            document.getElementById('tipo-fletes-container').classList.add('d-none');
-                            document.getElementById('detalle-flete-container').classList.add('d-none');
+                            document.getElementById('tipo-pasajes-container').classList.add(
+                                'd-none');
+                            document.getElementById('subtipo-pasajes-container').classList.add(
+                                'd-none');
+                            document.getElementById('tipo-fletes-container').classList.add(
+                                'd-none');
+                            document.getElementById('detalle-flete-container').classList.add(
+                                'd-none');
 
                             if (viaticos === 'peaje') {
-                                document.getElementById('combustible-container').classList.remove('d-none');
-                                document.getElementById('destino-container').classList.remove('d-none');
-                                document.getElementById('asignado-container').classList.remove('d-none');
+                                document.getElementById('combustible-container').classList.remove(
+                                    'd-none');
+                                document.getElementById('destino-container').classList.remove(
+                                    'd-none');
+                                document.getElementById('asignado-container').classList.remove(
+                                    'd-none');
                             } else if (viaticos === 'pasajes') {
-                                document.getElementById('tipo-pasajes-container').classList.remove('d-none');
+                                document.getElementById('tipo-pasajes-container').classList.remove(
+                                    'd-none');
 
-                                document.getElementById('tipo_pasajes').addEventListener('change', function () {
-                                    if (this.value === 'nacionales') {
-                                        document.getElementById('subtipo-pasajes-container').classList.remove('d-none');
-                                    } else {
-                                        document.getElementById('subtipo-pasajes-container').classList.add('d-none');
-                                    }
-                                });
+                                document.getElementById('tipo_pasajes').addEventListener('change',
+                                    function() {
+                                        if (this.value === 'nacionales') {
+                                            document.getElementById('subtipo-pasajes-container')
+                                                .classList.remove('d-none');
+                                        } else {
+                                            document.getElementById('subtipo-pasajes-container')
+                                                .classList.add('d-none');
+                                        }
+                                    });
                             } else if (viaticos === 'fletes') {
-                                document.getElementById('tipo-fletes-container').classList.remove('d-none');
+                                document.getElementById('tipo-fletes-container').classList.remove(
+                                    'd-none');
 
-                                document.getElementById('tipo_fletes').addEventListener('change', function () {
-                                    if (this.value) {
-                                        document.getElementById('detalle-flete-container').classList.remove('d-none');
-                                    } else {
-                                        document.getElementById('detalle-flete-container').classList.add('d-none');
-                                    }
-                                });
+                                document.getElementById('tipo_fletes').addEventListener('change',
+                                    function() {
+                                        if (this.value) {
+                                            document.getElementById('detalle-flete-container')
+                                                .classList.remove('d-none');
+                                        } else {
+                                            document.getElementById('detalle-flete-container')
+                                                .classList.add('d-none');
+                                        }
+                                    });
                             }
                         });
                     }
                 });
             }
+        });
+    </script>
+    <script>
+        // Mostrar el nombre del archivo seleccionado
+        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+            var fileName = document.getElementById("file").files[0].name;
+            var nextSibling = e.target.nextElementSibling
+            nextSibling.innerText = fileName
         });
     </script>
 @stop
