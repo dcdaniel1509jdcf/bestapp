@@ -84,7 +84,7 @@
                                     <div class="mb-3">
                                         <label for="numero_documento" class="form-label">Número de Documento</label>
                                         <input type="text" class="form-control" name="numero_documento"
-                                            id="numero_documento">
+                                            id="numero_documento" placeholder="000-000-000123">
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +98,9 @@
                                             <option value="">Seleccione un concepto</option>
                                             <option value="gastos_varios">Gastos Varios</option>
                                             <option value="suministros">Suministros</option>
-                                            <option value="tramites_entidades">Trámites Entidades</option>
                                             <option value="movilizacion">Movilización</option>
+                                            <option value="mantenimiento">Mantenimiento</option>
+                                            <option value="tramites_entidades">Trámites Entidades</option>
                                         </select>
                                     </div>
                                 </div>
@@ -146,7 +147,6 @@
                                             <option value="traslado_valores">Traslado de Valores</option>
                                             <option value="notificacion">Notificación</option>
                                             <option value="volanteo">Volanteo</option>
-                                            <option value="mantenimiento">Mantenimiento</option>
                                             <option value="viaticos">Viáticos</option>
                                         </select>
                                     </div>
@@ -179,7 +179,7 @@
                                 <div id="asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="asignado" class="form-label">Asignado a</label>
-                                        <input type="text" class="form-control" id="asignado" name="asignado">
+                                        <input type="text" class="form-control" id="asignado" name="asignado" placeholder="Nombre de la persona a cargo">
                                     </div>
                                 </div>
                                 <div id="tipo-pasajes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -202,7 +202,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="tipo-fletes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                <div id="tipo-fletes-container" class="col-xs-12 col-md-4 col-sm-4  d-none">
                                     <div class="mb-3">
                                         <label for="tipo_fletes" class="form-label">Tipo de Fletes</label>
                                         <select class="form-control" id="tipo_fletes" name="tipo_fletes">
@@ -212,7 +212,21 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="detalle-flete-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                <div id="inicio-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="inicio_destino" class="form-label">Inicio de destino</label>
+                                        <input type="text" class="form-control" id="inicio_destino"
+                                            name="inicio_destino">
+                                    </div>
+                                </div>
+                                <div id="fin-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="fin_destino" class="form-label">Fin de Destino</label>
+                                        <input type="text" class="form-control" id="fin_destino"
+                                            name="fin_destino">
+                                    </div>
+                                </div>
+                                <div id="detalle-flete-container" class="col-xs-12 col-md-12 col-sm-12  d-none">
                                     <div class="mb-3">
                                         <label for="detalle_flete" class="form-label">Detalle del Flete</label>
                                         <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3"></textarea>
@@ -220,7 +234,7 @@
                                 </div>
                                 <div id="movilizacion-destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
                                     <div class="mb-3">
-                                        <label for="movilizacion_destino" class="form-label">Destino</label>
+                                        <label for="movilizacion_destino" class="form-label">Dirección</label>
                                         <input type="text" class="form-control" id="movilizacion_destino"
                                             name="movilizacion_destino">
                                     </div>
@@ -228,7 +242,7 @@
                                 <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="movilizacion_asignado" class="form-label">Asignado a</label>
-                                        <input type="text" class="form-control" id="movilizacion_asignado"
+                                        <input type="text" class="form-control" id="movilizacion_asignado" placeholder="Nombre de la persona a cargo"
                                             name="movilizacion_asignado">
                                     </div>
                                 </div>
@@ -240,11 +254,11 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row" id="detalle-container" >
                                 <div class="col-xs-12 col-md-12 col-sm-12">
-                                    <div id="detalle-container" class="mb-3 ">
+                                    <div class="mb-3 ">
                                         <label for="detalle" class="form-label">Detalle de solicitud</label>
-                                        <input type="text" class="form-control" name="detalle" id="detalle" required>
+                                        <input type="text" class="form-control" name="detalle" id="detalle" >
                                     </div>
                                 </div>
                             </div>
@@ -305,10 +319,18 @@
             document.getElementById('subtipo-pasajes-container').classList.add('d-none');
             document.getElementById('tipo-fletes-container').classList.add('d-none');
             document.getElementById('detalle-flete-container').classList.add('d-none');
+
+            //nuevos campos inicio fin fletes
+
+            document.getElementById('inicio-flete-container').classList.add('d-none');
+            document.getElementById('fin-flete-container').classList.add('d-none');
+            //
             document.getElementById('movilizacion-container').classList.add('d-none');
             document.getElementById('movilizacion-destino-container').classList.add('d-none');
             document.getElementById('movilizacion-asignado-container').classList.add('d-none');
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
+            //document.getElementById('detalle-container').classList.add('d-none');
+            document.getElementById('detalle-container').classList.remove('d-none');
 
             if (concepto === 'gastos_varios' || concepto === 'suministros') {
                 // Campos por defecto
@@ -339,50 +361,52 @@
                     document.getElementById('subtipo-pasajes-container').classList.add('d-none');
                     document.getElementById('tipo-fletes-container').classList.add('d-none');
                     document.getElementById('detalle-flete-container').classList.add('d-none');
+                    //
+                    document.getElementById('inicio-flete-container').classList.add('d-none');
+                    document.getElementById('fin-flete-container').classList.add('d-none');
+                    //
                     document.getElementById('viaticos-container').classList.add('d-none');
                     document.getElementById('movilizacion-destino-container').classList.add('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.add('d-none');
                     document.getElementById('movilizacion-detalle-container').classList.add('d-none');
+                    //
+                    document.getElementById('detalle-container').classList.remove('d-none');
 
                     if (['encomiendas', 'traslado_personal', 'traslado_mercaderia', 'traslado_valores',
                             'notificacion', 'volanteo'
                         ].includes(movilizacion_tipo)) {
-                        document.getElementById('movilizacion-destino-container').classList.remove(
-                            'd-none');
-                        document.getElementById('movilizacion-asignado-container').classList.remove(
-                            'd-none');
-                        document.getElementById('movilizacion-detalle-container').classList.remove(
-                            'd-none');
+                        document.getElementById('movilizacion-destino-container').classList.remove('d-none');
+                        document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
+                        document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
 
                         document.getElementById('viaticos').addEventListener('change', function() {
                             var viaticos = this.value;
 
-                            document.getElementById('combustible-container').classList.add(
-                                'd-none');
+                            document.getElementById('combustible-container').classList.add('d-none');
                             document.getElementById('destino-container').classList.add('d-none');
                             document.getElementById('asignado-container').classList.add('d-none');
-                            document.getElementById('tipo-pasajes-container').classList.add(
-                                'd-none');
-                            document.getElementById('subtipo-pasajes-container').classList.add(
-                                'd-none');
-                            document.getElementById('tipo-fletes-container').classList.add(
-                                'd-none');
-                            document.getElementById('detalle-flete-container').classList.add(
-                                'd-none');
+                            document.getElementById('tipo-pasajes-container').classList.add('d-none');
+                            document.getElementById('subtipo-pasajes-container').classList.add('d-none');
+                            document.getElementById('tipo-fletes-container').classList.add('d-none');
+                            document.getElementById('detalle-flete-container').classList.add('d-none');
+                            //
+                            document.getElementById('inicio-flete-container').classList.add('d-none');
+                            document.getElementById('fin-flete-container').classList.add('d-none');
+                            //
+                            document.getElementById('detalle-container').classList.remove('d-none');
 
                             if (viaticos === 'peaje') {
-                                document.getElementById('combustible-container').classList.remove(
-                                    'd-none');
+                                //document.getElementById('combustible-container').classList.remove('d-none');
                                 document.getElementById('destino-container').classList.remove(
                                     'd-none');
                                 document.getElementById('asignado-container').classList.remove(
                                     'd-none');
                             } else if (viaticos === 'pasajes') {
-                                document.getElementById('tipo-pasajes-container').classList.remove(
-                                    'd-none');
-
+                                document.getElementById('tipo-pasajes-container').classList.remove('d-none');
+                                document.getElementById('destino-container').classList.remove('d-none');
+                                document.getElementById('asignado-container').classList.remove('d-none');
                                 document.getElementById('tipo_pasajes').addEventListener('change',
                                     function() {
                                         if (this.value === 'nacionales') {
@@ -394,17 +418,19 @@
                                         }
                                     });
                             } else if (viaticos === 'fletes') {
-                                document.getElementById('tipo-fletes-container').classList.remove(
-                                    'd-none');
+                                document.getElementById('tipo-fletes-container').classList.remove('d-none');
+                                document.getElementById('detalle-container').classList.add('d-none');
 
                                 document.getElementById('tipo_fletes').addEventListener('change',
                                     function() {
                                         if (this.value) {
-                                            document.getElementById('detalle-flete-container')
-                                                .classList.remove('d-none');
+                                            document.getElementById('detalle-flete-container').classList.remove('d-none');
+                                            document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                            document.getElementById('fin-flete-container').classList.remove('d-none');
                                         } else {
-                                            document.getElementById('detalle-flete-container')
-                                                .classList.add('d-none');
+                                            document.getElementById('detalle-flete-container').classList.add('d-none');
+                                            document.getElementById('inicio-flete-container').classList.add('d-none');
+                                            document.getElementById('fin-flete-container').classList.add('d-none');
                                         }
                                     });
                             }
@@ -414,8 +440,5 @@
             }
         });
     </script>
-    <script>
-        // Mostrar el nombre del archivo seleccionado
 
-    </script>
 @stop

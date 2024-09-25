@@ -36,8 +36,8 @@ class GastosController extends Controller
 
         }elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
             $jefes = User::role('JEFATURA')->get();
-            $gastos = Gastos::whereIn('estado', [1, 4, 7])
-               ->whereIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
+            $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
+               ->whereNotIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
                ->orderBy('id', 'DESC')->get();
 
         } elseif (auth()->user()->hasRole('CAJERO GASTOS')) {
@@ -62,7 +62,7 @@ class GastosController extends Controller
 
         }elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
             $jefes = User::role('JEFATURA')->get();
-            $gastos = Gastos::whereIn('estado', [1, 4, 7])
+            $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
                ->whereIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
                ->orderBy('id', 'DESC')->get();
 
@@ -89,9 +89,9 @@ class GastosController extends Controller
             $agencia =auth()->user()->agencia->nombre;
         if(auth()->user()->agencia->nombre == "AREA"){
             $agencia =auth()->user()->profile->departamento;
-            return view('formularios.gastos.create_area', compact('agencia'));
-        }else{
             return view('formularios.gastos.create', compact('agencia'));
+        }else{
+            return view('formularios.gastos.create_area', compact('agencia'));
         }
     }
 
@@ -150,12 +150,8 @@ class GastosController extends Controller
         $gasto->detalle = $request->detalle;
         $gasto->valor = $request->valor;
 
-        $gasto->fecha = $request->fecha;
-        $gasto->tipo_documento = $request->tipo_documento;
-        $gasto->numero_documento = $request->numero_documento;
-        $gasto->concepto = $request->concepto;
 
-//campos reiniciados
+        //campos reiniciados
             $gasto->tipo_tramite = null;
             $gasto->nombre_tramite = null;
             $gasto->nombre_entidad = null;
@@ -171,6 +167,8 @@ class GastosController extends Controller
             $gasto->movilizacion_destino = null;
             $gasto->movilizacion_asignado = null;
             $gasto->movilizacion_detalle = null;
+            $gasto->fin_destino= null;
+            $gasto->inicio_destino= null;
 
         // Campos condicionales según el concepto
         if ($request->concepto == 'tramites_entidades') {
@@ -185,13 +183,17 @@ class GastosController extends Controller
                 if ($request->viaticos=="fletes") {
                     $gasto->tipo_fletes = $request->tipo_fletes;
                     $gasto->detalle_flete = $request->detalle_flete;
+                    $gasto->fin_destino= $request->fin_destino;
+                    $gasto->inicio_destino= $request->inicio_destino;
                 }else if ($request->viaticos=="pasaje") {
                     $gasto->tipo_pasajes = $request->tipo_pasajes;
                     $gasto->subtipo_pasajes = $request->subtipo_pasajes;
+                    $gasto->destino = $request->destino;
+                    $gasto->asignado = $request->asignado;
                 } elseif ($request->viaticos == "peaje") {
                     $gasto->destino = $request->destino;
                     $gasto->asignado = $request->asignado;
-                    $gasto->combustible = $request->combustible;
+                   // $gasto->combustible = $request->combustible;
                 }
             } else if($request->movilizacion_tipo !="mantenimiento" ) {
                 $gasto->movilizacion_destino = $request->movilizacion_destino;
@@ -218,19 +220,35 @@ class GastosController extends Controller
             $gasto->movilizacion_destino = null;
             $gasto->movilizacion_asignado = null;
             $gasto->movilizacion_detalle = null;
+            $gasto->fin_destino= null;
+            $gasto->inicio_destino= null;
         }
         // Guardar la ruta del comprobante si existe
-
+        if (auth()->user()->hasRole('CAJERO GASTOS')) {
+            if (($gasto->gestado == 2 || $gasto->gestado == 6)) {
+            $gasto->fecha = $request->fecha;
+            $gasto->tipo_documento = $request->tipo_documento;
+            $gasto->numero_documento = $request->numero_documento;
+            $gasto->concepto = $request->concepto;
+            $gasto->subtotal=$request->subtotal;
+            $gasto->estado = 4;
+            $gasto->novedad= null;
+            }else{
+                $gasto->estado = 1;
+                $gasto->novedad= null;
+            }
+        }
+        if(auth()->user()->hasRole('JEFATURA')){
+            $gasto->fecha = $request->fecha;
+            $gasto->tipo_documento = $request->tipo_documento;
+            $gasto->numero_documento = $request->numero_documento;
+            $gasto->concepto = $request->concepto;
+            $gasto->subtotal=$request->subtotal;
+            $gasto->estado = 4;
+            $gasto->novedad= null;
+        }
 
         $gasto->user_id = auth()->user()->id;
-        if (auth()->user()->hasRole('JEFATURA')) {
-            $gasto->estado = 4;
-            $gasto->novedad= null;
-        }
-        if (auth()->user()->hasRole('CAJERO GASTOS')) {
-            $gasto->estado = 4;
-            $gasto->novedad= null;
-        }
 
         // Guardar el registro del gasto en la base de datos
         $gasto->save();
@@ -245,7 +263,7 @@ class GastosController extends Controller
         // Validación de los datos enviados desde el formulario
         $request->validate([
             'agencia' => 'required|string|max:255',
-            'detalle' => 'required|string|max:255',
+            'detalle' => 'nullable|string|max:255',
             'valor' => 'required|numeric|min:0',
            // 'fecha' => 'required|date',
            //'tipo_documento' => 'required|string',
@@ -284,6 +302,7 @@ class GastosController extends Controller
         $gasto->fecha = $request->fecha;
         $gasto->tipo_documento = $request->tipo_documento;
         $gasto->numero_documento = $request->numero_documento;
+        $gasto->subtotal=$request->subtotal;
         $gasto->concepto = $request->concepto;
 
         // Campos condicionales según el concepto
@@ -304,6 +323,8 @@ class GastosController extends Controller
             $gasto->movilizacion_destino = $request->movilizacion_destino;
             $gasto->movilizacion_asignado = $request->movilizacion_asignado;
             $gasto->movilizacion_detalle = $request->movilizacion_detalle;
+            $gasto->fin_destino= $request->fin_destino;
+            $gasto->inicio_destino= $request->inicio_destino;
         }
 
         // Guardar la ruta del comprobante si existe
@@ -313,7 +334,7 @@ class GastosController extends Controller
 
         $gasto->user_id = auth()->user()->id;
         if (auth()->user()->hasRole('JEFATURA')) {
-            $gasto->estado = 7;
+            $gasto->estado = 1;
         }
         if (auth()->user()->hasRole('CAJERO GASTOS')) {
             $gasto->estado = 1;
@@ -360,10 +381,7 @@ class GastosController extends Controller
     public function autorizate(Request $request, $id)
     {
         $request->validate([
-            //'tesoreria' => 'required|string|max:255',
             'estado' => 'required',
-            //'cajas' => 'nullable|string|max:255',
-            //'novedad' => 'nullable|string|max:255',
         ]);
 
         $gasto = Gastos::findOrFail($id);
@@ -372,9 +390,17 @@ class GastosController extends Controller
         $gasto->estado = $request->estado;
         //$deposito->cajas = $request->cajas;
         $gasto->novedad = $request->novedad;
+        // agencia->nombre == "AREA"
         $gasto->save();
+        if($gasto->user->agencia->nombre=="AREA"){
+            return redirect()->route('gastos.index.jefatura')->with('success', 'Gasto actualizado exitosamente');
+        }else{
+            return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
+        }
+        //return $gasto->user->agencia->nombre;
 
-        return redirect()->back()->with('success', 'Gasto actualizado exitosamente');
+
+
     }
 
 }

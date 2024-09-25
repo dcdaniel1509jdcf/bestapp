@@ -50,7 +50,8 @@
                                     'CREDITO' => 'CREDITO',
                                     'COBRANZAS' => 'COBRANZAS',
                                     'INVENTARIO' => 'INVENTARIO',
-                                    'LOGISTICA' => 'LOGISTICA'
+                                    'LOGISTICA' => 'LOGISTICA',
+								    'COMERCIAL'=>'COMERCIAL'
                                 ], null, ['class' => 'form-control', 'placeholder' => 'Seleccione un departamento', 'required']) !!}
                             </div>
                             <div class="form-group">

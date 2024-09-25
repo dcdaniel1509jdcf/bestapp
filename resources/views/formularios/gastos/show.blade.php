@@ -80,20 +80,28 @@
                                                 <option value="numero_factura"
                                                     {{ $gasto->tipo_documento == 'numero_factura' ? 'selected' : '' }}>
                                                     Número de Factura</option>
+                                                <option value="numero_nota_venta"
+                                                    {{ $gasto->tipo_documento == 'numero_nota_venta' ? 'selected' : '' }}>
+                                                    Número de nota de venta</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-3 " id="numero-documento-container">
-                                    <div class="col-xs-6 col-md-6 col-sm-6">
+                                    <div class="col-xs-6 col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="file">Comprobante</label>
 
                                             @if ($gasto->comprobante)
-                                                <p>Comprobante actual: <a
-                                                        href="{{ asset('storage/' . $gasto->comprobante) }}"
-                                                        target="_blank">Ver comprobante</a></p>
-                                            @endif
+                                            <p>Archivo actual: <button type="button" class="btn btn-sm btn-link"
+                                                    data-toggle="modal" data-target="#staticBackdrop">
+                                                    Ver Documento
+                                                </button>
+                                                <a href="{{ Storage::url($gasto->comprobante) }}"
+                                                    class="btn btn-sm btn-link" target="_blank">abrir</a>
+                                            </p>
+                                            @include('formularios.gastos.partial.modal')
+                                        @endif
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-md-6 col-sm-6">
@@ -101,6 +109,13 @@
                                             <label for="numero_documento" class="form-label">Número de Documento</label>
                                             <input type="text" class="form-control" name="numero_documento"
                                                 id="numero_documento" readonly value="{{ $gasto->numero_documento }}">
+                                        </div>
+                                    </div>
+                                    <div id="factura_subtotal" class="col-xs-6 col-md-2 col-sm-6 ">
+                                        <div class=" mb-3">
+                                                <label for="subtotal" class="form-label">Subtotal</label>
+                                                <input type="text" class="form-control" name="subtotal"
+                                                id="subtotal" readonly value="{{  $gasto->subtotal }}">
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +133,10 @@
                                             <option value="tramites_entidades"
                                                 {{ $gasto->concepto == 'tramites_entidades' ? 'selected' : '' }}>
                                                 Trámites Entidades</option>
-                                            <option value="movilizacion"
+                                            <option value="mantenimiento"
+                                                {{ $gasto->concepto == 'mantenimiento' ? 'selected' : '' }}>
+                                                Mantenimiento</option>
+                                                <option value="movilizacion"
                                                 {{ $gasto->concepto == 'movilizacion' ? 'selected' : '' }}>
                                                 Movilización</option>
                                             <option value="suministros"
@@ -200,9 +218,6 @@
                                             <option value="volanteo"
                                                 {{ $gasto->movilizacion_tipo == 'volanteo' ? 'selected' : '' }}>
                                                 Volanteo</option>
-                                            <option value="mantenimiento"
-                                                {{ $gasto->movilizacion_tipo == 'mantenimiento' ? 'selected' : '' }}>
-                                                Mantenimiento</option>
                                             <option value="viaticos"
                                                 {{ $gasto->movilizacion_tipo == 'viaticos' ? 'selected' : '' }}>
                                                 Viáticos</option>
@@ -281,7 +296,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="tipo-fletes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                <div id="tipo-fletes-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="tipo_fletes" class="form-label">Tipo de Fletes</label>
                                         <select class="form-control" id="tipo_fletes" name="tipo_fletes" disabled>
@@ -295,15 +310,29 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div id="detalle-flete-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
+                                <div id="inicio-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="inicio_destino" class="form-label">Inicio de destino</label>
+                                        <input type="text" class="form-control" id="inicio_destino"
+                                            name="inicio_destino" value="{{ old('inicio_destino', $gasto->inicio_destino) }}">
+                                    </div>
+                                </div>
+                                <div id="fin-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="fin_destino" class="form-label">Fin de Destino</label>
+                                        <input type="text" class="form-control" id="fin_destino"
+                                            name="fin_destino" value="{{ ($gasto->fin_destino) }}">
+                                    </div>
+                                </div>
+                                <div id="detalle-flete-container" class="col-xs-12 col-md-12 col-sm-12  d-none">
                                     <div class="mb-3">
                                         <label for="detalle_flete" class="form-label">Detalle del Flete</label>
-                                        <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3" readonly>{{ $gasto->detalle_flete }}</textarea>
+                                        <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3">{{ ($gasto->detalle_flete) }}</textarea>
                                     </div>
                                 </div>
                                 <div id="movilizacion-destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
                                     <div class="mb-3">
-                                        <label for="movilizacion_destino" class="form-label">Destino</label>
+                                        <label for="movilizacion_destino" class="form-label">Dirección</label>
                                         <input type="text" class="form-control" id="movilizacion_destino"
                                             name="movilizacion_destino" readonly
                                             value="{{ $gasto->movilizacion_destino }}">
@@ -329,7 +358,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
+                                        @php
+                                            $userRol=$gasto->user->agencia->nombre;
+
+                                        @endphp
                                         {!! Form::label('estado', 'Estado', ['class' => 'form-label']) !!}
+                                        @if ($gasto->user->agencia->nombre=="AREA")
+                                        {!! Form::select('estado', [
+                                            '' => 'Seleccione el estado',
+                                            '1' => 'En Espera',
+                                            '5' => 'Finalizar Transaccion',
+                                            '6' => 'Rectificar Documentos',
+                                        ], null, ['class' => 'form-control', 'id' => 'estado']) !!}
+                                        @else
                                         {!! Form::select('estado', [
                                             '' => 'Seleccione el estado',
                                             '1' => 'En Espera',
@@ -338,8 +379,9 @@
                                             '4' => 'Documentos Cargados',
                                             '5' => 'Finalizar Transaccion',
                                             '6' => 'Rectificar Documentos',
-                                            '7' => 'Gastos Departamentos' // Asegúrate de que este valor sea único
+                                            //'7' => 'Gastos Departamentos' // Asegúrate de que este valor sea único
                                         ], null, ['class' => 'form-control', 'id' => 'estado']) !!}
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -423,17 +465,22 @@
 
                     var viaticos = $("#viaticos").val();
                     if (viaticos === 'peaje') {
-                        document.getElementById('combustible-container').classList.remove('d-none');
+                      //  document.getElementById('combustible-container').classList.remove('d-none');
                         document.getElementById('destino-container').classList.remove('d-none');
                         document.getElementById('asignado-container').classList.remove('d-none');
                     } else if (viaticos === 'pasajes') {
                         document.getElementById('tipo-pasajes-container').classList.remove('d-none');
+                        document.getElementById('destino-container').classList.remove('d-none');
+                        document.getElementById('asignado-container').classList.remove('d-none');
                         if ($("#tipo_pasajes").val() == 'nacionales') {
                             document.getElementById('subtipo-pasajes-container').classList.remove('d-none');
                         }
                     } else if (viaticos === 'fletes') {
                         document.getElementById('tipo-fletes-container').classList.remove('d-none');
                         document.getElementById('detalle-flete-container').classList.remove('d-none');
+                        document.getElementById('detalle-container').classList.add('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
                     }
 
                 }

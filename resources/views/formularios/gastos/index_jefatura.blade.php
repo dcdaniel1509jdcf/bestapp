@@ -42,14 +42,18 @@
                                                 <td>
                                                     @if ($gasto->estado == '1')
                                                         <span class="badge badge-info">En Espera</span>
-                                                    @elseif ($gasto->estado == '3')
-                                                        <span class="badge badge-danger">Solicitud Negada</span>
                                                     @elseif ($gasto->estado == '2')
                                                         <span class="badge badge-success">Aprobado Cargar Documentos</span>
+                                                    @elseif ($gasto->estado == '3')
+                                                        <span class="badge badge-warning">Solicitud Negada</span>
+                                                    @elseif ($gasto->estado == '4')
+                                                        <span class="badge badge-success">Documentos Cargados</span>
                                                     @elseif ($gasto->estado == '5')
                                                         <span class="badge badge-info">Finalizar Transacción</span>
                                                     @elseif ($gasto->estado == '6')
                                                         <span class="badge badge-warning">Rectificar Documentos</span>
+                                                    @elseif ($gasto->estado == '7')
+                                                        <span class="badge badge-info">Gastos Departamentos</span>
                                                     @else
                                                         <span class="badge badge-danger">Estado Desconocido</span>
                                                     @endif

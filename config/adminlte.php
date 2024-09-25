@@ -469,6 +469,7 @@ return [
 
             ],
         ],
+      /*
         [
             'text' => 'Gestion',
             'icon' => 'fas fa-fw fa-file',
@@ -491,6 +492,7 @@ return [
 
             ],
         ]
+            */
        /*
         [
             'text' => 'information',
