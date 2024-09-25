@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/gastos-autorizacion/{gasto}', [GastosController::class, 'autorizate'])->name('gastos.validar');
     Route::get('/index-jefaturas', [GastosController::class, 'index_jefatura'])->name('gastos.index.jefatura');
+    Route::get('/index-finalizados', [GastosController::class, 'index_finalizados'])->name('gastos.index.finalizados');
     //Route::get('/saldos/create', [SaldoController::class, 'create'])->name('saldos.create');
     //Route::post('/saldos', [SaldoController::class, 'store'])->name('saldos.store');
 });

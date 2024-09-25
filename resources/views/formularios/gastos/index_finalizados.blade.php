@@ -3,7 +3,7 @@
 @section('title', 'Depósitos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Gastos</h1>
+    <h1 class="m-0 text-dark">Gastos de Jefatura</h1>
 @stop
 @section('content')
 
@@ -30,6 +30,8 @@
                                     </thead>
                                     <tbody>
                                         @isset($gastos)
+
+
                                         @foreach ($gastos as $gasto)
                                             <tr>
                                                 <th scope="row">{{ $gasto->id }}</th>
@@ -58,25 +60,9 @@
                                                 </td>
                                                 <td>
                                                     @canany(['gasto-authorize'])
-                                                        <a class="btn btn-sm btn-outline-primary"
+                                                        <a class="btn btn-sm btn-primary"
                                                             href="{{ route('gastos.show', ['gasto' => $gasto->id]) }}">Ver</a>
                                                     @endcanany
-                                                    @canany(['gasto-edit'])
-                                                        <a class="btn btn-sm btn-outline-info"
-                                                            href="{{ route('gastos.edit', ['gasto' => $gasto->id]) }}">Editar</a>
-                                                    @endcanany
-                                                    @canany(['gasto-delete'])
-                                                        {!! Form::open([
-                                                            'method' => 'DELETE',
-                                                            'route' => ['gastos.destroy', $gasto->id],
-                                                            'style' => 'display:inline',
-                                                            'class' => 'form-eliminar',
-                                                        ]) !!}
-                                                        {!! Form::submit('Borrar', ['class' => 'btn btn-sm btn-outline-danger']) !!}
-
-                                                        {!! Form::close() !!}
-                                                    @endcanany
-
                                                 </td>
                                             </tr>
                                         @endforeach

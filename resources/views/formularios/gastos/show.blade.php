@@ -353,15 +353,12 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (auth()->user()->hasRole('TESORERIA HOLDING'))
                             {!! Form::model($gasto, ['url' => route('gastos.validar', $gasto->id), 'method' => 'POST']) !!}
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        @php
-                                            $userRol=$gasto->user->agencia->nombre;
-
-                                        @endphp
                                         {!! Form::label('estado', 'Estado', ['class' => 'form-label']) !!}
                                         @if ($gasto->user->agencia->nombre=="AREA")
                                         {!! Form::select('estado', [
@@ -394,6 +391,17 @@
 
                             <button type="submit" class="btn btn-primary">Guardar Solicitud</button>
                             {!! Form::close() !!}
+                            @else
+                                <div class="row">
+                                    <div class="col-md-6">
+                                            <div class="mb-3">
+                                                {!! Form::label('novedad', 'Novedad', ['class' => 'form-label']) !!}
+                                                {!! Form::text('novedad', null, ['class' => 'form-control', 'id' => 'novedad']) !!}
+                                            </div>
+                                    </div>
+                                </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>

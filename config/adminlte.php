@@ -453,14 +453,19 @@ return [
                     'can' => 'gasto-create',
                 ],
                 [
-                    'text' => 'Listado',
+                    'text' => 'Cajeros',
                     'route' => 'gastos.index',
                     'can' => 'gasto-list',
                 ],
                 [
-                    'text' => 'Listado Jefatura',
+                    'text' => 'Jefaturas',
                     'route' => 'gastos.index.jefatura',
                     'can' => 'gasto-list',
+                ],
+                [
+                    'text' => 'Finalizados',
+                    'route' => 'gastos.index.finalizados',
+                    'can' => 'gasto-authorize',
                 ],
                 [
                     'text' => 'Descargar',

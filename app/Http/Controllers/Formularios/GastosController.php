@@ -16,7 +16,7 @@ class GastosController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:gasto-list|gasto-create|gasto-edit|gasto-delete', ['only' => ['index','index_jefatura']]);
+        $this->middleware('permission:gasto-list|gasto-create|gasto-edit|gasto-delete', ['only' => ['index','index_jefatura','index_finalizados']]);
         $this->middleware('permission:gasto-create', ['only' => ['create','store']]);
         $this->middleware('permission:gasto-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:gasto-delete', ['only' => ['destroy']]);
@@ -75,14 +75,16 @@ class GastosController extends Controller
                   ->orderBy('id', 'DESC');
             $gastos = $query->get();
         }
-
-
-
-// Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
-
+    // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
         return view('formularios.gastos.index_jefatura', compact('gastos'));
     }
 
+    public function index_finalizados(Request $request)
+    {
+            $gastos = Gastos::whereIn('estado', [5])->orderBy('id', 'DESC')->get();
+    // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
+        return view('formularios.gastos.index_finalizados', compact('gastos'));
+    }
     public function create()
     {
 
