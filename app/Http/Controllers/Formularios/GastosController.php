@@ -27,18 +27,18 @@ class GastosController extends Controller
     public function index(Request $request)
     {
 
-        $gastos=null;
+        $gastos = null;
         // Iniciar la consulta base
         if (auth()->user()->hasRole('ADMINISTRADOR')) {
             $jefes = User::role('JEFATURA')->get();
             $gastos = Gastos::whereNotIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
-               ->orderBy('id', 'DESC')->get();
+               ->orderBy('id', 'ASC')->get();
 
-        }elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
+        } elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
             $jefes = User::role('JEFATURA')->get();
             $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
                ->whereNotIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
-               ->orderBy('id', 'DESC')->get();
+               ->orderBy('id', 'ASC')->get();
 
         } elseif (auth()->user()->hasRole('CAJERO GASTOS')) {
             $query = Gastos::query();
@@ -46,25 +46,30 @@ class GastosController extends Controller
                   ->where(function ($subQuery) {
                       $subQuery->whereIn('estado', [1,2,3,6]);
                   })
-                  ->orderBy('id', 'DESC');
+                  ->orderBy('id', 'ASC');
             $gastos = $query->get();
+        } elseif (auth()->user()->hasRole('SUPERVISOR CAJEROS')) {
+            $jefes = User::role('JEFATURA')->get();
+            $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
+               ->whereNotIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
+               ->orderBy('id', 'ASC')->get();
         }
         return view('formularios.gastos.index', compact('gastos'));
     }
     public function index_jefatura(Request $request)
     {
-        $gastos=null;
+        $gastos = null;
         // Iniciar la consulta base
         if (auth()->user()->hasRole('ADMINISTRADOR')) {
             $jefes = User::role('JEFATURA')->get();
             $gastos = Gastos::whereIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
-               ->orderBy('id', 'DESC')->get();
+               ->orderBy('id', 'ASC')->get();
 
-        }elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
+        } elseif (auth()->user()->hasRole('TESORERIA HOLDING')) {
             $jefes = User::role('JEFATURA')->get();
             $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
                ->whereIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
-               ->orderBy('id', 'DESC')->get();
+               ->orderBy('id', 'ASC')->get();
 
         } elseif (auth()->user()->hasRole('JEFATURA')) {
             $query = Gastos::query();
@@ -72,27 +77,32 @@ class GastosController extends Controller
                   ->where(function ($subQuery) {
                       $subQuery->whereIn('estado', [2,3,6,7]);
                   })
-                  ->orderBy('id', 'DESC');
+                  ->orderBy('id', 'ASC');
             $gastos = $query->get();
+        }elseif(auth()->user()->hasRole('SUPERVISOR CAJEROS')){
+            $jefes = User::role('JEFATURA')->get();
+            $gastos = Gastos::whereIn('estado', [1,2,3,4,6, 7])
+               ->whereIn('user_id', $jefes->pluck('id')) // Filtrar por los IDs de los usuarios con rol JEFATURA
+               ->orderBy('id', 'ASC')->get();
         }
-    // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
+        // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
         return view('formularios.gastos.index_jefatura', compact('gastos'));
     }
 
     public function index_finalizados(Request $request)
     {
-            $gastos = Gastos::whereIn('estado', [5])->orderBy('id', 'DESC')->get();
-    // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
+        $gastos = Gastos::whereIn('estado', [5])->orderBy('id', 'DESC')->get();
+        // Recorrer cada usuario y buscar en la tabla de gastos los registros con estado 1, 2, o 3
         return view('formularios.gastos.index_finalizados', compact('gastos'));
     }
     public function create()
     {
 
-            $agencia =auth()->user()->agencia->nombre;
-        if(auth()->user()->agencia->nombre == "AREA"){
-            $agencia =auth()->user()->profile->departamento;
+        $agencia = auth()->user()->agencia->nombre;
+        if (auth()->user()->agencia->nombre == "AREA") {
+            $agencia = auth()->user()->profile->departamento;
             return view('formularios.gastos.create', compact('agencia'));
-        }else{
+        } else {
             return view('formularios.gastos.create_area', compact('agencia'));
         }
     }
@@ -148,106 +158,184 @@ class GastosController extends Controller
 
         // actualizar una nueva instancia del modelo Gasto
 
-        $gasto->agencia = $request->agencia;
-        $gasto->detalle = $request->detalle;
-        $gasto->valor = $request->valor;
 
-
-        //campos reiniciados
-            $gasto->tipo_tramite = null;
-            $gasto->nombre_tramite = null;
-            $gasto->nombre_entidad = null;
-            $gasto->movilizacion_tipo = null;
-            $gasto->viaticos = null;
-            $gasto->combustible = null;
-            $gasto->destino = null;
-            $gasto->asignado = null;
-            $gasto->tipo_pasajes = null;
-            $gasto->subtipo_pasajes = null;
-            $gasto->tipo_fletes = null;
-            $gasto->detalle_flete = null;
-            $gasto->movilizacion_destino = null;
-            $gasto->movilizacion_asignado = null;
-            $gasto->movilizacion_detalle = null;
-            $gasto->fin_destino= null;
-            $gasto->inicio_destino= null;
-
-        // Campos condicionales según el concepto
-        if ($request->concepto == 'tramites_entidades') {
-            $gasto->tipo_tramite = $request->tipo_tramite;
-            $gasto->nombre_tramite = $request->nombre_tramite;
-            $gasto->nombre_entidad = $request->nombre_entidad;
-
-        } elseif ($request->concepto == 'movilizacion') {
-            $gasto->movilizacion_tipo = $request->movilizacion_tipo;
-            $gasto->viaticos = $request->viaticos;
-            if ($request->movilizacion_tipo=="viaticos"){
-                if ($request->viaticos=="fletes") {
-                    $gasto->tipo_fletes = $request->tipo_fletes;
-                    $gasto->detalle_flete = $request->detalle_flete;
-                    $gasto->fin_destino= $request->fin_destino;
-                    $gasto->inicio_destino= $request->inicio_destino;
-                }else if ($request->viaticos=="pasaje") {
-                    $gasto->tipo_pasajes = $request->tipo_pasajes;
-                    $gasto->subtipo_pasajes = $request->subtipo_pasajes;
-                    $gasto->destino = $request->destino;
-                    $gasto->asignado = $request->asignado;
-                } elseif ($request->viaticos == "peaje") {
-                    $gasto->destino = $request->destino;
-                    $gasto->asignado = $request->asignado;
-                   // $gasto->combustible = $request->combustible;
-                }
-            } else if($request->movilizacion_tipo !="mantenimiento" ) {
-                $gasto->movilizacion_destino = $request->movilizacion_destino;
-                $gasto->movilizacion_asignado = $request->movilizacion_asignado;
-                $gasto->movilizacion_detalle = $request->movilizacion_detalle;
-
-            }
-
-        } elseif ($request->concepto == 'suministros' || $request->concepto == 'gastos_varios') {
-
-            $gasto->tipo_tramite = null;
-            $gasto->nombre_tramite = null;
-            $gasto->nombre_entidad = null;
-
-            $gasto->movilizacion_tipo = null;
-            $gasto->viaticos = null;
-            $gasto->combustible = null;
-            $gasto->destino = null;
-            $gasto->asignado = null;
-            $gasto->tipo_pasajes = null;
-            $gasto->subtipo_pasajes = null;
-            $gasto->tipo_fletes = null;
-            $gasto->detalle_flete = null;
-            $gasto->movilizacion_destino = null;
-            $gasto->movilizacion_asignado = null;
-            $gasto->movilizacion_detalle = null;
-            $gasto->fin_destino= null;
-            $gasto->inicio_destino= null;
-        }
         // Guardar la ruta del comprobante si existe
         if (auth()->user()->hasRole('CAJERO GASTOS')) {
-            if (($gasto->gestado == 2 || $gasto->gestado == 6)) {
-            $gasto->fecha = $request->fecha;
-            $gasto->tipo_documento = $request->tipo_documento;
-            $gasto->numero_documento = $request->numero_documento;
-            $gasto->concepto = $request->concepto;
-            $gasto->subtotal=$request->subtotal;
-            $gasto->estado = 4;
-            $gasto->novedad= null;
-            }else{
+            if (($gasto->estado == 2 || $gasto->estado == 6)) {
+                $gasto->fecha = $request->fecha;
+                $gasto->tipo_documento = $request->tipo_documento;
+                $gasto->numero_documento = $request->numero_documento;
+                $gasto->subtotal = $request->subtotal;
+                $gasto->estado = 4;
+                $gasto->novedad = null;
+            } else {
+
+                $gasto->agencia = $request->agencia;
+                $gasto->detalle = $request->detalle;
+                $gasto->valor = $request->valor;
+                $gasto->concepto = $request->concepto;
+
+                //campos reiniciados
+                $gasto->tipo_tramite = null;
+                $gasto->nombre_tramite = null;
+                $gasto->nombre_entidad = null;
+                $gasto->movilizacion_tipo = null;
+                $gasto->viaticos = null;
+                $gasto->combustible = null;
+                $gasto->destino = null;
+                $gasto->asignado = null;
+                $gasto->tipo_pasajes = null;
+                $gasto->subtipo_pasajes = null;
+                $gasto->tipo_fletes = null;
+                $gasto->detalle_flete = null;
+                $gasto->movilizacion_destino = null;
+                $gasto->movilizacion_asignado = null;
+                $gasto->movilizacion_detalle = null;
+                $gasto->fin_destino = null;
+                $gasto->inicio_destino = null;
+
+                // Campos condicionales según el concepto
+                if ($request->concepto == 'tramites_entidades') {
+                    $gasto->tipo_tramite = $request->tipo_tramite;
+                    $gasto->nombre_tramite = $request->nombre_tramite;
+                    $gasto->nombre_entidad = $request->nombre_entidad;
+
+                } elseif ($request->concepto == 'movilizacion') {
+                    $gasto->movilizacion_tipo = $request->movilizacion_tipo;
+                    $gasto->viaticos = $request->viaticos;
+                    if ($request->movilizacion_tipo == "viaticos") {
+                        if ($request->viaticos == "fletes") {
+                            $gasto->tipo_fletes = $request->tipo_fletes;
+                            $gasto->detalle_flete = $request->detalle_flete;
+                            $gasto->fin_destino = $request->fin_destino;
+                            $gasto->inicio_destino = $request->inicio_destino;
+                        } elseif ($request->viaticos == "pasaje") {
+                            $gasto->tipo_pasajes = $request->tipo_pasajes;
+                            $gasto->subtipo_pasajes = $request->subtipo_pasajes;
+                            $gasto->destino = $request->destino;
+                            $gasto->asignado = $request->asignado;
+                        } elseif ($request->viaticos == "peaje") {
+                            $gasto->destino = $request->destino;
+                            $gasto->asignado = $request->asignado;
+                            // $gasto->combustible = $request->combustible;
+                        }
+                    } elseif ($request->movilizacion_tipo != "mantenimiento") {
+                        $gasto->movilizacion_destino = $request->movilizacion_destino;
+                        $gasto->movilizacion_asignado = $request->movilizacion_asignado;
+                        $gasto->movilizacion_detalle = $request->movilizacion_detalle;
+
+                    }
+
+                } elseif ($request->concepto == 'suministros' || $request->concepto == 'gastos_varios') {
+
+                    $gasto->tipo_tramite = null;
+                    $gasto->nombre_tramite = null;
+                    $gasto->nombre_entidad = null;
+
+                    $gasto->movilizacion_tipo = null;
+                    $gasto->viaticos = null;
+                    $gasto->combustible = null;
+                    $gasto->destino = null;
+                    $gasto->asignado = null;
+                    $gasto->tipo_pasajes = null;
+                    $gasto->subtipo_pasajes = null;
+                    $gasto->tipo_fletes = null;
+                    $gasto->detalle_flete = null;
+                    $gasto->movilizacion_destino = null;
+                    $gasto->movilizacion_asignado = null;
+                    $gasto->movilizacion_detalle = null;
+                    $gasto->fin_destino = null;
+                    $gasto->inicio_destino = null;
+                }
                 $gasto->estado = 1;
-                $gasto->novedad= null;
+                $gasto->novedad = null;
             }
         }
-        if(auth()->user()->hasRole('JEFATURA')){
+        if (auth()->user()->hasRole('JEFATURA')) {
             $gasto->fecha = $request->fecha;
             $gasto->tipo_documento = $request->tipo_documento;
             $gasto->numero_documento = $request->numero_documento;
-            $gasto->concepto = $request->concepto;
-            $gasto->subtotal=$request->subtotal;
+
+            $gasto->subtotal = $request->subtotal;
             $gasto->estado = 4;
-            $gasto->novedad= null;
+            $gasto->novedad = null;
+            $gasto->agencia = $request->agencia;
+            $gasto->detalle = $request->detalle;
+            $gasto->valor = $request->valor;
+            $gasto->concepto = $request->concepto;
+
+            //campos reiniciados
+            $gasto->tipo_tramite = null;
+            $gasto->nombre_tramite = null;
+            $gasto->nombre_entidad = null;
+            $gasto->movilizacion_tipo = null;
+            $gasto->viaticos = null;
+            $gasto->combustible = null;
+            $gasto->destino = null;
+            $gasto->asignado = null;
+            $gasto->tipo_pasajes = null;
+            $gasto->subtipo_pasajes = null;
+            $gasto->tipo_fletes = null;
+            $gasto->detalle_flete = null;
+            $gasto->movilizacion_destino = null;
+            $gasto->movilizacion_asignado = null;
+            $gasto->movilizacion_detalle = null;
+            $gasto->fin_destino = null;
+            $gasto->inicio_destino = null;
+
+            // Campos condicionales según el concepto
+            if ($request->concepto == 'tramites_entidades') {
+                $gasto->tipo_tramite = $request->tipo_tramite;
+                $gasto->nombre_tramite = $request->nombre_tramite;
+                $gasto->nombre_entidad = $request->nombre_entidad;
+
+            } elseif ($request->concepto == 'movilizacion') {
+                $gasto->movilizacion_tipo = $request->movilizacion_tipo;
+                $gasto->viaticos = $request->viaticos;
+                if ($request->movilizacion_tipo == "viaticos") {
+                    if ($request->viaticos == "fletes") {
+                        $gasto->tipo_fletes = $request->tipo_fletes;
+                        $gasto->detalle_flete = $request->detalle_flete;
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
+                    } elseif ($request->viaticos == "pasaje") {
+                        $gasto->tipo_pasajes = $request->tipo_pasajes;
+                        $gasto->subtipo_pasajes = $request->subtipo_pasajes;
+                        $gasto->destino = $request->destino;
+                        $gasto->asignado = $request->asignado;
+                    } elseif ($request->viaticos == "peaje") {
+                        $gasto->destino = $request->destino;
+                        $gasto->asignado = $request->asignado;
+                        // $gasto->combustible = $request->combustible;
+                    }
+                } elseif ($request->movilizacion_tipo != "mantenimiento") {
+                    $gasto->movilizacion_destino = $request->movilizacion_destino;
+                    $gasto->movilizacion_asignado = $request->movilizacion_asignado;
+                    $gasto->movilizacion_detalle = $request->movilizacion_detalle;
+
+                }
+
+            } elseif ($request->concepto == 'suministros' || $request->concepto == 'gastos_varios') {
+
+                $gasto->tipo_tramite = null;
+                $gasto->nombre_tramite = null;
+                $gasto->nombre_entidad = null;
+
+                $gasto->movilizacion_tipo = null;
+                $gasto->viaticos = null;
+                $gasto->combustible = null;
+                $gasto->destino = null;
+                $gasto->asignado = null;
+                $gasto->tipo_pasajes = null;
+                $gasto->subtipo_pasajes = null;
+                $gasto->tipo_fletes = null;
+                $gasto->detalle_flete = null;
+                $gasto->movilizacion_destino = null;
+                $gasto->movilizacion_asignado = null;
+                $gasto->movilizacion_detalle = null;
+                $gasto->fin_destino = null;
+                $gasto->inicio_destino = null;
+            }
         }
 
         $gasto->user_id = auth()->user()->id;
@@ -256,7 +344,7 @@ class GastosController extends Controller
         $gasto->save();
         if (auth()->user()->hasRole('JEFATURA')) {
             return redirect()->route('gastos.index.jefatura')->with('success', 'Gasto actualizado exitosamente');
-        }else{
+        } else {
             return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
         }
     }
@@ -304,7 +392,7 @@ class GastosController extends Controller
         $gasto->fecha = $request->fecha;
         $gasto->tipo_documento = $request->tipo_documento;
         $gasto->numero_documento = $request->numero_documento;
-        $gasto->subtotal=$request->subtotal;
+        $gasto->subtotal = $request->subtotal;
         $gasto->concepto = $request->concepto;
 
         // Campos condicionales según el concepto
@@ -325,8 +413,8 @@ class GastosController extends Controller
             $gasto->movilizacion_destino = $request->movilizacion_destino;
             $gasto->movilizacion_asignado = $request->movilizacion_asignado;
             $gasto->movilizacion_detalle = $request->movilizacion_detalle;
-            $gasto->fin_destino= $request->fin_destino;
-            $gasto->inicio_destino= $request->inicio_destino;
+            $gasto->fin_destino = $request->fin_destino;
+            $gasto->inicio_destino = $request->inicio_destino;
         }
 
         // Guardar la ruta del comprobante si existe
@@ -347,7 +435,7 @@ class GastosController extends Controller
 
         if (auth()->user()->hasRole('JEFATURA')) {
             return redirect()->route('gastos.index.jefatura')->with('success', 'El gasto ha sido registrado exitosamente');
-        }else{
+        } else {
             return redirect()->route('gastos.index')->with('success', 'El gasto ha sido registrado exitosamente.');
         }
         // Redirigir con un mensaje de éxito
@@ -371,7 +459,7 @@ class GastosController extends Controller
     }
     public function download(Request $request)
     {
-       // return Excel::download(new GastosExport($request->dateIni, $request->dateFin), 'gastos'.time().'.xlsx');
+        // return Excel::download(new GastosExport($request->dateIni, $request->dateFin), 'gastos'.time().'.xlsx');
         return "En Proceso Att. DC";
     }
     public function show($id)
@@ -394,9 +482,9 @@ class GastosController extends Controller
         $gasto->novedad = $request->novedad;
         // agencia->nombre == "AREA"
         $gasto->save();
-        if($gasto->user->agencia->nombre=="AREA"){
+        if ($gasto->user->agencia->nombre == "AREA") {
             return redirect()->route('gastos.index.jefatura')->with('success', 'Gasto actualizado exitosamente');
-        }else{
+        } else {
             return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
         }
         //return $gasto->user->agencia->nombre;

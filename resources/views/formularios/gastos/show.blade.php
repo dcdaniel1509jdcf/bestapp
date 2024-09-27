@@ -12,7 +12,16 @@
     <h1 class="m-0 text-dark text-center">Gasto</h1>
 @stop
 @section('content')
-
+@php
+    $roleUser=true;
+    if(auth()->user()->hasRole('JEFATURA')){
+        $roleUser=true;
+    }
+    if(auth()->user()->hasRole('CAJERO GASTOS')){
+        $roleUser=false;
+    }
+    $gestado=$gasto->estado;
+@endphp
     <section class="section">
         <div class="section-body">
             <div class="row justify-content-center">
@@ -57,9 +66,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @if ($gasto->estado != 1)
-
-
                                 <div id="tipo-documento-container" class="mb-3 ">
                                     <div class="row">
                                         <div class="col-xs-6 col-md-6 col-sm-6">
@@ -119,7 +125,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
                             <!-- Campo Agencia -->
                             <div class="row">
                                 <div class="col-xs-6 col-md-6 col-sm-6">
@@ -365,7 +370,7 @@
                                             '' => 'Seleccione el estado',
                                             '1' => 'En Espera',
                                             '5' => 'Finalizar Transaccion',
-                                            '6' => 'Rectificar Documentos',
+                                            '6' => 'Rectificar Información',
                                         ], null, ['class' => 'form-control', 'id' => 'estado']) !!}
                                         @else
                                         {!! Form::select('estado', [
@@ -503,6 +508,27 @@
             $('#concepto').change(function() {
                 toggleContainers();
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const roleUser = '{{ $roleUser}}'; // O 'true' dependiendo del tipo
+            const gastoEstado = '{{ $gasto->estado }}';
+
+            if (roleUser==true) {
+                document.getElementById('tipo-documento-container').classList.remove('d-none');
+                document.getElementById('numero-documento-container').classList.remove('d-none');
+            } else {
+                if (gastoEstado == 2 || gastoEstado == 6) {
+                    document.getElementById('tipo-documento-container').classList.remove('d-none');
+                    document.getElementById('numero-documento-container').classList.remove('d-none');
+                } else {
+                    document.getElementById('tipo-documento-container').classList.add('d-none');
+                    document.getElementById('numero-documento-container').classList.add('d-none');
+                }
+            }
         });
     </script>
 @stop

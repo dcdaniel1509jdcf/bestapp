@@ -380,7 +380,7 @@
                         ].includes(movilizacion_tipo)) {
                         document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                         document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
-                        document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
+                        //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
 

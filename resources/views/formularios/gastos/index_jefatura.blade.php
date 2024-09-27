@@ -51,7 +51,7 @@
                                                     @elseif ($gasto->estado == '5')
                                                         <span class="badge badge-info">Finalizar Transacción</span>
                                                     @elseif ($gasto->estado == '6')
-                                                        <span class="badge badge-warning">Rectificar Documentos</span>
+                                                        <span class="badge badge-warning">Rectificar Información</span>
                                                     @elseif ($gasto->estado == '7')
                                                         <span class="badge badge-info">Gastos Departamentos</span>
                                                     @else

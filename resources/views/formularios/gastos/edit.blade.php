@@ -458,7 +458,7 @@
                     ].includes(selectedValue)) {
                     document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
-                    document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
+                    //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                 } else if (selectedValue === 'viaticos') {
                     document.getElementById('viaticos-container').classList.remove('d-none');
 
@@ -571,12 +571,9 @@
                     if (['encomiendas', 'traslado_personal', 'traslado_mercaderia', 'traslado_valores',
                             'notificacion', 'volanteo'
                         ].includes(movilizacion_tipo)) {
-                        document.getElementById('movilizacion-destino-container').classList.remove(
-                            'd-none');
-                        document.getElementById('movilizacion-asignado-container').classList.remove(
-                            'd-none');
-                        document.getElementById('movilizacion-detalle-container').classList.remove(
-                            'd-none');
+                        document.getElementById('movilizacion-destino-container').classList.remove('d-none');
+                        document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
+                        //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
 
