@@ -43,9 +43,9 @@
                                                     @elseif ($gasto->estado == '2')
                                                         <span class="badge badge-success">Aprobado Cargar Documentos</span>
                                                     @elseif ($gasto->estado == '3')
-                                                        <span class="badge badge-warning">Solicitud Negada</span>
+                                                        <span class="badge badge-danger">Solicitud Negada</span>
                                                     @elseif ($gasto->estado == '4')
-                                                        <span class="badge badge-success">Documentos Cargados</span>
+                                                        <span class="badge badge-warning">Documentos Cargados</span>
                                                     @elseif ($gasto->estado == '5')
                                                         <span class="badge badge-info">Finalizar Transacción</span>
                                                     @elseif ($gasto->estado == '6')

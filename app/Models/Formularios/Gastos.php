@@ -17,7 +17,7 @@ class Gastos extends Model
         'tipo_tramite', 'nombre_tramite', 'nombre_entidad', 'movilizacion_tipo', 'viaticos',
         'combustible', 'destino', 'asignado', 'tipo_pasajes', 'subtipo_pasajes', 'tipo_fletes',
         'detalle_flete', 'movilizacion_destino', 'movilizacion_asignado', 'movilizacion_detalle',
-        'comprobante', 'user_id', 'estado','novedad','inicio_destino','fin_destino','subtotal'
+        'comprobante', 'user_id', 'estado','novedad','inicio_destino','fin_destino','subtotal','tipo_mantenimiento'
     ];
 
     // Relación con el usuario

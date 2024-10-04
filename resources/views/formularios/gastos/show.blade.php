@@ -119,7 +119,7 @@
                                     </div>
                                     <div id="factura_subtotal" class="col-xs-6 col-md-2 col-sm-6 ">
                                         <div class=" mb-3">
-                                                <label for="subtotal" class="form-label">Subtotal</label>
+                                                <label for="subtotal" class="form-label">Valor IVA</label>
                                                 <input type="text" class="form-control" name="subtotal"
                                                 id="subtotal" readonly value="{{  $gasto->subtotal }}">
                                         </div>
@@ -312,6 +312,9 @@
                                             <option value="autos"
                                                 {{ $gasto->tipo_fletes == 'autos' ? 'selected' : '' }}>
                                                 Autos</option>
+                                            <option value="motos"
+                                                {{ $gasto->tipo_fletes == 'motos' ? 'selected' : '' }}>
+                                                Motos</option>
                                         </select>
                                     </div>
                                 </div>
@@ -319,20 +322,20 @@
                                     <div class="mb-3">
                                         <label for="inicio_destino" class="form-label">Inicio de destino</label>
                                         <input type="text" class="form-control" id="inicio_destino"
-                                            name="inicio_destino" value="{{ old('inicio_destino', $gasto->inicio_destino) }}">
+                                            name="inicio_destino" value="{{ $gasto->inicio_destino }}">
                                     </div>
                                 </div>
                                 <div id="fin-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="fin_destino" class="form-label">Fin de Destino</label>
                                         <input type="text" class="form-control" id="fin_destino"
-                                            name="fin_destino" value="{{ ($gasto->fin_destino) }}">
+                                            name="fin_destino" value="{{ $gasto->fin_destino }}">
                                     </div>
                                 </div>
                                 <div id="detalle-flete-container" class="col-xs-12 col-md-12 col-sm-12  d-none">
                                     <div class="mb-3">
                                         <label for="detalle_flete" class="form-label">Detalle del Flete</label>
-                                        <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3">{{ ($gasto->detalle_flete) }}</textarea>
+                                        <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3">{{ $gasto->detalle_flete }}</textarea>
                                     </div>
                                 </div>
                                 <div id="movilizacion-destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -355,6 +358,22 @@
                                     <div class="mb-3 ">
                                         <label for="movilizacion_detalle" class="form-label">Detalle</label>
                                         <textarea class="form-control" id="movilizacion_detalle" name="movilizacion_detalle" readonly rows="3">{{ $gasto->movilizacion_detalle }}</textarea>
+                                    </div>
+                                </div>
+                                <div id="tipo-mantenimiento-container" class="col-xs-12 col-md-4 col-sm-4  d-none">
+                                    <div class="mb-3">
+                                        <label for="tipo_mantenimiento" class="form-label">Tipo de Mantenimiento</label>
+                                        <select class="form-control" id="tipo_mantenimiento" name="tipo_mantenimiento">
+                                            <option value="camionetas"
+                                                {{ $gasto->tipo_mantenimiento == 'camionetas' ? 'selected' : '' }}>
+                                                Camionetas</option>
+                                            <option value="autos"
+                                                {{ $gasto->tipo_mantenimiento == 'autos' ? 'selected' : '' }}>
+                                                Autos</option>
+                                            <option value="motos"
+                                                {{ $gasto->tipo_mantenimiento == 'motos' ? 'selected' : '' }}>
+                                                Motos</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -464,6 +483,8 @@
                 var concepto = $('#concepto').val();
                 if (concepto === 'movilizacion') {
                     movilizacionContainer.classList.remove('d-none');
+                } else if (concepto === 'mantenimiento'){
+                    document.getElementById('tipo-mantenimiento-container').classList.remove('d-none');
                 }
 
 
@@ -473,18 +494,28 @@
                     document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
                     document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
+                    document.getElementById('inicio-flete-container').classList.remove('d-none');
+                    document.getElementById('fin-flete-container').classList.remove('d-none');
+                    if(selectedValue == "traslado_valores"){
+                        document.getElementById('inicio-flete-container').classList.add('d-none');
+                        document.getElementById('fin-flete-container').classList.add('d-none');
+                    }
                 } else if (selectedValue === 'viaticos') {
                     document.getElementById('viaticos-container').classList.remove('d-none');
 
                     var viaticos = $("#viaticos").val();
                     if (viaticos === 'peaje') {
-                      //  document.getElementById('combustible-container').classList.remove('d-none');
-                        document.getElementById('destino-container').classList.remove('d-none');
+                        document.getElementById('combustible-container').classList.remove('d-none');
+                        //document.getElementById('destino-container').classList.remove('d-none');
                         document.getElementById('asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
                     } else if (viaticos === 'pasajes') {
                         document.getElementById('tipo-pasajes-container').classList.remove('d-none');
-                        document.getElementById('destino-container').classList.remove('d-none');
+                        //document.getElementById('destino-container').classList.remove('d-none');
                         document.getElementById('asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
                         if ($("#tipo_pasajes").val() == 'nacionales') {
                             document.getElementById('subtipo-pasajes-container').classList.remove('d-none');
                         }
@@ -492,6 +523,12 @@
                         document.getElementById('tipo-fletes-container').classList.remove('d-none');
                         document.getElementById('detalle-flete-container').classList.remove('d-none');
                         document.getElementById('detalle-container').classList.add('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                    } else if(viaticos === 'movilizacion'){
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                    } else if(viaticos === 'hospedaje'){
                         document.getElementById('inicio-flete-container').classList.remove('d-none');
                         document.getElementById('fin-flete-container').classList.remove('d-none');
                     }

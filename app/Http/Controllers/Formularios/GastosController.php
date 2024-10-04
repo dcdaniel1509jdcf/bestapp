@@ -193,6 +193,7 @@ class GastosController extends Controller
                 $gasto->movilizacion_detalle = null;
                 $gasto->fin_destino = null;
                 $gasto->inicio_destino = null;
+                $gasto->tipo_mantenimiento = null;
 
                 // Campos condicionales según el concepto
                 if ($request->concepto == 'tramites_entidades') {
@@ -203,7 +204,13 @@ class GastosController extends Controller
                 } elseif ($request->concepto == 'movilizacion') {
                     $gasto->movilizacion_tipo = $request->movilizacion_tipo;
                     $gasto->viaticos = $request->viaticos;
+                    if ($request->movilizacion_tipo != "traslado_valores") {
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
+                    }
                     if ($request->movilizacion_tipo == "viaticos") {
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
                         if ($request->viaticos == "fletes") {
                             $gasto->tipo_fletes = $request->tipo_fletes;
                             $gasto->detalle_flete = $request->detalle_flete;
@@ -212,12 +219,16 @@ class GastosController extends Controller
                         } elseif ($request->viaticos == "pasaje") {
                             $gasto->tipo_pasajes = $request->tipo_pasajes;
                             $gasto->subtipo_pasajes = $request->subtipo_pasajes;
-                            $gasto->destino = $request->destino;
+                            //$gasto->destino = $request->destino;
+                            $gasto->fin_destino = $request->fin_destino;
+                            $gasto->inicio_destino = $request->inicio_destino;
                             $gasto->asignado = $request->asignado;
                         } elseif ($request->viaticos == "peaje") {
-                            $gasto->destino = $request->destino;
+                            //$gasto->destino = $request->destino;
                             $gasto->asignado = $request->asignado;
-                            // $gasto->combustible = $request->combustible;
+                            $gasto->combustible = $request->combustible;
+                            $gasto->fin_destino = $request->fin_destino;
+                            $gasto->inicio_destino = $request->inicio_destino;
                         }
                     } elseif ($request->movilizacion_tipo != "mantenimiento") {
                         $gasto->movilizacion_destino = $request->movilizacion_destino;
@@ -246,6 +257,9 @@ class GastosController extends Controller
                     $gasto->movilizacion_detalle = null;
                     $gasto->fin_destino = null;
                     $gasto->inicio_destino = null;
+                    $gasto->tipo_mantenimiento = null;
+                } elseif ($request->concepto == 'mantenimiento') {
+                    $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
                 }
                 $gasto->estado = 1;
                 $gasto->novedad = null;
@@ -282,6 +296,7 @@ class GastosController extends Controller
             $gasto->movilizacion_detalle = null;
             $gasto->fin_destino = null;
             $gasto->inicio_destino = null;
+            $gasto->tipo_mantenimiento = null;
 
             // Campos condicionales según el concepto
             if ($request->concepto == 'tramites_entidades') {
@@ -292,7 +307,13 @@ class GastosController extends Controller
             } elseif ($request->concepto == 'movilizacion') {
                 $gasto->movilizacion_tipo = $request->movilizacion_tipo;
                 $gasto->viaticos = $request->viaticos;
+                if ($request->movilizacion_tipo != "traslado_valores") {
+                    $gasto->fin_destino = $request->fin_destino;
+                    $gasto->inicio_destino = $request->inicio_destino;
+                }
                 if ($request->movilizacion_tipo == "viaticos") {
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
                     if ($request->viaticos == "fletes") {
                         $gasto->tipo_fletes = $request->tipo_fletes;
                         $gasto->detalle_flete = $request->detalle_flete;
@@ -301,12 +322,16 @@ class GastosController extends Controller
                     } elseif ($request->viaticos == "pasaje") {
                         $gasto->tipo_pasajes = $request->tipo_pasajes;
                         $gasto->subtipo_pasajes = $request->subtipo_pasajes;
-                        $gasto->destino = $request->destino;
+                        //$gasto->destino = $request->destino;
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
                         $gasto->asignado = $request->asignado;
                     } elseif ($request->viaticos == "peaje") {
-                        $gasto->destino = $request->destino;
+                        //$gasto->destino = $request->destino;
                         $gasto->asignado = $request->asignado;
-                        // $gasto->combustible = $request->combustible;
+                        $gasto->combustible = $request->combustible;
+                        $gasto->fin_destino = $request->fin_destino;
+                        $gasto->inicio_destino = $request->inicio_destino;
                     }
                 } elseif ($request->movilizacion_tipo != "mantenimiento") {
                     $gasto->movilizacion_destino = $request->movilizacion_destino;
@@ -335,6 +360,9 @@ class GastosController extends Controller
                 $gasto->movilizacion_detalle = null;
                 $gasto->fin_destino = null;
                 $gasto->inicio_destino = null;
+                $gasto->tipo_mantenimiento = null;
+            } elseif ($request->concepto == 'mantenimiento') {
+                $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
             }
         }
 
@@ -395,6 +423,7 @@ class GastosController extends Controller
         $gasto->subtotal = $request->subtotal;
         $gasto->concepto = $request->concepto;
 
+
         // Campos condicionales según el concepto
         if ($request->concepto == 'tramites_entidades') {
             $gasto->tipo_tramite = $request->tipo_tramite;
@@ -415,6 +444,8 @@ class GastosController extends Controller
             $gasto->movilizacion_detalle = $request->movilizacion_detalle;
             $gasto->fin_destino = $request->fin_destino;
             $gasto->inicio_destino = $request->inicio_destino;
+        } elseif ($request->concepto == 'mantenimiento') {
+            $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
         }
 
         // Guardar la ruta del comprobante si existe

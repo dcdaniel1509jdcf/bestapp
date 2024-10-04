@@ -453,14 +453,14 @@ return [
                     'can' => 'gasto-create',
                 ],
                 [
-                    'text' => 'Cajeros',
+                    'text' => 'Solicitudes Cajas',
                     'route' => 'gastos.index',
-                    'can' => 'gasto-list',
+                    'can' => 'list-gatos-cajas',
                 ],
                 [
-                    'text' => 'Jefaturas',
+                    'text' => 'Solicitudes Áreas',
                     'route' => 'gastos.index.jefatura',
-                    'can' => 'gasto-list',
+                    'can' => 'list-gatos-areas',
                 ],
                 [
                     'text' => 'Finalizados',

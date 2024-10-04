@@ -48,21 +48,21 @@
                                     <div id="agencia-container" class="mb-3">
                                         <label for="agencia" class="form-label">Agencia</label>
                                         <input type="text" class="form-control" name="agencia" id="agencia"
-                                            value="{{ old('agencia', $gasto->agencia) }}" @if( ( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
+                                            value="{{ $gasto->agencia }}" @if( ( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-md-6 col-sm-6">
                                     <div id="valor-container" class="mb-3 ">
                                         <label for="valor" class="form-label">Valor</label>
                                         <input type="text" class="form-control" name="valor" id="valor" required
-                                            value="{{ old('valor', $gasto->valor) }}" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
+                                            value="{{ $gasto->valor }}" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
                                     </div>
                                 </div>
                                 <div id="detalle-container" class="col-xs-12 col-md-12 col-sm-12">
                                     <div  class="mb-3 ">
                                         <label for="detalle" class="form-label">Detalle</label>
                                         <input type="text" class="form-control" name="detalle" id="detalle" required
-                                            value="{{ old('detalle', $gasto->detalle) }}" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
+                                            value="{{ $gasto->detalle }}" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                         <div id="fecha-container" class="mb-3">
                                             <label for="fecha" class="form-label">Fecha de Comprobante</label>
                                             <input type="date" class="form-control" name="fecha" id="fecha"
-                                                value="{{ old('fecha', $gasto->fecha) }}" >
+                                                value="{{ $gasto->fecha }}" >
                                         </div>
                                     </div>
 
@@ -82,13 +82,13 @@
                                         <select class="form-control" id="tipo_documento" name="tipo_documento">
                                             <option value="">Seleccione tipo de documento</option>
                                             <option value="numero_recibo"
-                                                {{ old('tipo_documento', $gasto->tipo_documento) == 'numero_recibo' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_documento == 'numero_recibo' ? 'selected' : '' }}>
                                                 Número de Recibo</option>
                                             <option value="numero_factura"
-                                                {{ old('tipo_documento', $gasto->tipo_documento) == 'numero_factura' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_documento == 'numero_factura' ? 'selected' : '' }}>
                                                 Número de Factura</option>
                                             <option value="numero_nota_venta"
-                                                {{ old('tipo_documento', $gasto->tipo_documento) == 'numero_nota_venta' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_documento == 'numero_nota_venta' ? 'selected' : '' }}>
                                                 Número de nota de venta</option>
 
                                         </select>
@@ -121,14 +121,14 @@
                                         <label for="numero_documento" class="form-label">Número de Documento</label>
                                         <input type="text" class="form-control" name="numero_documento"
                                             id="numero_documento" placeholder="000-000-0000123"
-                                            value="{{ old('numero_documento', $gasto->numero_documento) }}">
+                                            value="{{ $gasto->numero_documento }}">
                                     </div>
                                 </div>
                                 <div id="factura_subtotal" class="col-xs-6 col-md-2 col-sm-6 ">
                                     <div class=" mb-3">
-                                            <label for="subtotal" class="form-label">Subtotal</label>
+                                            <label for="subtotal" class="form-label">Valor IVA</label>
                                             <input type="text" class="form-control" name="subtotal"
-                                            id="subtotal" readonly value="{{ old('subtotal', $gasto->subtotal) }}">
+                                            id="subtotal" readonly value="{{ $gasto->subtotal }}">
                                     </div>
                                 </div>
                             </div>
@@ -167,28 +167,28 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione tipo de trámite</option>
                                             <option value="municipios"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'municipios' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'municipios' ? 'selected' : '' }}>
                                                 Municipios</option>
                                             <option value="ant"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'ant' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'ant' ? 'selected' : '' }}>
                                                 ANT</option>
                                             <option value="sri"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'sri' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'sri' ? 'selected' : '' }}>
                                                 SRI</option>
                                             <option value="fiscalia"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'fiscalia' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'fiscalia' ? 'selected' : '' }}>
                                                 Fiscalía</option>
                                             <option value="notaria"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'notaria' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'notaria' ? 'selected' : '' }}>
                                                 Notaría</option>
                                             <option value="ministerio_de_trabajo"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'ministerio_de_trabajo' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'ministerio_de_trabajo' ? 'selected' : '' }}>
                                                 Ministerio del Trabajo</option>
                                             <option value="procuracion_judicial"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'procuracion_judicial' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'procuracion_judicial' ? 'selected' : '' }}>
                                                 Procuración judicial</option>
                                             <option value="registro_mercantil"
-                                                {{ old('tipo_tramite', $gasto->tipo_tramite) == 'registro_mercantil' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_tramite == 'registro_mercantil' ? 'selected' : '' }}>
                                                 Registro Mercantil</option>
                                         </select>
                                     </div>
@@ -198,7 +198,7 @@
                                         <label for="nombre_tramite" class="form-label">Nombre del Trámite</label>
                                         <input type="text" class="form-control" id="nombre_tramite"
                                             name="nombre_tramite" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('nombre_tramite', $gasto->nombre_tramite) }}">
+                                            value="{{ $gasto->nombre_tramite }}">
                                     </div>
                                 </div>
                                 <div id="nombre-entidad-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -206,7 +206,7 @@
                                         <label for="nombre_entidad" class="form-label">Nombre de la Entidad</label>
                                         <input type="text" class="form-control" id="nombre_entidad"
                                             name="nombre_entidad" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('nombre_entidad', $gasto->nombre_entidad) }}">
+                                            value="{{ $gasto->nombre_entidad }}">
                                     </div>
                                 </div>
                                 <div id="movilizacion-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -216,25 +216,25 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione tipo de movilización</option>
                                             <option value="encomiendas"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'encomiendas' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'encomiendas' ? 'selected' : '' }}>
                                                 Encomiendas</option>
                                             <option value="traslado_personal"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'traslado_personal' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'traslado_personal' ? 'selected' : '' }}>
                                                 Traslado del Personal</option>
                                             <option value="traslado_mercaderia"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'traslado_mercaderia' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'traslado_mercaderia' ? 'selected' : '' }}>
                                                 Traslado de Mercadería</option>
                                             <option value="traslado_valores"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'traslado_valores' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'traslado_valores' ? 'selected' : '' }}>
                                                 Traslado de Valores</option>
                                             <option value="notificacion"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'notificacion' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'notificacion' ? 'selected' : '' }}>
                                                 Notificación</option>
                                             <option value="volanteo"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'volanteo' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'volanteo' ? 'selected' : '' }}>
                                                 Volanteo</option>
                                             <option value="viaticos"
-                                                {{ old('movilizacion_tipo', $gasto->movilizacion_tipo) == 'viaticos' ? 'selected' : '' }}>
+                                                {{ $gasto->movilizacion_tipo == 'viaticos' ? 'selected' : '' }}>
                                                 Viáticos</option>
                                         </select>
                                     </div>
@@ -246,19 +246,19 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione tipo de viático</option>
                                             <option value="peaje"
-                                                {{ old('viaticos', $gasto->viaticos) == 'peaje' ? 'selected' : '' }}>Peaje
+                                                {{ $gasto->viaticos == 'peaje' ? 'selected' : '' }}>Peaje
                                             </option>
                                             <option value="pasajes"
-                                                {{ old('viaticos', $gasto->viaticos) == 'pasajes' ? 'selected' : '' }}>
+                                                {{ $gasto->viaticos == 'pasajes' ? 'selected' : '' }}>
                                                 Pasajes</option>
                                             <option value="fletes"
-                                                {{ old('viaticos', $gasto->viaticos) == 'fletes' ? 'selected' : '' }}>
+                                                {{ $gasto->viaticos == 'fletes' ? 'selected' : '' }}>
                                                 Fletes</option>
                                             <option value="movilizacion"
-                                                {{ old('viaticos', $gasto->viaticos) == 'movilizacion' ? 'selected' : '' }}>
+                                                {{ $gasto->viaticos == 'movilizacion' ? 'selected' : '' }}>
                                                 Movilización</option>
                                             <option value="hospedaje"
-                                                {{ old('viaticos', $gasto->viaticos) == 'hospedaje' ? 'selected' : '' }}>
+                                                {{ $gasto->viaticos == 'hospedaje' ? 'selected' : '' }}>
                                                 Hospedaje</option>
                                         </select>
                                     </div>
@@ -268,7 +268,7 @@
                                         <label for="combustible" class="form-label">Combustible</label>
                                         <input type="text" class="form-control" id="combustible" name="combustible"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('combustible', $gasto->combustible) }}">
+                                            value="{{ $gasto->combustible }}">
                                     </div>
                                 </div>
                                 <div id="destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -276,7 +276,7 @@
                                         <label for="destino" class="form-label">Destino</label>
                                         <input type="text" class="form-control" id="destino" name="destino"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('destino', $gasto->destino) }}">
+                                            value="{{ $gasto->destino }}">
                                     </div>
                                 </div>
                                 <div id="asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -284,7 +284,7 @@
                                         <label for="asignado" class="form-label">Asignado a</label>
                                         <input type="text" class="form-control" id="asignado" name="asignado"
                                         placeholder="Nombre de la persona a cargo" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('asignado', $gasto->asignado) }}">
+                                            value="{{ $gasto->asignado }}">
                                     </div>
                                 </div>
                                 <div id="tipo-pasajes-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -294,10 +294,10 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione tipo de pasajes</option>
                                             <option value="nacionales"
-                                                {{ old('tipo_pasajes', $gasto->tipo_pasajes) == 'nacionales' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_pasajes == 'nacionales' ? 'selected' : '' }}>
                                                 Nacionales</option>
                                             <option value="interprovincial"
-                                                {{ old('tipo_pasajes', $gasto->tipo_pasajes) == 'interprovincial' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_pasajes == 'interprovincial' ? 'selected' : '' }}>
                                                 Interprovincial</option>
                                         </select>
                                     </div>
@@ -309,10 +309,10 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione subtipo de pasajes</option>
                                             <option value="taxis"
-                                                {{ old('subtipo_pasajes', $gasto->subtipo_pasajes) == 'taxis' ? 'selected' : '' }}>
+                                                {{ $gasto->subtipo_pasajes == 'taxis' ? 'selected' : '' }}>
                                                 Taxis</option>
                                             <option value="buses"
-                                                {{ old('subtipo_pasajes', $gasto->subtipo_pasajes) == 'buses' ? 'selected' : '' }}>
+                                                {{ $gasto->subtipo_pasajes == 'buses' ? 'selected' : '' }}>
                                                 Buses</option>
                                         </select>
                                     </div>
@@ -324,11 +324,14 @@
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
                                             <option value="">Seleccione tipo de fletes</option>
                                             <option value="camionetas"
-                                                {{ old('tipo_fletes', $gasto->tipo_fletes) == 'camionetas' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_fletes == 'camionetas' ? 'selected' : '' }}>
                                                 Camionetas</option>
                                             <option value="autos"
-                                                {{ old('tipo_fletes', $gasto->tipo_fletes) == 'autos' ? 'selected' : '' }}>
+                                                {{ $gasto->tipo_fletes == 'autos' ? 'selected' : '' }}>
                                                 Autos</option>
+                                            <option value="motos"
+                                                {{ $gasto->tipo_fletes == 'motos' ? 'selected' : '' }}>
+                                                Motos</option>
                                         </select>
                                     </div>
                                 </div>
@@ -337,7 +340,7 @@
                                         <label for="inicio_destino" class="form-label">Inicio de destino</label>
                                         <input type="text" class="form-control" id="inicio_destino"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            name="inicio_destino" value="{{ old('inicio_destino', $gasto->inicio_destino) }}">
+                                            name="inicio_destino" value="{{ $gasto->inicio_destino }}">
                                     </div>
                                 </div>
                                 <div id="fin-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
@@ -345,14 +348,14 @@
                                         <label for="fin_destino" class="form-label">Fin de Destino</label>
                                         <input type="text" class="form-control" id="fin_destino"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            name="fin_destino" value="{{ old('fin_destino', $gasto->fin_destino) }}">
+                                            name="fin_destino" value="{{ $gasto->fin_destino }}">
                                     </div>
                                 </div>
                                 <div id="detalle-flete-container" class="col-xs-12 col-md-12 col-sm-12  d-none">
                                     <div class="mb-3">
                                         <label for="detalle_flete" class="form-label">Detalle del Flete</label>
                                         <textarea class="form-control" id="detalle_flete" name="detalle_flete" rows="3"
-                                        @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif >{{ old('detalle_flete', $gasto->detalle_flete) }}</textarea>
+                                        @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif >{{ $gasto->detalle_flete }}</textarea>
                                     </div>
                                 </div>
                                 <div id="movilizacion-destino-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -360,7 +363,7 @@
                                         <label for="movilizacion_destino" class="form-label">Dirección</label>
                                         <input type="text" class="form-control" id="movilizacion_destino"
                                             name="movilizacion_destino" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('movilizacion_destino', $gasto->movilizacion_destino) }}">
+                                            value="{{ $gasto->movilizacion_destino }}">
                                     </div>
                                 </div>
                                 <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -368,7 +371,7 @@
                                         <label for="movilizacion_asignado" class="form-label">Asignado a</label>
                                         <input type="text" class="form-control" id="movilizacion_asignado" placeholder="Nombre de la persona a cargo"
                                             name="movilizacion_asignado" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            value="{{ old('movilizacion_asignado', $gasto->movilizacion_asignado) }}">
+                                            value="{{ $gasto->movilizacion_asignado }}">
                                     </div>
                                 </div>
                                 <div id="movilizacion-detalle-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -376,7 +379,26 @@
                                         <label for="movilizacion_detalle" class="form-label">Detalle</label>
                                         <textarea class="form-control" id="movilizacion_detalle"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                        name="movilizacion_detalle" rows="3">{{ old('movilizacion_detalle', $gasto->movilizacion_detalle) }}</textarea>
+                                        name="movilizacion_detalle" rows="3">{{ $gasto->movilizacion_detalle }}</textarea>
+                                    </div>
+                                </div>
+                                <div id="tipo-mantenimiento-container" class="col-xs-12 col-md-4 col-sm-4  d-none">
+                                    <div class="mb-3">
+                                        <label for="tipo_mantenimiento" class="form-label">Tipo de Mantenimiento</label>
+                                        <select class="form-control" id="tipo_mantenimiento" name="tipo_mantenimiento">
+                                            @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) disabled @endif >
+                                            <option value="">Seleccione tipo de mantenimiento</option>
+                                            <option value="camionetas"
+                                                {{ $gasto->tipo_mantenimiento == 'camionetas' ? 'selected' : '' }}>
+                                                Camionetas</option>
+                                            <option value="autos"
+                                                {{ $gasto->tipo_mantenimiento == 'autos' ? 'selected' : '' }}>
+                                                Autos</option>
+                                            <option value="motos"
+                                                {{ $gasto->tipo_mantenimiento == 'motos' ? 'selected' : '' }}>
+                                                Motos</option>
+                                        </select>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -435,6 +457,8 @@
                     $('#tipo-tramite-container').removeClass('d-none');
                     $('#nombre-tramite-container').removeClass('d-none');
                     $('#nombre-entidad-container').removeClass('d-none');
+                } else if (concepto === 'mantenimiento'){
+                    document.getElementById('tipo-mantenimiento-container').classList.remove('d-none');
                 }
             }
 
@@ -458,19 +482,29 @@
                     ].includes(selectedValue)) {
                     document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
+                    document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                        if(selectedValue == "traslado_valores"){
+                            document.getElementById('inicio-flete-container').classList.add('d-none');
+                            document.getElementById('fin-flete-container').classList.add('d-none');
+                        }
                     //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                 } else if (selectedValue === 'viaticos') {
                     document.getElementById('viaticos-container').classList.remove('d-none');
 
                     var viaticos = $("#viaticos").val();
                     if (viaticos === 'peaje') {
-                      //  document.getElementById('combustible-container').classList.remove('d-none');
-                        document.getElementById('destino-container').classList.remove('d-none');
+                        document.getElementById('combustible-container').classList.remove('d-none');
+                        //document.getElementById('destino-container').classList.remove('d-none');
                         document.getElementById('asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
                     } else if (viaticos === 'pasajes') {
                         document.getElementById('tipo-pasajes-container').classList.remove('d-none');
-                        document.getElementById('destino-container').classList.remove('d-none');
+                        //document.getElementById('destino-container').classList.remove('d-none');
                         document.getElementById('asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
                         if ($("#tipo_pasajes").val() == 'nacionales') {
                             document.getElementById('subtipo-pasajes-container').classList.remove('d-none');
                         }
@@ -478,6 +512,12 @@
                         document.getElementById('tipo-fletes-container').classList.remove('d-none');
                         document.getElementById('detalle-flete-container').classList.remove('d-none');
                         document.getElementById('detalle-container').classList.add('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                    } else if(viaticos === 'movilizacion'){
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                    } else if(viaticos === 'hospedaje'){
                         document.getElementById('inicio-flete-container').classList.remove('d-none');
                         document.getElementById('fin-flete-container').classList.remove('d-none');
                     }
@@ -529,6 +569,7 @@
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
             //
             document.getElementById('detalle-container').classList.remove('d-none');
+            document.getElementById('tipo-mantenimiento-container').classList.add('d-none');
 
             if (concepto === 'gastos_varios' || concepto === 'suministros') {
                 // Campos por defecto
@@ -573,6 +614,12 @@
                         ].includes(movilizacion_tipo)) {
                         document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                         document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                        if(movilizacion_tipo == "traslado_valores"){
+                            document.getElementById('inicio-flete-container').classList.add('d-none');
+                            document.getElementById('fin-flete-container').classList.add('d-none');
+                        }
                         //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
@@ -594,13 +641,17 @@
                             document.getElementById('detalle-container').classList.remove('d-none');
 
                             if (viaticos === 'peaje') {
-                            //    document.getElementById('combustible-container').classList.remove('d-none');
-                                document.getElementById('destino-container').classList.remove('d-none');
+                                document.getElementById('combustible-container').classList.remove('d-none');
+                                //document.getElementById('destino-container').classList.remove('d-none');
                                 document.getElementById('asignado-container').classList.remove('d-none');
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                             } else if (viaticos === 'pasajes') {
                                 document.getElementById('tipo-pasajes-container').classList.remove('d-none');
-                                document.getElementById('destino-container').classList.remove('d-none');
+                                //document.getElementById('destino-container').classList.remove('d-none');
                                 document.getElementById('asignado-container').classList.remove('d-none');
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                                 document.getElementById('tipo_pasajes').addEventListener('change',
                                     function() {
                                         if (this.value === 'nacionales') {
@@ -627,10 +678,18 @@
 
                                         }
                                     });
+                            } else if(viaticos === 'movilizacion'){
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
+                            } else if(viaticos === 'hospedaje'){
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                             }
                         });
                     }
                 });
+            } else if (concepto === 'mantenimiento'){
+                document.getElementById('tipo-mantenimiento-container').classList.remove('d-none');
             }
         });
     </script>

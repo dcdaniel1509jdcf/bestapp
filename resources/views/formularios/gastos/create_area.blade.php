@@ -209,6 +209,7 @@
                                             <option value="">Seleccione tipo de fletes</option>
                                             <option value="camionetas">Camionetas</option>
                                             <option value="autos">Autos</option>
+                                            <option value="motos">Motos</option>
                                         </select>
                                     </div>
                                 </div>
@@ -250,6 +251,17 @@
                                     <div class="mb-3 ">
                                         <label for="movilizacion_detalle" class="form-label">Detalle</label>
                                         <textarea class="form-control" id="movilizacion_detalle" name="movilizacion_detalle" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div id="tipo-mantenimiento-container" class="col-xs-12 col-md-4 col-sm-4  d-none">
+                                    <div class="mb-3">
+                                        <label for="tipo_mantenimiento" class="form-label">Tipo de Fletes</label>
+                                        <select class="form-control" id="tipo_mantenimiento" name="tipo_mantenimiento">
+                                            <option value="">Seleccione tipo de fletes</option>
+                                            <option value="camionetas">Camionetas</option>
+                                            <option value="autos">Autos</option>
+                                            <option value="motos">Motos</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -331,6 +343,7 @@
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
             //document.getElementById('detalle-container').classList.add('d-none');
             document.getElementById('detalle-container').classList.remove('d-none');
+            document.getElementById('tipo-mantenimiento-container').classList.add('d-none');
 
             if (concepto === 'gastos_varios' || concepto === 'suministros') {
                 // Campos por defecto
@@ -348,6 +361,7 @@
                 });
 
             } else if (concepto === 'movilizacion') {
+                document.getElementById('tipo-mantenimiento-container').classList.add('d-none');
                 document.getElementById('movilizacion-container').classList.remove('d-none');
 
                 document.getElementById('movilizacion_tipo').addEventListener('change', function() {
@@ -377,6 +391,12 @@
                         ].includes(movilizacion_tipo)) {
                         document.getElementById('movilizacion-destino-container').classList.remove('d-none');
                         document.getElementById('movilizacion-asignado-container').classList.remove('d-none');
+                        document.getElementById('inicio-flete-container').classList.remove('d-none');
+                        document.getElementById('fin-flete-container').classList.remove('d-none');
+                        if(movilizacion_tipo == "traslado_valores"){
+                            document.getElementById('inicio-flete-container').classList.add('d-none');
+                            document.getElementById('fin-flete-container').classList.add('d-none');
+                        }
                        //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
                         document.getElementById('viaticos-container').classList.remove('d-none');
@@ -398,15 +418,17 @@
                             document.getElementById('detalle-container').classList.remove('d-none');
 
                             if (viaticos === 'peaje') {
-                                //document.getElementById('combustible-container').classList.remove('d-none');
-                                document.getElementById('destino-container').classList.remove(
-                                    'd-none');
-                                document.getElementById('asignado-container').classList.remove(
-                                    'd-none');
+                                document.getElementById('combustible-container').classList.remove('d-none');
+                                //document.getElementById('destino-container').classList.remove('d-none');
+                                document.getElementById('asignado-container').classList.remove('d-none');
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                             } else if (viaticos === 'pasajes') {
                                 document.getElementById('tipo-pasajes-container').classList.remove('d-none');
-                                document.getElementById('destino-container').classList.remove('d-none');
+                                //document.getElementById('destino-container').classList.remove('d-none');
                                 document.getElementById('asignado-container').classList.remove('d-none');
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                                 document.getElementById('tipo_pasajes').addEventListener('change',
                                     function() {
                                         if (this.value === 'nacionales') {
@@ -433,10 +455,18 @@
                                             document.getElementById('fin-flete-container').classList.add('d-none');
                                         }
                                     });
+                            } else if(viaticos === 'movilizacion'){
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
+                            } else if(viaticos === 'hospedaje'){
+                                document.getElementById('inicio-flete-container').classList.remove('d-none');
+                                document.getElementById('fin-flete-container').classList.remove('d-none');
                             }
                         });
                     }
                 });
+            } else if (concepto === 'mantenimiento'){
+                document.getElementById('tipo-mantenimiento-container').classList.remove('d-none');
             }
         });
     </script>
