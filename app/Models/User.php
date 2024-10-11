@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Formularios\Depositos;
+use App\Models\Formularios\Gastos;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -76,5 +77,9 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
+    }
+    public function gastos()
+    {
+        return $this->hasMany(Gastos::class, 'user_id');
     }
 }

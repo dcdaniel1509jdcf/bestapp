@@ -9,6 +9,7 @@ use App\Models\Formularios\Gastos;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -516,8 +517,24 @@ class GastosController extends Controller
     }
     public function download(Request $request)
     {
-        // return Excel::download(new GastosExport($request->dateIni, $request->dateFin), 'gastos'.time().'.xlsx');
-        return "En Proceso Att. DC";
+        //reporte caja chica
+        // Consulta de gastos acumulados por agencia y usuario
+        $gastosHarwest = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
+            ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
+            ->where('agencia', 'LIKE', 'HardWest%')  // Agencias que empiezan con HardWest
+            ->groupBy('agencia', 'user_id')
+            ->with(['user', 'user.agencia'])
+            ->get();
+
+        $gastosBestPC = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
+            ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
+            ->where('agencia', 'NOT LIKE', 'HardWest%')  // Agencias que NO empiezan con HardWest
+            ->groupBy('agencia', 'user_id')
+            ->with(['user', 'user.agencia'])
+            ->get();
+           // return view('formularios.descargas.partials.gastos',compact('gastosHarwest','gastosBestPC') );
+         return Excel::download(new GastosExport($gastosHarwest,$gastosBestPC,$request->dateIni, $request->dateFin), 'gastos_CajaChicaN1'.time().'.xlsx');
+       // return "En Proceso Att. DC";
     }
     public function show($id)
     {

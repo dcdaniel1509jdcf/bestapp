@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('depositos-autorizacion/{deposito}', [DepositosController::class, 'autorizate'])->name('depositos.autorizacion');
 
     Route::resource('reportes', ReporteController::class);
-    Route::get('/reportes-gastos', [ReporteController::class, 'index_gastos'])->name('reportes.gastos.index');
+    Route::get('/reportes-gastos', [ReporteController::class, 'index_gastos'])->name('reporteUno.gastos.index');
 
     Route::get('/depositos-buscar', [DepositosController::class, 'buscar'])->name('depositos.search');
     Route::get('/depositos-buscar-show/{deposito}', [DepositosController::class, 'edit_adm'])->name('depositos.edit.adm');

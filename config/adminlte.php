@@ -472,8 +472,24 @@ return [
                     'can' => 'gasto-authorize',
                 ],
                 [
-                    'text' => 'Descargar',
-                    'route' => 'reportes.gastos.index',
+                    'text' => 'Descargas',
+                    'url' => '#',
+                    'submenu' => [
+                        [
+                            'text' => 'R. Caja Chica',
+                            'route' => 'reporteUno.gastos.index',
+                        ],
+                        [
+                            'text' => 'R. Reposición BEST PC',
+                            'url' => '#',
+                            //'route' => 'reporteUno.gastos.index',
+                        ],
+                        [
+                            'text' => 'R. Reposición HARD WEST',
+                            'url' => '#',
+                            //'route' => 'reporteUno.gastos.index',
+                        ],
+                    ],
                 ],
 
             ],
