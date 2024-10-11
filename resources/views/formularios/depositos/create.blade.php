@@ -60,8 +60,17 @@
                                                 $array = ['VENTA' => 'VENTA'];
                                             @endphp
                                         @endrole
+                                        @isset(auth()->user()->profile->departamento)
+                                            @if (auth()->user()->profile->departamento == "COMERCIAL")
+                                                @php
+                                                $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
+                                                @endphp
+                                            @endif
+                                        @endisset
                                         @role('TESORERIA')
-                                        $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
+                                            @php
+                                            $array =['COBRO' => 'COBRO', 'VENTA' => 'VENTA'];
+                                            @endphp
                                         @endrole
                                         {!! Form::select('origen', $array, null, [
                                             'class' => 'form-control',
