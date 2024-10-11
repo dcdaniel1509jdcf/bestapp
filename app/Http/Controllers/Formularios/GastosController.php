@@ -75,7 +75,7 @@ class GastosController extends Controller
             $query = Gastos::query();
             $query->where('user_id', auth()->user()->id)
                   ->where(function ($subQuery) {
-                      $subQuery->whereIn('estado', [2,3,6,7]);
+                      $subQuery->whereIn('estado', [1,2,3,6,7]);
                   })
                   ->orderBy('id', 'ASC');
             $gastos = $query->get();
@@ -194,6 +194,8 @@ class GastosController extends Controller
                 $gasto->fin_destino = null;
                 $gasto->inicio_destino = null;
                 $gasto->tipo_mantenimiento = null;
+                $gasto->hora_llegada = null;
+                $gasto->hora_salida = null;
 
                 // Campos condicionales según el concepto
                 if ($request->concepto == 'tramites_entidades') {
@@ -234,6 +236,14 @@ class GastosController extends Controller
                         $gasto->movilizacion_destino = $request->movilizacion_destino;
                         $gasto->movilizacion_asignado = $request->movilizacion_asignado;
                         $gasto->movilizacion_detalle = $request->movilizacion_detalle;
+                    if($request->movilizacion_tipo == "volanteo"){
+                        $gasto->hora_llegada = $request->hora_llegada;
+                        $gasto->hora_salida = $request->hora_salida;
+                        $gasto->movilizacion_destino=null;
+                    }else{
+                        $gasto->hora_llegada = null;
+                        $gasto->hora_salida = null;
+                    }
 
                     }
 
@@ -258,6 +268,8 @@ class GastosController extends Controller
                     $gasto->fin_destino = null;
                     $gasto->inicio_destino = null;
                     $gasto->tipo_mantenimiento = null;
+                    $gasto->hora_llegada = null;
+                    $gasto->hora_salida = null;
                 } elseif ($request->concepto == 'mantenimiento') {
                     $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
                 }
@@ -297,6 +309,8 @@ class GastosController extends Controller
             $gasto->fin_destino = null;
             $gasto->inicio_destino = null;
             $gasto->tipo_mantenimiento = null;
+            $gasto->hora_llegada = null;
+            $gasto->hora_salida = null;
 
             // Campos condicionales según el concepto
             if ($request->concepto == 'tramites_entidades') {
@@ -337,6 +351,14 @@ class GastosController extends Controller
                     $gasto->movilizacion_destino = $request->movilizacion_destino;
                     $gasto->movilizacion_asignado = $request->movilizacion_asignado;
                     $gasto->movilizacion_detalle = $request->movilizacion_detalle;
+                    if($request->movilizacion_tipo == "volanteo"){
+                        $gasto->hora_llegada = $request->hora_llegada;
+                        $gasto->hora_salida = $request->hora_salida;
+                        $gasto->movilizacion_destino=null;
+                    }else{
+                        $gasto->hora_llegada = null;
+                        $gasto->hora_salida = null;
+                    }
 
                 }
 
@@ -361,6 +383,8 @@ class GastosController extends Controller
                 $gasto->fin_destino = null;
                 $gasto->inicio_destino = null;
                 $gasto->tipo_mantenimiento = null;
+                $gasto->hora_llegada = null;
+                $gasto->hora_salida = null;
             } elseif ($request->concepto == 'mantenimiento') {
                 $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
             }
@@ -444,6 +468,8 @@ class GastosController extends Controller
             $gasto->movilizacion_detalle = $request->movilizacion_detalle;
             $gasto->fin_destino = $request->fin_destino;
             $gasto->inicio_destino = $request->inicio_destino;
+            $gasto->hora_llegada = $request->hora_llegada;
+            $gasto->hora_salida = $request->hora_salida;
         } elseif ($request->concepto == 'mantenimiento') {
             $gasto->tipo_mantenimiento=$request->tipo_mantenimiento;
         }

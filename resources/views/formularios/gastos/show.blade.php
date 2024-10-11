@@ -321,14 +321,14 @@
                                 <div id="inicio-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="inicio_destino" class="form-label">Inicio de destino</label>
-                                        <input type="text" class="form-control" id="inicio_destino"
+                                        <input type="text" class="form-control" id="inicio_destino" readonly
                                             name="inicio_destino" value="{{ $gasto->inicio_destino }}">
                                     </div>
                                 </div>
                                 <div id="fin-flete-container" class="col-xs-12 col-md-4 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="fin_destino" class="form-label">Fin de Destino</label>
-                                        <input type="text" class="form-control" id="fin_destino"
+                                        <input type="text" class="form-control" id="fin_destino" readonly
                                             name="fin_destino" value="{{ $gasto->fin_destino }}">
                                     </div>
                                 </div>
@@ -344,6 +344,20 @@
                                         <input type="text" class="form-control" id="movilizacion_destino"
                                             name="movilizacion_destino" readonly
                                             value="{{ $gasto->movilizacion_destino }}">
+                                    </div>
+                                </div>
+                                <div id="hora-salida-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_salida" class="form-label">Hora de Salida</label>
+                                        <input type="text" class="form-control" id="hora_salida"
+                                            name="hora_salida" value="{{ $gasto->hora_salida }}" readonly>
+                                    </div>
+                                </div>
+                                <div id="hora-llegada-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_llegada" class="form-label">Hora de Llegada</label>
+                                        <input type="text" class="form-control" id="hora_llegada"
+                                            name="hora_llegada" value="{{ $gasto->hora_salida }}" readonly>
                                     </div>
                                 </div>
                                 <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -499,6 +513,11 @@
                     if(selectedValue == "traslado_valores"){
                         document.getElementById('inicio-flete-container').classList.add('d-none');
                         document.getElementById('fin-flete-container').classList.add('d-none');
+                    }
+                    if(selectedValue == "volanteo"){
+                        document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                        document.getElementById('hora-salida-container').classList.remove('d-none');
+                        document.getElementById('hora-llegada-container').classList.remove('d-none');
                     }
                 } else if (selectedValue === 'viaticos') {
                     document.getElementById('viaticos-container').classList.remove('d-none');

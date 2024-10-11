@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'GIFU FORMS',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,8 +63,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>GIFU</b>FORMS',
+    'logo_img' => 'vendor/adminlte/dist/img/gifu.png',
+    //'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,8 +87,8 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'Auth Logo',
+            'path' => 'vendor/adminlte/dist/img/gifu.png',
+            'alt' => 'GIFU Logo',
             'class' => '',
             'width' => 50,
             'height' => 50,
@@ -113,8 +114,8 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'path' => 'vendor/adminlte/dist/img/gifu.png',
+            'alt' => 'Gifu Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -455,12 +456,12 @@ return [
                 [
                     'text' => 'Solicitudes Cajas',
                     'route' => 'gastos.index',
-                    'can' => 'list-gatos-cajas',
+                    'can' => 'list-gastos-cajas',
                 ],
                 [
                     'text' => 'Solicitudes Áreas',
                     'route' => 'gastos.index.jefatura',
-                    'can' => 'list-gatos-areas',
+                    'can' => 'list-gastos-areas',
                 ],
                 [
                     'text' => 'Finalizados',

@@ -240,6 +240,20 @@
                                             name="movilizacion_destino">
                                     </div>
                                 </div>
+                                <div id="hora-salida-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_salida" class="form-label">Hora de Salida</label>
+                                        <input type="text" class="form-control" id="hora_salida"
+                                            name="hora_salida">
+                                    </div>
+                                </div>
+                                <div id="hora-llegada-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_llegada" class="form-label">Hora de Llegada</label>
+                                        <input type="text" class="form-control" id="hora_llegada"
+                                            name="hora_llegada">
+                                    </div>
+                                </div>
                                 <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
                                     <div class="mb-3">
                                         <label for="movilizacion_asignado" class="form-label">Asignado a</label>
@@ -339,6 +353,8 @@
             //
             document.getElementById('movilizacion-container').classList.add('d-none');
             document.getElementById('movilizacion-destino-container').classList.add('d-none');
+            document.getElementById('hora-salida-container').classList.add('d-none');
+            document.getElementById('hora-llegada-container').classList.add('d-none');
             document.getElementById('movilizacion-asignado-container').classList.add('d-none');
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
             //document.getElementById('detalle-container').classList.add('d-none');
@@ -381,6 +397,8 @@
                     //
                     document.getElementById('viaticos-container').classList.add('d-none');
                     document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                    document.getElementById('hora-salida-container').classList.add('d-none');
+                    document.getElementById('hora-llegada-container').classList.add('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.add('d-none');
                     document.getElementById('movilizacion-detalle-container').classList.add('d-none');
                     //
@@ -396,6 +414,11 @@
                         if(movilizacion_tipo == "traslado_valores"){
                             document.getElementById('inicio-flete-container').classList.add('d-none');
                             document.getElementById('fin-flete-container').classList.add('d-none');
+                        }
+                        if(movilizacion_tipo == "volanteo"){
+                            document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                            document.getElementById('hora-salida-container').classList.remove('d-none');
+                            document.getElementById('hora-llegada-container').classList.remove('d-none');
                         }
                        //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {

@@ -348,7 +348,7 @@
                                         <label for="fin_destino" class="form-label">Fin de Destino</label>
                                         <input type="text" class="form-control" id="fin_destino"
                                         @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
-                                            name="fin_destino" value="{{ $gasto->fin_destino }}">
+                                         name="fin_destino" value="{{ $gasto->fin_destino }}">
                                     </div>
                                 </div>
                                 <div id="detalle-flete-container" class="col-xs-12 col-md-12 col-sm-12  d-none">
@@ -364,6 +364,22 @@
                                         <input type="text" class="form-control" id="movilizacion_destino"
                                             name="movilizacion_destino" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
                                             value="{{ $gasto->movilizacion_destino }}">
+                                    </div>
+                                </div>
+                                <div id="hora-salida-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_salida" class="form-label">Hora de Salida</label>
+                                        <input type="text" class="form-control" id="hora_salida"
+                                            name="hora_salida" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
+                                            value="{{ $gasto->hora_salida }}">
+                                    </div>
+                                </div>
+                                <div id="hora-llegada-container" class="col-xs-12 col-md-3 col-sm-6  d-none">
+                                    <div class="mb-3">
+                                        <label for="hora_salida" class="form-label">Hora de Llegada</label>
+                                        <input type="text" class="form-control" id="hora_salida"
+                                            name="hora_salida" @if(( $roleUser == false ) && ($gestado == 2 || $gestado == 6)) readonly @endif
+                                            value="{{ $gasto->hora_salida }}">
                                     </div>
                                 </div>
                                 <div id="movilizacion-asignado-container" class="col-xs-6 col-md-6 col-sm-6  d-none">
@@ -488,6 +504,11 @@
                             document.getElementById('inicio-flete-container').classList.add('d-none');
                             document.getElementById('fin-flete-container').classList.add('d-none');
                         }
+                        if(selectedValue == "volanteo"){
+                            document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                            document.getElementById('hora-salida-container').classList.remove('d-none');
+                            document.getElementById('hora-llegada-container').classList.remove('d-none');
+                        }
                     //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                 } else if (selectedValue === 'viaticos') {
                     document.getElementById('viaticos-container').classList.remove('d-none');
@@ -565,6 +586,8 @@
             document.getElementById('fin-flete-container').classList.add('d-none');
             document.getElementById('movilizacion-container').classList.add('d-none');
             document.getElementById('movilizacion-destino-container').classList.add('d-none');
+            document.getElementById('hora-salida-container').classList.add('d-none');
+            document.getElementById('hora-llegada-container').classList.add('d-none');
             document.getElementById('movilizacion-asignado-container').classList.add('d-none');
             document.getElementById('movilizacion-detalle-container').classList.add('d-none');
             //
@@ -604,6 +627,8 @@
                     document.getElementById('fin-flete-container').classList.add('d-none');
                     document.getElementById('viaticos-container').classList.add('d-none');
                     document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                    document.getElementById('hora-salida-container').classList.add('d-none');
+                    document.getElementById('hora-llegada-container').classList.add('d-none');
                     document.getElementById('movilizacion-asignado-container').classList.add('d-none');
                     document.getElementById('movilizacion-detalle-container').classList.add('d-none');
                     //
@@ -619,6 +644,11 @@
                         if(movilizacion_tipo == "traslado_valores"){
                             document.getElementById('inicio-flete-container').classList.add('d-none');
                             document.getElementById('fin-flete-container').classList.add('d-none');
+                        }
+                        if(movilizacion_tipo == "volanteo"){
+                            document.getElementById('movilizacion-destino-container').classList.add('d-none');
+                            document.getElementById('hora-salida-container').classList.remove('d-none');
+                            document.getElementById('hora-llegada-container').classList.remove('d-none');
                         }
                         //document.getElementById('movilizacion-detalle-container').classList.remove('d-none');
                     } else if (movilizacion_tipo === 'viaticos') {
@@ -755,5 +785,29 @@
                 }
             }
         });
+    </script>
+    <script>
+        // Obtener el input de fecha
+        const fechaInput = document.getElementById('fecha');
+
+        // Obtener la fecha actual
+        const today = new Date();
+        const todayISO = today.toISOString().split('T')[0];
+
+        // Calcular un día antes y un día después
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const yesterdayISO = yesterday.toISOString().split('T')[0];
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const tomorrowISO = tomorrow.toISOString().split('T')[0];
+
+        // Establecer los límites en el input de fecha
+        fechaInput.min = yesterdayISO;
+        fechaInput.max = tomorrowISO;
+
+        // Establecer el valor por defecto como el día actual
+        fechaInput.value = todayISO;
     </script>
 @stop
