@@ -522,6 +522,7 @@ class GastosController extends Controller
         $gastosHarwest = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
             ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
             ->where('agencia', 'LIKE', 'HardWest%')  // Agencias que empiezan con HardWest
+            ->where('estado', '=', 5)  // unicamente para estados con Finalizar Transacción
             ->groupBy('agencia', 'user_id')
             ->with(['user', 'user.agencia'])
             ->get();
@@ -529,6 +530,7 @@ class GastosController extends Controller
         $gastosBestPC = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
             ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
             ->where('agencia', 'NOT LIKE', 'HardWest%')  // Agencias que NO empiezan con HardWest
+            ->where('estado', '=', 5)  // unicamente para estados con Finalizar Transacción
             ->groupBy('agencia', 'user_id')
             ->with(['user', 'user.agencia'])
             ->get();
