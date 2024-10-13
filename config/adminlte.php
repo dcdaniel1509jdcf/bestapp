@@ -481,13 +481,17 @@ return [
                         ],
                         [
                             'text' => 'R. Reposición BEST PC',
-                            'url' => '#',
-                            //'route' => 'reporteUno.gastos.index',
+                            //'url' => '#',
+                            'route' => 'reporteDos.gastos.index',
                         ],
                         [
                             'text' => 'R. Reposición HARD WEST',
                             'url' => '#',
-                            //'route' => 'reporteUno.gastos.index',
+                            //'route' => 'reporte.gastosGeneral.index',
+                        ],
+                        [
+                            'text' => 'Reporte General Gastos',
+                            'route' => 'reporte.gastosGeneral.index',
                         ],
                     ],
                 ],

@@ -4,7 +4,7 @@
 @section('title', 'Depositos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Descargar</h1>
+    <h1 class="m-0 text-dark text-center">Descarga de Reposición de Cajas Chicas para Best PC</h1>
 @stop
 
 @section('content')
@@ -12,9 +12,8 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-                {!! Form::open(['route' => 'gastos.download', 'method' => 'POST']) !!}
+                {!! Form::open(['route' => 'gastos.bestpc.download', 'method' => 'POST']) !!}
                 @csrf
-
                 <div class="row justify-content-center">
                     <div class="col-xs-4 col-md-4 col-sm-4">
                         <div class="form-group">

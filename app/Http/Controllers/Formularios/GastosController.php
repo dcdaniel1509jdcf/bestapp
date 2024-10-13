@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Formularios;
 
 use App\Exports\GastosExport;
+use App\Exports\GastosRepBestPCExport;
+use App\Exports\GastosRepGeneralExport;
 use App\Http\Controllers\Controller;
 use App\Models\Agencias;
 use App\Models\Formularios\Gastos;
@@ -564,9 +566,78 @@ class GastosController extends Controller
             return redirect()->route('gastos.index')->with('success', 'Gasto actualizado exitosamente');
         }
         //return $gasto->user->agencia->nombre;
-
-
-
     }
+    public function downloadBestPC(Request $request)
+    {
+        //reporte caja chica
+        // Consulta de gastos acumulados por agencia y usuario
+        /* $gastosHarwest = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
+            ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
+            ->where('agencia', 'LIKE', 'HardWest%')  // Agencias que empiezan con HardWest
+            ->where('estado', '=', 5)  // unicamente para estados con Finalizar Transacción
+            ->groupBy('agencia', 'user_id')
+            ->with(['user', 'user.agencia'])
+            ->get();
+*/
+        $gastosBestPC = Gastos::select('agencia', 'user_id', DB::raw('SUM(valor) as valor_sumado'))
+            ->whereBetween('fecha', [$request->dateIni, $request->dateFin])
+            ->where('agencia', 'NOT LIKE', 'HardWest%')  // Agencias que NO empiezan con HardWest
+            ->where('estado', '=', 5)  // unicamente para estados con Finalizar Transacción
+            ->groupBy('agencia', 'user_id')
+            ->with(['user', 'user.agencia','user.profile'])
+            ->get();
+            //return $gastosBestPC;
+           // return view('formularios.descargas.partials.reposicionBestPC',compact('gastosBestPC') );
+         return Excel::download(new GastosRepBestPCExport ($gastosBestPC,$request->dateIni, $request->dateFin), 'g_reposicion_Caja_Chica_bestpc'.time().'.xlsx');
+       // return "En Proceso Att. DC";
+    }
+    public function downloadGastosGeneral(Request $request)
+    {
+        $conceptosSeleccionados = $request->concepto;  // Esto es un array
+
+        // Asignar a variables individuales si existen en la selección
+
+        $gastosVarios = in_array('gastos_varios', $conceptosSeleccionados) ? 'gastos_varios' : null;
+        $suministros = in_array('suministros', $conceptosSeleccionados) ? 'suministros' : null;
+        $movilizacion = in_array('movilizacion', $conceptosSeleccionados) ? 'movilizacion' : null;
+        $mantenimiento = in_array('mantenimiento', $conceptosSeleccionados) ? 'mantenimiento' : null;
+        $tramitesEntidades = in_array('tramites_entidades', $conceptosSeleccionados) ? 'tramites_entidades' : null;
+
+        $getGastosVarios=null;
+        $getSuministros=null;
+        $getMovilizacion=null;
+        $getMantenimiento=null;
+        $getTramitesEntidades=null;
+
+        if($gastosVarios){
+            $getGastosVarios= $this->getGastos($gastosVarios,$request->dateIni, $request->dateFin);
+        }
+        if($suministros){
+            $getSuministros= $this->getGastos($suministros,$request->dateIni, $request->dateFin);
+        }
+        if($movilizacion){
+            $getMovilizacion= $this->getGastos($movilizacion,$request->dateIni, $request->dateFin);
+        }
+        if($mantenimiento){
+            $getMantenimiento= $this->getGastos($mantenimiento,$request->dateIni, $request->dateFin);
+        }
+        if($tramitesEntidades){
+            $getTramitesEntidades= $this->getGastos($tramitesEntidades,$request->dateIni, $request->dateFin);
+        }
+        //return $tramitesEntidades;
+        //return view('formularios.descargas.partials.gastosGeneral',compact('getGastosVarios','getSuministros','getMovilizacion','getMantenimiento','getTramitesEntidades') );
+         return Excel::download(new GastosRepGeneralExport ($getGastosVarios,$getSuministros,$getMovilizacion,$getMantenimiento,$getTramitesEntidades,$request->dateIni, $request->dateFin), 'gastos_reporte_general_'.time().'.xlsx');
+       // return "En Proceso Att. DC";
+    }
+    public function getGastos($concepto,$dateIni,$dateFin)  {
+
+        return  Gastos::whereBetween('fecha', [$dateIni, $dateFin])
+         ->where('concepto', $concepto)  // Agencias que NO empiezan con HardWest
+         //->where('estado', '=', 5)  // unicamente para estados con Finalizar Transacción
+         //->groupBy('agencia', 'user_id')
+         ->with(['user', 'user.agencia'])
+         ->get();
+    }
+
 
 }

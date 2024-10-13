@@ -49,11 +49,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('depositos-download', [DepositosController::class, 'download'])->name('depositos.download');
     Route::post('gastos-download', [GastosController::class, 'download'])->name('gastos.download');
+    Route::post('gastos-bestpc-download', [GastosController::class, 'downloadBestPC'])->name('gastos.bestpc.download');
+    Route::post('gastos-general-download', [GastosController::class, 'downloadGastosGeneral'])->name('gastos.general.download');
     Route::post('/filtrar', [DepositosController::class, 'filtrar'])->name('filtrar');
     Route::patch('depositos-autorizacion/{deposito}', [DepositosController::class, 'autorizate'])->name('depositos.autorizacion');
 
     Route::resource('reportes', ReporteController::class);
     Route::get('/reportes-gastos', [ReporteController::class, 'index_gastos'])->name('reporteUno.gastos.index');
+    Route::get('/reportes-reposicion-gastos', [ReporteController::class, 'reposicion_gastos_bestpc'])->name('reporteDos.gastos.index');
+    Route::get('/reportes-general-gastos', [ReporteController::class, 'index_gastos_general'])->name('reporte.gastosGeneral.index');
 
     Route::get('/depositos-buscar', [DepositosController::class, 'buscar'])->name('depositos.search');
     Route::get('/depositos-buscar-show/{deposito}', [DepositosController::class, 'edit_adm'])->name('depositos.edit.adm');

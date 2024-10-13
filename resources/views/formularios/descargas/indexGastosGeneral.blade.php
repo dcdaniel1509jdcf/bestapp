@@ -4,7 +4,7 @@
 @section('title', 'Depositos')
 
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Descargar</h1>
+    <h1 class="m-0 text-dark text-center">Descarga General de Gastos</h1>
 @stop
 
 @section('content')
@@ -12,7 +12,7 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-                {!! Form::open(['route' => 'gastos.download', 'method' => 'POST']) !!}
+                {!! Form::open(['route' => 'gastos.general.download', 'method' => 'POST']) !!}
                 @csrf
 
                 <div class="row justify-content-center">
@@ -31,6 +31,20 @@
                     </div>
                 </div>
 
+                <div class="row justify-content-center">
+                    <div class="col-xs-12 col-md-6 col-sm-6">
+                        <div class="mb-3">
+                            <label for="concepto" class="form-label">Seleccione el Concepto a descargar</label>
+                            <select class="form-control" id="concepto" name="concepto[]" multiple required style="height: 120px;">
+                                <option value="gastos_varios">Gastos Varios</option>
+                                <option value="suministros">Suministros</option>
+                                <option value="movilizacion">Movilización</option>
+                                <option value="mantenimiento">Mantenimiento</option>
+                                <option value="tramites_entidades">Trámites Entidades</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-xs-12 col-md-12 col-sm-12 text-center">

@@ -275,7 +275,7 @@
                                 </div>
                                 <div id="tipo-mantenimiento-container" class="col-xs-12 col-md-4 col-sm-4  d-none">
                                     <div class="mb-3">
-                                        <label for="tipo_mantenimiento" class="form-label">Tipo de Fletes</label>
+                                        <label for="tipo_mantenimiento" class="form-label">Tipo de Mantenimiento</label>
                                         <select class="form-control" id="tipo_mantenimiento" name="tipo_mantenimiento">
                                             <option value="">Seleccione tipo de fletes</option>
                                             <option value="camionetas">Camionetas</option>
